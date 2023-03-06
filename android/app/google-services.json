@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1024353338202",
+    "project_id": "kfa2023",
+    "storage_bucket": "kfa2023.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024353338202:android:d3ade7608f9dd05b85e963",
+        "android_client_info": {
+          "package_name": "com.example.kfa_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024353338202-23f5rbr3jl597r2cnaqmvt4gclqi5s9o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClVXKv_c4s32BHC3bOYSDxU8NDduKmBJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024353338202-23f5rbr3jl597r2cnaqmvt4gclqi5s9o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
