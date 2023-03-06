@@ -4,8 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:kfa_admin/components/get_image_by_firsbase.dart';
 import 'package:kfa_admin/interface/mobile/navigate_home/AutoVerbal/Deteil.dart';
 import 'package:kfa_admin/interface/mobile/navigate_home/AutoVerbal/Edit.dart';
-import 'package:kfa_admin/interface/mobile/navigate_home/AutoVerbal/search/HomeScreen.dart';
+
 import 'package:kfa_admin/model/models/autoVerbal.dart';
+import 'package:kfa_admin/search/Search-Verbal-ID.dart';
 import 'dart:convert';
 
 import '../../../../model/land_building.dart';
@@ -474,21 +475,21 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           },
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.blue[700],
-      //   elevation: 10,
-      //   onPressed: () {
-      //     setState(() {});
-      //     showSearch(
-      //       context: context,
-      //       delegate: SearchUser(),
-      //       query: '2022',
-      //     );
-      //   },
-      //   child: const Icon(
-      //     Icons.search_sharp,
-      //   ),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[700],
+        elevation: 10,
+        onPressed: () {
+          setState(() {});
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Search_verbal(),
+              ));
+        },
+        child: const Icon(
+          Icons.search_sharp,
+        ),
+      ),
     );
   }
 
