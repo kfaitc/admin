@@ -689,8 +689,6 @@ class _Check_mapState extends State<Check_map> {
   GoogleMapController? mapController; //contrller for Google map
   CameraPosition? cameraPosition;
   List<MarkerId> listMarkerIds = List<MarkerId>.empty(growable: true);
-  // double latitude = 11.5489; //latitude
-  // double longitude = 104.9214;
   LatLng latLng = const LatLng(11.5489, 104.9214);
   String address = "";
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
@@ -698,17 +696,13 @@ class _Check_mapState extends State<Check_map> {
   double adding_price = 0.0;
   String sendAddrress = '';
   List data = [];
-
   bool isApiCallProcess = false;
-  // static const apiKey = "AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY";
   late LocatitonGeocoder geocoder = LocatitonGeocoder(googleApikey);
   String? _currentAddress;
   Position? _currentPosition;
-// use for check user access to the location
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
-
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -774,10 +768,7 @@ class _Check_mapState extends State<Check_map> {
 
   var latitude;
   var longitude;
-  // final String apiKey = 'YOUR_API_KEY';
-  // final String communeName = 'YOUR_COMMUNE_NAME';
-  // final String url =
-  //     'https://maps.googleapis.com/maps/api/geocode/json?latlng=11.5279091,104.9171695&key=AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI';
+  late String commune, district;
   Future<void> Find_by_piont(double la, double lo) async {
     final response = await http.get(Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=${la},${lo}&key=AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI'));
@@ -785,15 +776,6 @@ class _Check_mapState extends State<Check_map> {
     if (response.statusCode == 200) {
       // Successful response
       var jsonResponse = json.decode(response.body);
-      // latitude = location['lat'];
-      // longitude = location['lng'];
-
-      // Use the latitude and longitude to display a marker on the map
-      // var marker = Marker(
-      //   markerId: MarkerId('Commune Location'),
-      //   position: LatLng(latitude, longitude),
-      //   // infoWindow: InfoWindow(title: communeName),
-      // );
       List ls = jsonResponse['results'];
       List ac;
       for (int j = 0; j < ls.length; j++) {
@@ -804,6 +786,8 @@ class _Check_mapState extends State<Check_map> {
             setState(() {
               widget.commune(jsonResponse['results'][j]['address_components'][i]
                   ['short_name']);
+              commune = jsonResponse['results'][j]['address_components'][i]
+                  ['short_name'];
             });
           }
           if (jsonResponse['results'][j]['address_components'][i]['types'][0] ==
@@ -811,6 +795,8 @@ class _Check_mapState extends State<Check_map> {
             setState(() {
               widget.district(jsonResponse['results'][j]['address_components']
                   [i]['short_name']);
+              district = jsonResponse['results'][j]['address_components'][i]
+                  ['short_name'];
             });
           }
           if (jsonResponse['results'][j]['address_components'][i]['types'][0] ==
@@ -822,6 +808,12 @@ class _Check_mapState extends State<Check_map> {
           }
         }
       }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: Duration(seconds: 2),
+          content: Text("Sangkat: ${commune} / khan: ${district}"),
+        ),
+      );
     } else {
       // Error or invalid response
       print(response.statusCode);
@@ -2233,7 +2225,7 @@ class _Check_mapState extends State<Check_map> {
                         markers[markerId] = marker;
                         // requestModel.lat = argument.latitude.toString();
                         // requestModel.lng = argument.longitude.toString();
-                        getAddress(argument);
+                        // getAddress(argument);
                       });
                     },
                     onCameraMove: (CameraPosition cameraPositiona) {

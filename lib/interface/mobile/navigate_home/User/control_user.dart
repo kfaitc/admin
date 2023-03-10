@@ -34,12 +34,23 @@ class _CTL_UserState extends State<CTL_User>
   var get_user = [];
   List data = [];
   var groupValue = 0;
-  List<String> Title = [
+  List Title = [
     'Female',
     'Male',
   ];
   static TabController? controller;
   static int index = 0;
+  void fetchData(gender, form) async {
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/userAll?gender=${gender}&known_from=${form}'));
+    if (rs.statusCode == 200) {
+      var jsonData = jsonDecode(rs.body);
+      setState(() {
+        data = jsonData;
+      });
+    }
+  }
+
   @override
   void initState() {
     cell_user(
@@ -58,137 +69,110 @@ class _CTL_UserState extends State<CTL_User>
     return Scaffold(
       appBar: AppBar(
         title: const Text("User Control Verbal"),
-        // bottom: TabBar(
-        //   controller: controller,
-        //   isScrollable: true,
-        //   onTap: (value) {
-        //     setState(() {
-        //       index = value;
-        //     });
-        //   },
-        //   tabs: [
-        //     for (int i = 0; i < Title.length; i++)
-        //       Tab(child: Text(Title.elementAt(i))),
-        //   ],
-        // ),
       ),
       body: Column(
         children: [
           GFCard(
+              margin: EdgeInsets.all(5),
               content: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  GFRadio(
-                    size: 20,
-                    value: 0,
-                    groupValue: groupValue,
-                    onChanged: (value) {
-                      setState(() {
-                        groupValue = value;
-                      });
-                    },
-                    inactiveIcon: null,
-                    activeBorderColor: GFColors.SUCCESS,
-                    radioColor: GFColors.SUCCESS,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      GFRadio(
+                        size: 20,
+                        value: 0,
+                        groupValue: groupValue,
+                        onChanged: (value) {
+                          setState(() {
+                            groupValue = value;
+                          });
+                        },
+                        inactiveIcon: null,
+                        activeBorderColor: GFColors.SUCCESS,
+                        radioColor: GFColors.SUCCESS,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10),
+                        child: DropdownButtonHideUnderline(
+                          child: GFDropdown(
+                            borderRadius: BorderRadius.circular(5),
+                            border: const BorderSide(
+                                color: Colors.black12, width: 1),
+                            dropdownButtonColor: Colors.white,
+                            value: dropdown,
+                            onChanged: (newValue) {
+                              setState(() {
+                                dropdown = newValue;
+                                controller;
+                              });
+                            },
+                            hint: Text(
+                              'Property',
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            items: [
+                              'Other',
+                              'Banks',
+                              'Private',
+                              'Admin',
+                            ]
+                                .map((value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      ),
+                      GFRadio(
+                        size: 20,
+                        value: 1,
+                        groupValue: groupValue,
+                        onChanged: (value) {
+                          setState(() {
+                            groupValue = value;
+                          });
+                        },
+                        inactiveIcon: null,
+                        activeBorderColor: GFColors.PRIMARY,
+                        radioColor: GFColors.PRIMARY,
+                      )
+                    ],
                   ),
-                  GFRadio(
-                    size: 20,
-                    value: 1,
-                    groupValue: groupValue,
-                    onChanged: (value) {
-                      setState(() {
-                        groupValue = value;
-                      });
-                    },
-                    inactiveIcon: null,
-                    activeBorderColor: GFColors.PRIMARY,
-                    radioColor: GFColors.PRIMARY,
-                  )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[Text('Male'), Text("Female")],
+                  ),
                 ],
+              )),
+          InkWell(
+            onTap: () {
+              fetchData(Title.elementAt(groupValue), dropdown);
+              print(data.length);
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Text(
+                "Show Number",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: MediaQuery.textScaleFactorOf(context) * 18),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[Text('Man'), Text("Woman")],
-              ),
-            ],
-          )),
-          Container(
-            margin: EdgeInsets.only(top: 10, left: 15, right: 15),
-            child: DropdownButtonHideUnderline(
-              child: GFDropdown(
-                padding: const EdgeInsets.all(15),
-                borderRadius: BorderRadius.circular(5),
-                border: const BorderSide(color: Colors.black12, width: 1),
-                dropdownButtonColor: Colors.white,
-                value: dropdown,
-                onChanged: (newValue) {
-                  setState(() {
-                    dropdown = newValue;
-                    controller;
-                  });
-                },
-                hint: Text('Property'),
-                items: [
-                  'Other',
-                  'Banks',
-                  'Private',
-                  'Admin',
-                ]
-                    .map((value) => DropdownMenuItem(
-                          value: value,
-                          child: Text(value),
-                        ))
-                    .toList(),
+              decoration: BoxDecoration(
+                boxShadow: [BoxShadow(blurRadius: 5, color: Colors.grey)],
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
           ),
-          // DropdownButtonHideUnderline(
-          //   child: GFDropdown(
-          //     padding: const EdgeInsets.all(15),
-          //     borderRadius: BorderRadius.circular(5),
-          //     border: const BorderSide(color: Colors.black12, width: 1),
-          //     dropdownButtonColor: Colors.white,
-          //     value: dropdown,
-          //     onChanged: (newValue) {
-          //       setState(() {
-          //         dropdown = newValue;
-          //         controller;
-          //       });
-          //     },
-          //     hint: Text('Property'),
-          //     items: [
-          //       'Other',
-          //       'Banks',
-          //       'Private',
-          //       'Admin',
-          //     ]
-          //         .map((value) => DropdownMenuItem(
-          //               value: value,
-          //               child: Text(value),
-          //             ))
-          //         .toList(),
-          //   ),
-          // ),
-          // if (dropdown != null)
-          //   Container(
-          //     height: MediaQuery.of(context).size.height * 0.7,
-          //     child: TabBarView(
-          //       dragStartBehavior: DragStartBehavior.down,
-          //       controller: controller,
-          //       children: [
-          //         cell_user(
-          //           known_from: 0,
-          //           check: dropdown,
-          //         ),
-          //         cell_user(
-          //           known_from: 1,
-          //           check: dropdown,
-          //         ),
-          //       ],
-          //     ),
-          //   ),
+          if (data.isNotEmpty)
+            for (int i = 0; i < data.length; i++)
+              Container(
+                margin: EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
+                child: Text(data[i]['username']),
+              )
         ],
       ),
     );
@@ -210,6 +194,7 @@ class _cell_userState extends State<cell_user> {
   ];
 
   var number_verbal = [];
+  List data = [];
   void fetchData(gender, form) async {
     var rs = await http.get(Uri.parse(
         'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/userAll?gender=${gender}&known_from=${form}'));
@@ -233,7 +218,7 @@ class _cell_userState extends State<cell_user> {
   }
 
   var get_user = [];
-  List data = [];
+
   @override
   void initState() {
     User;
