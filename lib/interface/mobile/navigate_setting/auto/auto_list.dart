@@ -128,11 +128,11 @@ class _View_DataState extends State<View_Data> {
     fontWeight: FontWeight.bold,
   );
   List<String> Title = [
-    "Khan Chamkar Mon",
+    "Chamkarmon",
     "Khan Doun Penh",
     "Khan 7 Makara",
-    "Khan Tuol Kouk",
-    "Khan Mean Chey",
+    "Khan Tuol Kork",
+    "MeanChey",
     "Khan Chbar Ampov",
     "Khan Chroy Changvar",
     "Khan Sensok",
