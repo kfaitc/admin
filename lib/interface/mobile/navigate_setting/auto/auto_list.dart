@@ -36,7 +36,7 @@ class _AutoListState extends State<AutoList>
 
   List<String> Title = [
     "Khan Chamkar Mon",
-    "Khan Doun Penh",
+    "Khan Daun Penh",
     "Khan 7 Makara",
     "Khan Tuol Kouk",
     "Khan Mean Chey",
@@ -129,14 +129,14 @@ class _View_DataState extends State<View_Data> {
   );
   List<String> Title = [
     "Chamkarmon",
-    "Khan Doun Penh",
-    "Khan 7 Makara",
+    "Daun Penh",
+    "Prampi Makara",
     "Khan Tuol Kork",
     "MeanChey",
-    "Khan Chbar Ampov",
-    "Khan Chroy Changvar",
-    "Khan Sensok",
-    "Khan Russey Keo",
+    "Chbar Ampov",
+    "Chraoy Chongvar",
+    "Khan Sen Sok",
+    "Russei Keo",
     "Khan Dangkor",
     "Khan Pou Senchey",
     "Khan Preaek Pnov",
