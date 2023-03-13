@@ -137,9 +137,9 @@ class _View_DataState extends State<View_Data> {
     "Chraoy Chongvar",
     "Khan Sen Sok",
     "Russei Keo",
-    "Khan Dangkor",
-    "Khan Pou Senchey",
-    "Khan Preaek Pnov",
+    "Dangkor",
+    "Pur SenChey",
+    "Praek Pnov",
   ];
   @override
   void initState() {
