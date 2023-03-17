@@ -23,7 +23,7 @@ class _DistrictState extends State<District> {
   int num_index = 0;
   List<String> Title = [
     "Khan Chamkar Mon",
-    "Daun Penh",
+    "Khan Daun Penh",
     "Khan 7 Makara",
     "Khan Tuol Kouk",
     "Khan Mean Chey",
@@ -146,7 +146,7 @@ class _Check_mapState extends State<Check_map> {
   Position? _currentPosition;
   List<String> Title = [
     "Khan Chamkar Mon",
-    "Daun Penh",
+    "Khan Daun Penh",
     "Khan 7 Makara",
     "Khan Tuol Kouk",
     "Khan Mean Chey",
