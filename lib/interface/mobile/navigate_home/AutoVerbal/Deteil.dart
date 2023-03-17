@@ -129,7 +129,7 @@ class _DetailState extends State<Detail> {
                           ),
                           SizedBox(width: 10),
                           Text(
-                            widget.code,
+                            widget.code.toString(),
                             style: TextStyle(
                                 fontSize: 19,
                                 fontWeight: FontWeight.bold,
@@ -138,9 +138,9 @@ class _DetailState extends State<Detail> {
                         ],
                       ),
 
-                      // ignore: sized_box_for_whitespace
-                      //dropdown(),
-                      // PropertyDropdown(),
+                      // // ignore: sized_box_for_whitespace
+                      // //dropdown(),
+                      // // PropertyDropdown(),
 
                       Box(
                         label: "Property",
@@ -243,173 +243,175 @@ class _DetailState extends State<Detail> {
                       SizedBox(
                         height: 10,
                       ),
-                      for (int index = 0; index < land_list.length; index++)
-                        Container(
-                          width: 260,
-                          //height: 210,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: kPrimaryColor),
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                          child: Column(
-                            children: [
-                              Stack(
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          '${list[index]["verbal_land_type"]} ',
-                                          style: NameProperty(),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
-                                child: Text.rich(
-                                  TextSpan(
-                                    children: <InlineSpan>[
-                                      WidgetSpan(
-                                          child: Icon(
-                                        Icons.location_on_sharp,
-                                        color: kPrimaryColor,
-                                        size: 14,
-                                      )),
-                                      TextSpan(
-                                          text: "${list[index]["address"]} "),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 3.0,
-                              ),
-                              Divider(
-                                height: 1,
-                                thickness: 1,
-                                color: kPrimaryColor,
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 10),
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  list[index]["verbal_land_des"],
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(width: 10),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Depreciation",
-                                        style: Label(),
-                                      ),
-                                      SizedBox(height: 3),
-                                      Text(
-                                        "Area",
-                                        style: Label(),
-                                      ),
-                                      SizedBox(height: 3),
-                                      Text(
-                                        'Min Value/Sqm',
-                                        style: Label(),
-                                      ),
-                                      SizedBox(height: 3),
-                                      Text(
-                                        'Max Value/Sqm',
-                                        style: Label(),
-                                      ),
-                                      SizedBox(height: 3),
-                                      Text(
-                                        'Min Value',
-                                        style: Label(),
-                                      ),
-                                      SizedBox(height: 3),
-                                      Text(
-                                        'Min Value',
-                                        style: Label(),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(width: 15),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 4),
-                                      Text(
-                                        ':   ' + list[index]["verbal_land_dp"],
-                                        style: Name(),
-                                      ),
-                                      SizedBox(height: 2),
-                                      Text(
-                                        ':   ' +
-                                            (list[index]["verbal_land_area"]
-                                                    .toInt())
-                                                .toString() +
-                                            'm' +
-                                            '\u00B2',
-                                        style: Name(),
-                                      ),
-                                      SizedBox(height: 2),
-                                      Text(
-                                        ':   ' +
-                                            (list[index]["verbal_land_minsqm"])
-                                                .toString() +
-                                            '\$',
-                                        style: Name(),
-                                      ),
-                                      SizedBox(height: 2),
-                                      Text(
-                                        ':   ' +
-                                            (list[index]["verbal_land_maxsqm"])
-                                                .toString() +
-                                            '\$',
-                                        style: Name(),
-                                      ),
-                                      SizedBox(height: 2),
-                                      Text(
-                                        ':   ' +
-                                            (list[index]
-                                                    ["verbal_land_minvalue"])
-                                                .toString() +
-                                            '\$',
-                                        style: Name(),
-                                      ),
-                                      SizedBox(height: 2),
-                                      Text(
-                                        ':   ' +
-                                            (list[index]["verbal_land_maxvalue"]
-                                                    .toString() +
-                                                '\$'),
-                                        style: Name(),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                      // for (int index = 0; index < land_list.length; index++)
+                      //   Container(
+                      //     width: 260,
+                      //     //height: 210,
+                      //     padding: EdgeInsets.all(10),
+                      //     decoration: BoxDecoration(
+                      //       border: Border.all(width: 1, color: kPrimaryColor),
+                      //       borderRadius: BorderRadius.all(Radius.circular(15)),
+                      //     ),
+                      //     child: Column(
+                      //       children: [
+                      //         Stack(
+                      //           children: [
+                      //             Row(
+                      //               children: [
+                      //                 SizedBox(
+                      //                   width: 10,
+                      //                 ),
+                      //                 Expanded(
+                      //                   flex: 1,
+                      //                   child: Text(
+                      //                     (list[index]["verbal_land_des"]
+                      //                         .toString()),
+                      //                     style: NameProperty(),
+                      //                   ),
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         Padding(
+                      //           padding:
+                      //               const EdgeInsets.only(left: 10, right: 10),
+                      //           child: Text.rich(
+                      //             TextSpan(
+                      //               children: <InlineSpan>[
+                      //                 WidgetSpan(
+                      //                     child: Icon(
+                      //                   Icons.location_on_sharp,
+                      //                   color: kPrimaryColor,
+                      //                   size: 14,
+                      //                 )),
+                      //                 TextSpan(
+                      //                     text: "${list[index]["address"]} "),
+                      //               ],
+                      //             ),
+                      //             textAlign: TextAlign.left,
+                      //             style: TextStyle(fontSize: 12),
+                      //           ),
+                      //         ),
+                      //         SizedBox(
+                      //           height: 3.0,
+                      //         ),
+                      //         Divider(
+                      //           height: 1,
+                      //           thickness: 1,
+                      //           color: kPrimaryColor,
+                      //         ),
+                      //         SizedBox(
+                      //           height: 5,
+                      //         ),
+                      //         // Container(
+                      //         //   padding: EdgeInsets.only(left: 10),
+                      //         //   alignment: Alignment.centerLeft,
+                      //         //   child: Text(
+                      //         //     list[index]["verbal_land_des"].toString(),
+                      //         //   ),
+                      //         // ),
+                      //         Row(
+                      //           children: [
+                      //             SizedBox(width: 10),
+                      //             // Column(
+                      //             //   mainAxisAlignment: MainAxisAlignment.start,
+                      //             //   crossAxisAlignment:
+                      //             //       CrossAxisAlignment.start,
+                      //             //   children: [
+                      //             //     Text(
+                      //             //       "Depreciation",
+                      //             //       style: Label(),
+                      //             //     ),
+                      //             //     SizedBox(height: 3),
+                      //             //     Text(
+                      //             //       "Area",
+                      //             //       style: Label(),
+                      //             //     ),
+                      //             //     SizedBox(height: 3),
+                      //             //     Text(
+                      //             //       'Min Value/Sqm',
+                      //             //       style: Label(),
+                      //             //     ),
+                      //             //     SizedBox(height: 3),
+                      //             //     Text(
+                      //             //       'Max Value/Sqm',
+                      //             //       style: Label(),
+                      //             //     ),
+                      //             //     SizedBox(height: 3),
+                      //             //     Text(
+                      //             //       'Min Value',
+                      //             //       style: Label(),
+                      //             //     ),
+                      //             //     SizedBox(height: 3),
+                      //             //     Text(
+                      //             //       'Min Value',
+                      //             //       style: Label(),
+                      //             //     ),
+                      //             //   ],
+                      //             // ),
+                      //             SizedBox(width: 15),
+                      //             // Column(
+                      //             //   mainAxisAlignment: MainAxisAlignment.start,
+                      //             //   crossAxisAlignment:
+                      //             //       CrossAxisAlignment.start,
+                      //             //   children: [
+                      //             //     SizedBox(height: 4),
+                      //             //     Text(
+                      //             //       ':   ' + list[index]["verbal_land_dp"],
+                      //             //       style: Name(),
+                      //             //     ),
+                      //             //     SizedBox(height: 2),
+                      //             //     Text(
+                      //             //       ':   ' +
+                      //             //           (list[index]["verbal_land_area"]
+                      //             //                   .toInt())
+                      //             //               .toString() +
+                      //             //           'm' +
+                      //             //           '\u00B2',
+                      //             //       style: Name(),
+                      //             //     ),
+                      //             //     SizedBox(height: 2),
+                      //             //     Text(
+                      //             //       ':   ' +
+                      //             //           (list[index]["verbal_land_minsqm"])
+                      //             //               .toString() +
+                      //             //           '\$',
+                      //             //       style: Name(),
+                      //             //     ),
+                      //             //     SizedBox(height: 2),
+                      //             //     Text(
+                      //             //       ':   ' +
+                      //             //           (list[index]["verbal_land_maxsqm"])
+                      //             //               .toString() +
+                      //             //           '\$',
+                      //             //       style: Name(),
+                      //             //     ),
+                      //             //     SizedBox(height: 2),
+                      //             //     Text(
+                      //             //       ':   ' +
+                      //             //           (list[index]
+                      //             //                   ["verbal_land_minvalue"])
+                      //             //               .toString() +
+                      //             //           '\$',
+                      //             //       style: Name(),
+                      //             //     ),
+                      //             //     SizedBox(height: 2),
+                      //             //     Text(
+                      //             //       ':   ' +
+                      //             //           (list[index]["verbal_land_maxvalue"]
+                      //             //                   .toString() +
+                      //             //               '\$'),
+                      //             //       style: Name(),
+                      //             //     ),
+                      //             //   ],
+                      //             // ),
+                      //             ////////////
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
                     ],
                   ),
                 ),

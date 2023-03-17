@@ -66,10 +66,10 @@ class _CommentAndOptionState extends State<CommentAndOption> {
               items: _list
                   .map<DropdownMenuItem<String>>(
                     (value) => DropdownMenuItem<String>(
-                      value: value["opt_value"] + " " + value["opt_id"],
+                      value: "${value["opt_value"]}  ${value["opt_id"]}",
                       child: Text(value["opt_des"]),
                       onTap: () {
-                        widget.opt_type_id(value["opt_value"]);
+                        widget.opt_type_id(value["opt_value"].toString());
                       },
                     ),
                   )

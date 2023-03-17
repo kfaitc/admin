@@ -40,7 +40,7 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
     // ignore: unnecessary_new
     LoadApprove();
     LoadVerify();
-    print('= ======= = = = == = = = = == = ${widget.vfy}');
+    // print('= ======= = = = == = = = = == = ${widget.vfy}');
     // if (widget.vfy != null) {
     //   LoadVerify2(widget.vfy);
     // }
@@ -71,8 +71,8 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
               items: listVerify
                   .map<DropdownMenuItem<String>>(
                     (value) => DropdownMenuItem<String>(
-                      value: value["agenttype_id"],
-                      child: Text(value["agenttype_name"]),
+                      value: value["agenttype_id"].toString(),
+                      child: Text(value["agenttype_name"].toString()),
                     ),
                   )
                   .toList(),
@@ -129,8 +129,8 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
               items: listApprove
                   .map<DropdownMenuItem<String>>(
                     (value) => DropdownMenuItem<String>(
-                      value: value["approve_id"],
-                      child: Text(value["approve_name"]),
+                      value: value["approve_id"].toString(),
+                      child: Text(value["approve_name"].toString()),
                     ),
                   )
                   .toList(),
