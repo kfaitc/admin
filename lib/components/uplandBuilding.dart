@@ -664,16 +664,16 @@ class _LandBuildingState extends State<up_LandBuilding> {
             'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/commercial?Khan_ID=${khan_id}&Sangkat_ID=${sangkat_id}'));
         var jsonData = jsonDecode(rs.body);
         setState(() {
-          maxSqm = double.parse(jsonData[0]['Max_Value']);
-          minSqm = double.parse(jsonData[0]['Min_Value']);
+          maxSqm = double.parse(jsonData[0]['Max_Value'].toString());
+          minSqm = double.parse(jsonData[0]['Min_Value'].toString());
         });
       } else if (_selectedValue == 'Residencial') {
         var rs = await http.get(Uri.parse(
             'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/residential?Khan_ID=${khan_id}&Sangkat_ID=${sangkat_id}'));
         var jsonData = jsonDecode(rs.body);
         setState(() {
-          maxSqm = double.parse(jsonData[0]['Max_Value']);
-          minSqm = double.parse(jsonData[0]['Min_Value']);
+          maxSqm = double.parse(jsonData[0]['Max_Value'].toString());
+          minSqm = double.parse(jsonData[0]['Min_Value'].toString());
         });
       } else if (_selectedValue == 'Agricultural') {
         maxSqm = 1;
@@ -711,8 +711,8 @@ class _LandBuildingState extends State<up_LandBuilding> {
     setState(() {
       isApiCallProcess = false;
       // _list = jsonData['property'];
-      maxSqm = double.parse(jsonData[0]['max']);
-      minSqm = double.parse(jsonData[0]['min']);
+      maxSqm = double.parse(jsonData[0]['max'].toString());
+      minSqm = double.parse(jsonData[0]['min'].toString());
       if (widget.opt_type_id != '0') {
         totalMin = (minSqm * area) * (double.parse(widget.opt_type_id) / 100);
         totalMax = (maxSqm * area) * (double.parse(widget.opt_type_id) / 100);

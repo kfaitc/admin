@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       ),
       // home: Show_autoVerbals(),
       home: Login(),
+      // home: Show_autoVerbals(),
     );
   }
 }

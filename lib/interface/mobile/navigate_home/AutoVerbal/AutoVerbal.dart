@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
@@ -56,8 +58,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
 
       setState(() {
         list = jsonData;
-        print('**************$list');
-        ;
       });
     }
   }
@@ -128,9 +128,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
       body: ListView.builder(
           itemCount: list.length,
           itemBuilder: (BuildContext context, int index) {
-            // final cdt = snapshot.data![index];
-            // data_pdf.add(snapshot.data![index]);
-            // data_pdf[index] = snapshot.data![index];
             return Container(
                 height: MediaQuery.of(context).size.height * 0.47,
                 margin: const EdgeInsets.all(10),

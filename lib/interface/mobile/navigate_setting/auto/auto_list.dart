@@ -177,7 +177,7 @@ class _View_DataState extends State<View_Data> {
                         alignment: Alignment.centerRight,
                         child: GFAvatar(
                           size: 20,
-                          child: Text(_list[i]['cid']),
+                          child: Text(_list[i]['cid'].toString()),
                         ),
                       ),
                       Padding(
@@ -193,7 +193,7 @@ class _View_DataState extends State<View_Data> {
                             Expanded(
                               flex: 3,
                               child: Text(
-                                _list[i]['commune_name'],
+                                _list[i]['commune_name'].toString(),
                                 textAlign: TextAlign.right,
                               ),
                             )
@@ -213,7 +213,7 @@ class _View_DataState extends State<View_Data> {
                             Expanded(
                               flex: 3,
                               child: Text(
-                                _list[i]['district'],
+                                _list[i]['district'].toString(),
                                 textAlign: TextAlign.right,
                               ),
                             )
@@ -233,7 +233,7 @@ class _View_DataState extends State<View_Data> {
                             Expanded(
                               flex: 3,
                               child: Text(
-                                _list[i]['province'],
+                                _list[i]['province'].toString(),
                                 textAlign: TextAlign.right,
                               ),
                             )
@@ -260,7 +260,7 @@ class _View_DataState extends State<View_Data> {
                                   Expanded(
                                     flex: 3,
                                     child: Text(
-                                      "${double.parse(_list[i]['max_value']).toStringAsFixed(2)} \$",
+                                      "${double.parse(_list[i]['max_value'].toString()).toStringAsFixed(2)} \$",
                                       textAlign: TextAlign.right,
                                     ),
                                   )
@@ -281,7 +281,7 @@ class _View_DataState extends State<View_Data> {
                                   Expanded(
                                     flex: 3,
                                     child: Text(
-                                      "${double.parse(_list[i]['min_value']).toStringAsFixed(2)} \$",
+                                      "${double.parse(_list[i]['min_value'].toString()).toStringAsFixed(2)} \$",
                                       textAlign: TextAlign.right,
                                     ),
                                   )
@@ -304,7 +304,7 @@ class _View_DataState extends State<View_Data> {
                             Expanded(
                               flex: 3,
                               child: Text(
-                                _list[i]['road_name'],
+                                _list[i]['road_name'].toString(),
                                 textAlign: TextAlign.right,
                               ),
                             )

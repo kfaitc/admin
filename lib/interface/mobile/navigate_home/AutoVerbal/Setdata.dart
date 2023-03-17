@@ -9,6 +9,7 @@ import 'package:getwidget/types/gf_animation_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kfa_admin/Customs/formTwinN.dart';
 import 'package:kfa_admin/components/code.dart';
@@ -144,7 +145,7 @@ class _AddState extends State<Add> with SingleTickerProviderStateMixin {
           InkWell(
             onTap: () {
               setState(() {
-                uploadt_image(_file);
+                uploadt_image(_file!);
               });
               requestModelAuto.user = widget.id;
               requestModelAuto.verbal_id = code;
@@ -444,7 +445,7 @@ class _AddState extends State<Add> with SingleTickerProviderStateMixin {
           SizedBox(
             height: 3.0,
           ),
-          // if (id_khan == 0)
+
           TextButton(
             onPressed: () {
               SlideUp(context);
@@ -498,53 +499,59 @@ class _AddState extends State<Add> with SingleTickerProviderStateMixin {
           //   },
           // ),
           SingleChildScrollView(
-            child: Column(children: [
-              imagepath != "" ? Image.file(File(imagepath)) : SizedBox(),
-              imagepath == ""
-                  ? TextButton(
-                      onPressed: () {
-                        openImage();
-                      },
-                      child: FractionallySizedBox(
-                        widthFactor: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 22, right: 22),
-                          child: Container(
-                            height: 60,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: kPrimaryColor,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
+              child: Column(children: [
+            _file != null
+                ? Container(
+                    height: 200,
+                    width: 300,
+                    child: Image.file(File(_file!.path)),
+                  )
+                : SizedBox(),
+            _file == null
+                ? TextButton(
+                    onPressed: () async {
+                      await openImage(ImageSource.gallery);
+                      setState(() {
+                        _file;
+                      });
+                    },
+                    child: FractionallySizedBox(
+                      widthFactor: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 22, right: 22),
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: kPrimaryColor,
                             ),
-                            // padding: EdgeInsets.only(left: 30, right: 30),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Row(
-                                  // ignore: prefer_const_literals_to_create_immutables
-                                  children: [
-                                    SizedBox(width: 10),
-                                    Icon(
-                                      Icons.photo_album_outlined,
-                                      color: kImageColor,
-                                    ),
-                                    SizedBox(width: 10),
-                                    // ignore: unnecessary_null_comparison
-                                    Text((imagepath == "")
-                                        ? 'Choose Photo'
-                                        : 'choosed Photo'),
-                                  ],
-                                )),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
                           ),
+                          // padding: EdgeInsets.only(left: 30, right: 30),
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 10),
+                                  Icon(
+                                    Icons.map_sharp,
+                                    color: kImageColor,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text((imagepath == "")
+                                      ? 'Choose Photo'
+                                      : 'choosed Photo'),
+                                ],
+                              )),
                         ),
                       ),
-                    )
-                  : SizedBox(),
-            ]),
-          ),
+                    ),
+                  )
+                : SizedBox()
+          ])),
 
           if (id_khan != 0)
             InkWell(
@@ -868,26 +875,46 @@ class _AddState extends State<Add> with SingleTickerProviderStateMixin {
   late File _image;
   final picker = ImagePicker();
   late String base64string;
-  late File _file;
+  XFile? _file;
   final ImagePicker imgpicker = ImagePicker();
   String imagepath = "";
-  openImage() async {
+  dynamic openImage(ImageSource source) async {
     try {
-      var pickedFile = await imgpicker.pickImage(source: ImageSource.gallery);
+      XFile? pickedFile = await ImagePicker().pickImage(source: source);
       //you can use ImageCourse.camera for Camera capture
       if (pickedFile != null) {
         imagepath = pickedFile.path;
-        print(imagepath);
+        CroppedFile? cropFile = await ImageCropper()
+            .cropImage(sourcePath: pickedFile.path, aspectRatioPresets: [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio16x9,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.square,
+        ], uiSettings: [
+          AndroidUiSettings(
+              lockAspectRatio: false,
+              backgroundColor: Colors.black,
+              initAspectRatio: CropAspectRatioPreset.original)
+        ]);
+        _file = XFile(cropFile!.path);
+        imagepath = pickedFile.path;
+        // _file = imagefile;
+        // XFile? imagefile;
+
         //output /data/user/0/com.example.testapp/cache/image_picker7973898508152261600.jpg
-        File imagefile = File(imagepath); //convert Path to File
+        File? imagefile = File(imagepath); //convert Path to File
         // saveAutoVerbal(imagefile);
         Uint8List imagebytes = await imagefile.readAsBytes(); //convert to bytes
         String base64string =
             base64.encode(imagebytes); //convert bytes to base64 string
         Uint8List decodedbytes = base64.decode(base64string);
         //decode base64 stirng to bytes
-        setState(() {
-          _file = imagefile;
+        setState(() async {
+          _file = imagefile as XFile;
         });
       } else {
         print("No image is selected.");
@@ -897,9 +924,36 @@ class _AddState extends State<Add> with SingleTickerProviderStateMixin {
     }
   }
 
-  Future<dynamic> uploadt_image(File _image) async {
-    var request = await http.MultipartRequest("POST",
-        Uri.parse("https://www.oneclickonedollar.com/v/public/api/set_image"));
+  // openImage() async {
+  //   try {
+  //     var pickedFile = await imgpicker.pickImage(source: ImageSource.gallery);
+  //     //you can use ImageCourse.camera for Camera capture
+  //     if (pickedFile != null) {
+  //       imagepath = pickedFile.path;
+  //       print(imagepath);
+  //       //output /data/user/0/com.example.testapp/cache/image_picker7973898508152261600.jpg
+  //       File imagefile = File(imagepath); //convert Path to File
+  //       // saveAutoVerbal(imagefile);
+  //       Uint8List imagebytes = await imagefile.readAsBytes(); //convert to bytes
+  //       String base64string =
+  //           base64.encode(imagebytes); //convert bytes to base64 string
+  //       Uint8List decodedbytes = base64.decode(base64string);
+  //       //decode base64 stirng to bytes
+  //       setState(() {
+  //         _file = imagefile;
+  //       });
+  //     } else {
+  //       print("No image is selected.");
+  //     }
+  //   } catch (e) {
+  //     print("error while picking file.");
+  //   }
+  // }
+  Future<dynamic> uploadt_image(XFile _image) async {
+    var request = await http.MultipartRequest(
+        "POST",
+        Uri.parse(
+            "https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/set_image"));
     Map<String, String> headers = {
       "content-type": "application/json",
       "Connection": "keep-alive",
@@ -917,8 +971,29 @@ class _AddState extends State<Add> with SingleTickerProviderStateMixin {
     var response = await request.send();
     var responseData = await response.stream.toBytes();
     var result = String.fromCharCodes(responseData);
-    print(result);
   }
+  // Future<dynamic> uploadt_image(XFile _image) async {
+  //   var request = await http.MultipartRequest("POST",
+  //       Uri.parse("https://www.oneclickonedollar.com/v/public/api/set_image"));
+  //   Map<String, String> headers = {
+  //     "content-type": "application/json",
+  //     "Connection": "keep-alive",
+  //     "Accept-Encoding": " gzip"
+  //   };
+  //   request.headers.addAll(headers);
+  //   // request.files.add(picture);
+  //   request.fields['cid'] = code.toString();
+  //   request.files.add(
+  //     await http.MultipartFile.fromPath(
+  //       "image",
+  //       _image.path,
+  //     ),
+  //   );
+  //   var response = await request.send();
+  //   var responseData = await response.stream.toBytes();
+  //   var result = String.fromCharCodes(responseData);
+  //   print(result);
+  // }
 
   //get khan
   void Load_khan(String district) async {
