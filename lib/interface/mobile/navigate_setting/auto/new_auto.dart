@@ -64,7 +64,8 @@ class _NewAutoState extends State<NewAuto> {
         province: "Null",
         longitude: 0.0,
         latitude: 0.0,
-        option: "Null");
+        option: "Null"
+        );
     options;
     onClick1 = false;
     onClick2 = false;
@@ -336,7 +337,8 @@ class _NewAutoState extends State<NewAuto> {
                       province: province,
                       longitude: log,
                       latitude: lat,
-                      option: options);
+                      option: options
+                      );
                   APIservice setData = APIservice();
                   setData.SaveCommune(Commune);
                 });

@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'Auth/login.dart';
+<<<<<<< Updated upstream
 import 'interface/mobile/navigate_home/AutoVerbal/AutoVerbal.dart';
+=======
+import 'interface/mobile/navigate_setting/auto/auto_list.dart';
+>>>>>>> Stashed changes
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,9 +28,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+<<<<<<< Updated upstream
       // home: Show_autoVerbals(),
       home: Login(),
       // home: Show_autoVerbals(),
+=======
+      home: LoginPage(),
+      
+>>>>>>> Stashed changes
     );
   }
 }
