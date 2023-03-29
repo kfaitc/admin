@@ -310,6 +310,7 @@ class AutoVerbalReponseModel {
 
 class AutoVerbalRequestModel {
   late int verbal_id;
+  late String verbal_khan;
   late String property_type_id;
   late String bank_id;
   late String bank_branch_id;
@@ -355,11 +356,12 @@ class AutoVerbalRequestModel {
       required this.verbal_con,
       required this.agent,
       required this.verbal_id,
-      //   required this.autoVerbal,
+      required this.verbal_khan,
       required this.verbal});
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
       "verbal_id": verbal_id,
+      "verbal_khan": verbal_khan,
       "verbal_property_id": property_type_id.trim(),
       "verbal_bank_id": bank_id.trim(),
       "verbal_bank_branch_id": bank_branch_id.trim(),
@@ -379,7 +381,7 @@ class AutoVerbalRequestModel {
       "verbal_con": verbal_con.trim(),
       "verbal_property_code": code.trim(),
       "verbal_user": user.trim(),
-      "verbal_option": option.trim(),
+      "verbal_option": option,
       "VerbalType": verbal,
     };
     return map;

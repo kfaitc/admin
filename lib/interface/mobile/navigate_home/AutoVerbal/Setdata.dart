@@ -128,7 +128,7 @@ class _AddState extends State<Add> with SingleTickerProviderStateMixin {
       verbal_com: '',
       verbal_con: "",
       verbal: [],
-      verbal_id: 0,
+      verbal_id: 0, verbal_khan: '',
       // autoVerbal: [requestModelVerbal],
       // data: requestModelVerbal,
     );
@@ -149,7 +149,7 @@ class _AddState extends State<Add> with SingleTickerProviderStateMixin {
               });
               requestModelAuto.user = widget.id;
               requestModelAuto.verbal_id = code;
-              // requestModelAuto.verbal = lb;
+              requestModelAuto.verbal_khan = district.toString();
               if (validateAndSave()) {
                 APIservice apIservice = APIservice();
                 apIservice.saveAutoVerbal(requestModelAuto).then(

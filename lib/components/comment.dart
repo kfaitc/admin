@@ -32,6 +32,7 @@ class _CommentAndOptionState extends State<CommentAndOption> {
   late String Value = '';
   late List<dynamic> _list;
   late List<dynamic> _list2;
+  var genderValue;
   @override
   void initState() {
     super.initState();
@@ -50,23 +51,21 @@ class _CommentAndOptionState extends State<CommentAndOption> {
             height: 60,
             padding: EdgeInsets.only(left: 30),
             child: DropdownButtonFormField<String>(
-              //value: genderValue,
               isExpanded: true,
               onChanged: (String? newValue) {
                 setState(() {
                   Value = newValue!;
 
-                  widget.value(newValue.split(" ")[0]);
-                  widget.id(newValue.split(" ")[1]);
-
-                  print(_list.toString());
+                  widget.value(newValue.split(" ")[0].toString());
+                  widget.id(newValue.split(" ")[1].toString());
                   print(newValue);
                 });
               },
               items: _list
                   .map<DropdownMenuItem<String>>(
                     (value) => DropdownMenuItem<String>(
-                      value: "${value["opt_value"]}  ${value["opt_id"]}",
+                      value:
+                          "${value["opt_value"].toString()} ${value["opt_id"].toString()}",
                       child: Text(value["opt_des"]),
                       onTap: () {
                         widget.opt_type_id(value["opt_value"].toString());

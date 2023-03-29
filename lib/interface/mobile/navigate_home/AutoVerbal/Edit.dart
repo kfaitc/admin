@@ -142,13 +142,11 @@ class _EditState extends State<Edit> with SingleTickerProviderStateMixin {
       setState(() {
         list_sangkat = jsonData;
         id_Sangkat = int.parse(list_sangkat[0]['Sangkat_ID']);
-        print("id_Sangkat = ${id_Sangkat}");
       });
     }
   }
 
   Future<void> Find_by_piont(double la, double lo) async {
-    print("la ============ ${la}///////// lng=================== ${lo}");
     final response = await http.get(Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=${la},${lo}&key=AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI'));
 

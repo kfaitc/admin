@@ -50,8 +50,6 @@ class _Show_autoVerbalState extends State<Verbals_list> {
 
       setState(() {
         list = jsonData;
-        print('**************$list');
-        ;
       });
     }
   }
@@ -408,7 +406,9 @@ class _Show_autoVerbalState extends State<Verbals_list> {
                             elevation: 5,
                             onPressed: () {
                               setState(() {
-                                deleteDataId(verbalIds: list[0]['verbal_id']);
+                                deleteDataId(
+                                    verbalIds:
+                                        list[index]['verbal_id'].toString());
                                 Navigator.pop(context);
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => Verbals_list()));

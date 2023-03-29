@@ -70,7 +70,7 @@ class _CodeState extends State<Code> {
       setState(() {
         loading = false;
         code = jsonData;
-        codedisplay = int.parse(code[0]['verbal_id']) + 1;
+        codedisplay = int.parse(code[0]['verbal_id'].toString()) + 1;
         widget.code(codedisplay);
       });
     }
