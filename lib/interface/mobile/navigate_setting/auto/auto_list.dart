@@ -17,7 +17,7 @@ class AutoList extends StatefulWidget {
 }
 
 class _AutoListState extends State<AutoList>
-    with SingleTickerProviderStateMixin {
+  with SingleTickerProviderStateMixin {
   late List M_v;
   late List N_v;
 

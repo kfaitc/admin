@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'Home_Screen_property.dart';
+
 class MenuProperty extends StatefulWidget {
   MenuProperty({Key? key, required this.id}) : super(key: key);
   final String id;
@@ -47,7 +49,20 @@ class _MenuPropertyState extends State<MenuProperty> {
           children: [
             for (int i = 0; i < option.length; i++)
               InkWell(
-                onTap: () {},
+                onTap: () {
+                   if (i == 0) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Home_Screen_property(
+                            //id: widget.id,
+                          )));
+                }
+                if (i == 1) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Home_Screen_property(
+                            //id: widget.id,
+                          )));
+                }
+                },
                 child: Container(
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width,

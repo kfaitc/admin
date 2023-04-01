@@ -18,7 +18,8 @@ class APIservice {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: requestModel.toJson());
+        body: requestModel.toJson()
+        );
 
     if (response.statusCode == 200 || response.statusCode == 422) {
       return LoginReponseModel.fromJson(json.decode(response.body));
