@@ -1,18 +1,18 @@
-// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, dead_code, avoid_print
-
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../model/models/search_model.dart';
+import '../../../../../model/models/searchprovincemodel.dart';
 import '../More.dart';
+import '../imageproperty.dart';
 import '../mapproperty/search_map.dart';
 import '../marker_point_map/model_Test.dart';
 import '../List_Property/List_Sale.dart';
 import '../naviga_menu.dart/For_Sale.dart';
 import '../naviga_menu.dart/Home_type.dart';
 import '../naviga_menu.dart/Price.dart';
+import '../search/searchdelegate.dart';
 import 'Screen_post.dart';
 
 List<String> list1 = <String>[
@@ -37,6 +37,7 @@ class SearchPropertyState extends State<SearchProperty> {
   String dropdownValue1 = list1.first;
 
   late SearchRequestModel requestModel;
+  DataModel? dataModel;
   double? lat, log;
   final List<Marker> _markers = <Marker>[];
   CameraPosition? cameraPosition;
@@ -46,11 +47,12 @@ class SearchPropertyState extends State<SearchProperty> {
     MapType.normal,
   ];
   final ScrollController _scrollController = new ScrollController();
-
+  String? search;
   int index = 0;
   @override
   void initState() {
     Property_Sale();
+    //searchProvince(search!);
     super.initState();
   }
 
@@ -83,70 +85,18 @@ class SearchPropertyState extends State<SearchProperty> {
             ),
             Row(
               children: [
-                // Expanded(
-                //   flex: 2,
-                //   child: Container(
-                //     height: MediaQuery.of(context).size.height * 0.1,
-                //     width: MediaQuery.of(context).size.width * 0.2,
-                //     child: Padding(
-                //       padding: const EdgeInsets.all(8.0),
-                //       child: DropdownButton<String>(
-                //         value: dropdownValue1,
-                //         icon: const Icon(Icons.arrow_circle_down_outlined),
-                //         elevation: 16,
-                //         style: const TextStyle(
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 15,
-                //             color: Colors.black),
-                //         underline: SizedBox(),
-                //         // underline: null,
-                //         onChanged: (String? value) {
-                //           // This is called when the user selects an item.
-                //           setState(() {
-                //             dropdownValue1 = value!;
-                //           });
-                //         },
-                //         items: list1
-                //             .map<DropdownMenuItem<String>>((String value) {
-                //           return DropdownMenuItem<String>(
-                //             value: value,
-                //             child: Text(value),
-                //           );
-                //         }).toList(),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // Expanded(
-                //     flex: 1,
-                //     child: Text(
-                //       'Location',
-                //       style: TextStyle(
-                //           fontWeight: FontWeight.bold, fontSize: 16),
-                //     ))
-              ],
-            ),
-            //Text('(number of list) Listings for sale/rent'),
-            // SizedBox(
-            //   height: 5,
-            // ),
-            Row(
-              children: [
                 Expanded(
                   flex: 2,
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder(),
-                          hintText: 'Find listing here...',
-                        ),
+                    child: Container(
+                      // decoration: BoxDecoration(
+                      //   color: Colors.amber,
+                      //   border: Border.all()
+                      // ),
+                      child: SearchDelegate1()
                       ),
-                    ),
                   ),
                 ),
                 Expanded(
@@ -200,57 +150,8 @@ class SearchPropertyState extends State<SearchProperty> {
               ],
             ),
             Flexible(
-              flex: 6,
-              child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 2.0,
-                  mainAxisSpacing: 2.0,
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
-                    const StackReusable(
-                      imagere: 'assets/images/homeimage.jpeg',
-                      pricere: '10000',
-                      sizere: '72',
-                    ),
-                    const StackReusable(
-                      imagere: 'assets/images/villa.jpg',
-                      pricere: '10000',
-                      sizere: '72',
-                    ),
-                    const StackReusable(
-                      imagere: 'assets/images/vilas.jpg',
-                      pricere: '10000',
-                      sizere: '72',
-                    ),
-                    const StackReusable(
-                      imagere: 'assets/images/vla.jpeg',
-                      pricere: '10000',
-                      sizere: '72',
-                    ),
-                    const StackReusable(
-                      imagere: 'assets/images/homeimage.jpeg',
-                      pricere: '10000',
-                      sizere: '72',
-                    ),
-                    const StackReusable(
-                      imagere: 'assets/images/villa.jpg',
-                      pricere: '10000',
-                      sizere: '72',
-                    ),
-                    const StackReusable(
-                      imagere: 'assets/images/vilas.jpg',
-                      pricere: '10000',
-                      sizere: '72',
-                    ),
-                    const StackReusable(
-                      imagere: 'assets/images/vla.jpeg',
-                      pricere: '10000',
-                      sizere: '72',
-                    ),
-                  ]),
-            ),
-            SizedBox(
-              height: 10,
+              flex: 7,
+              child: ImageProperty(),
             ),
           ],
         ),
@@ -272,10 +173,10 @@ class SearchPropertyState extends State<SearchProperty> {
   void Property_Sale() async {
     var jsonData;
     final response = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/property_sale_get'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/image_get'));
 
     if (response.statusCode == 200) {
-      jsonData = jsonDecode(response.body)['Propery_Sale'];
+      jsonData = jsonDecode(response.body);
       list2_Sale = jsonData;
       setState(() {
         list2_Sale;
@@ -283,8 +184,38 @@ class SearchPropertyState extends State<SearchProperty> {
       });
     }
   }
-}
+  //Search province
+  List list2_Search = [];
+   List Name_Commune=[];
+  void Searchtest() async {
+    var jsonData;
+    final response = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/Commune_25_all'));
 
+    if (response.statusCode == 200) {
+      jsonData = jsonDecode(response.body)['data'];
+      list2_Search = jsonData;
+      setState(() {
+        list2_Search;
+        for(int i=0;i<list2_Search.length;i++){
+          Name_Commune.add(list2_Search[i]['Name_cummune'].toString());
+        }
+        print('111111111111111111111${list2_Search[0]['Name_cummune'].toString()}');
+      });
+    }
+  }
+}
+List searchpro = [];
+Future<List<DataModel>> searchProvince(String query) async {
+  final response = await http.get(Uri.parse('https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/Commune_25/khet/search?province=$query'));
+  if (response.statusCode == 200) {
+    final List<dynamic> data = jsonDecode(response.body)['data'];
+    searchpro = data;
+    return data.map((e) => DataModel.fromJson(e)).toList();
+  } else {
+    throw Exception('Failed to load data');
+  }
+}
 class StackReusable extends StatelessWidget {
   final imagere;
   final pricere;
@@ -355,5 +286,59 @@ class StackReusable extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+class TestSearch extends SearchDelegate {
+  TestSearch({required this.name});
+  List name = [];
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+          onPressed: () {
+            query = "";
+          },
+          icon: Icon(Icons.close))
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: Icon(Icons.arrow_back));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List result = name.where((element) {
+      return element.contains(query);
+    }).toList();
+    return ListView.builder(
+        itemCount: query == "" ? name.length : result.length,
+        itemBuilder: (context, i) {
+          return InkWell(
+            onTap: () {
+              query = query == "" ? name[i] : result[i];
+              print(query);
+              // showModalBottomSheet(
+              //     context: context,
+              //     builder: (context) {
+              //       return Slider1();
+              //     });
+            },
+            child: Container(
+                padding: const EdgeInsets.all(14),
+                child: query == "" ? Text("${name[i]}") : Text("${result[i]}")),
+          );
+        });
   }
 }

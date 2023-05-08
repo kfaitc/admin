@@ -27,14 +27,14 @@ import '../../../../customs/form.dart';
 import '../../../../model/land_building.dart';
 import '../../../../model/models/autoVerbal.dart';
 
-class Add extends StatefulWidget {
-  const Add({super.key, required this.id});
+class AddTest extends StatefulWidget {
+  const AddTest({super.key, required this.id});
   final String id;
   @override
-  State<Add> createState() => _AddState();
+  State<AddTest> createState() => _AddTestState();
 }
 
-class _AddState extends State<Add> with SingleTickerProviderStateMixin {
+class _AddTestState extends State<AddTest> with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();

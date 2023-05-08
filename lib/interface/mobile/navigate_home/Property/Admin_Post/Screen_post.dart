@@ -10,10 +10,12 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../../Profile/contants.dart';
 import '../../../../../model/Property_admin.dart';
+import '../../../../../model/models/autoVerbal.dart';
+import '../../../../../model/models/login_model.dart';
+import '../../../../../model/models/property.dart';
 
 class Screen_post extends StatefulWidget {
   const Screen_post({super.key});
-
   @override
   State<Screen_post> createState() => _Screen_postState();
 }
@@ -25,15 +27,33 @@ class _Screen_postState extends State<Screen_post> {
   int? propertyTypeId;
   late TextEditingController Contect;
   late Model_Image_ptys_post model_Image_ptys_post;
+  late AutoVerbalRequestModel requestModelAuto;
+  SaleModelRequest? obj;
   @override
   void initState() {
     super.initState();
-    model_Image_ptys_post = Model_Image_ptys_post(
-      propertyTypeId: 0,
-      idImage: 0,
-      imageName: '',
-      url: '',
+    obj = new SaleModelRequest(
+      ptySaleId: 0,
+      ptySaleImage: 0,
+      propertyId: 0,
+      ptySalePublic: 0,
+      lat: 0,
+      logs: 0,
+      forSaleUser: 0,
+      ptySaleKhan: "",
+      address: "",
+      land: "",
+      sqm: "",
+      bed: "",
+      bath: "",
+      price: "",
     );
+    // model_Image_ptys_post = Model_Image_ptys_post(
+    //   propertyTypeId: 0,
+    //   idImage: 0,
+    //   imageName: '',
+    //   url: '',
+    // );
   }
 
   var code = 0;
@@ -164,7 +184,9 @@ class _Screen_postState extends State<Screen_post> {
 
                           keyboardType: TextInputType.number,
                           // controller: controller,
-                          onChanged: (newValue) {},
+                          onSaved: (newValue) {
+                            obj!.land = newValue.toString();
+                          },
                           decoration: InputDecoration(
                             fillColor: kwhite,
                             filled: true,
@@ -197,7 +219,9 @@ class _Screen_postState extends State<Screen_post> {
                           // controller: sqm,
                           keyboardType: TextInputType.number,
                           // controller: controller,
-                          onChanged: (newValue) {},
+                          onSaved: (newValue) {
+                            obj!.sqm = newValue;
+                          },
                           decoration: InputDecoration(
                             fillColor: kwhite,
                             filled: true,
@@ -239,7 +263,9 @@ class _Screen_postState extends State<Screen_post> {
                           // controller: land,
                           keyboardType: TextInputType.number,
                           // controller: controller,
-                          onChanged: (newValue) {},
+                          onSaved: (newValue) {
+                            obj!.bed = newValue;
+                          },
                           decoration: InputDecoration(
                             fillColor: kwhite,
                             filled: true,
@@ -272,7 +298,9 @@ class _Screen_postState extends State<Screen_post> {
                           // controller: sqm,
                           keyboardType: TextInputType.number,
                           // controller: controller,
-                          onChanged: (newValue) {},
+                          onSaved: (newValue) {
+                            obj!.bath = newValue;
+                          },
                           decoration: InputDecoration(
                             fillColor: kwhite,
                             filled: true,
@@ -308,7 +336,9 @@ class _Screen_postState extends State<Screen_post> {
                   // controller: land,
                   keyboardType: TextInputType.number,
                   // controller: controller,
-                  onChanged: (newValue) {},
+                  onChanged: (newValue) {
+                    obj!.price = newValue;
+                  },
                   decoration: InputDecoration(
                     fillColor: kwhite,
                     filled: true,
@@ -338,8 +368,8 @@ class _Screen_postState extends State<Screen_post> {
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   keyboardType: TextInputType.number,
                   // controller: controller,
-                  onChanged: (value) {
-                    model_Image_ptys_post.propertyTypeId = int.parse(value);
+                  onSaved: (value) {
+                    obj!.propertyId = int.parse(value!);
                   },
                   decoration: InputDecoration(
                     fillColor: kwhite,
@@ -362,13 +392,16 @@ class _Screen_postState extends State<Screen_post> {
                 ),
               ),
               TextButton(
-                  onPressed: () {
+                  onPressed: () { 
+                    postproperty(obj!);
                     setState(() {
-                      uploadt_image(_file!);
+                      uploadt_image(_file!);  
+                      print("Save...");                 
                     });
-                    model_Image_ptys_post.imageName = propertyTypeId as String?;
+                    //model_Image_ptys_post.imageName = propertyTypeId as String?;
                   },
-                  child: Text('Save'))
+                  child: Text('Save')
+                  )
             ])),
           ],
         ),
@@ -432,7 +465,7 @@ class _Screen_postState extends State<Screen_post> {
     var request = await http.MultipartRequest(
         "POST",
         Uri.parse(
-            "https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/Image_ptys_post"));
+            "https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/image_post"));
     Map<String, String> headers = {
       "content-type": "application/json",
       "Connection": "keep-alive",
@@ -440,15 +473,34 @@ class _Screen_postState extends State<Screen_post> {
     };
     request.headers.addAll(headers);
     // request.files.add(picture);
-
+    request.fields['image_id'] = code.toString();
     request.files.add(
       await http.MultipartFile.fromPath(
-        "image_name",
+        "image",
         _image.path,
       ),
     );
-    setState(() {
-      model_Image_ptys_post.imageName = propertyTypeId.toString();
-    });
+    var response = await request.send();
+    var responseData = await response.stream.toBytes();
+    var result = String.fromCharCodes(responseData);
+  }
+  Future<SaleReponseModel> postproperty(SaleModelRequest requestModel) async {
+    final response = await http.post(
+        Uri.parse(
+            'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/property_Poster'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: requestModel.toJson()
+        );
+
+    if (response.statusCode == 200 || response.statusCode == 422) {
+      return SaleReponseModel.fromJson(json.decode(response.body));
+    } else if (response.statusCode == 201 || response.statusCode == 401) {
+      return SaleReponseModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Data');
+    }
   }
 }
