@@ -20,6 +20,7 @@ import 'package:kfa_admin/server/api_service.dart';
 import '../../../../components/ApprovebyAndVerifyby.dart';
 import '../../../../components/LandBuilding.dart';
 import '../../../../components/bank.dart';
+import '../../../../components/code_copy.dart';
 import '../../../../components/property.dart';
 import '../../../../components/slideUp.dart';
 import '../../../../contants.dart';
@@ -309,7 +310,7 @@ class _AddTestState extends State<AddTest> with SingleTickerProviderStateMixin {
       key: _formKey,
       child: Column(
         children: [
-          Code(
+          CodeTest(
             code: (value) {
               setState(() {
                 code = value;

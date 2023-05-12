@@ -32,9 +32,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: Show_autoVerbals(),
-      home: SearchProperty()
-      // home: Search_verbal(),
+       //home: Show_autoVerbals(),
+      home: CodeTest(check_property: 1, code: (value) {  },)
+      //home: AddTest(id: '',),
+      //home: Add(id: '',),
 
       //home: image_test(),
     );

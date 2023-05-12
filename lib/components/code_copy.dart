@@ -43,15 +43,14 @@ class _CodeTestState extends State<CodeTest> {
       loading = true; //make loading true to show progressindicator
     });
     var rs = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/verbal?verbal_published=0'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/getsearchpublish?search_publish=0'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
-
       setState(() {
         loading = false;
         code = jsonData;
-        codedisplay = int.parse(code[0]['verbal_id']) + 1;
-        print(code[0]['verbal_id']);
+        codedisplay = int.parse(code[0]['search']) + 1;
+        print(code[0]['search']);
         widget.code(codedisplay);
         print(codedisplay);
       });
@@ -63,14 +62,14 @@ class _CodeTestState extends State<CodeTest> {
       loading = true; //make loading true to show progressindicator
     });
     var rs = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/verbals?verbal_published=0'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/getsearchpublish?search_publish=0'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 
       setState(() {
         loading = false;
         code = jsonData;
-        codedisplay = int.parse(code[0]['verbal_id'].toString()) + 1;
+        codedisplay = int.parse(code[0]['search'].toString()) + 1;
         widget.code(codedisplay);
       });
     }
