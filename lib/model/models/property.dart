@@ -1,81 +1,69 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-class SaleReponseModel {
+class SearchReponseModel {
   final String message;
-  SaleReponseModel({
+  SearchReponseModel({
     required this.message,
   });
-  factory SaleReponseModel.fromJson(Map<String, dynamic> json) {
-    return SaleReponseModel(
+  factory SearchReponseModel.fromJson(Map<String, dynamic> json) {
+    return SearchReponseModel(
       message: json["message"] ?? "",
     );
   }
 }
-class SaleModelRequest {
-  int? ptySaleId;
-  int? ptySaleImage;
-  int? propertyId;
-  int? ptySalePublic;
-  double? lat;
-  double? logs;
-  int? forSaleUser;
-  String? ptySaleKhan;
-  String? address;
+class SearchModelRequest {
+  String? provinceId;
+  String? imageId;
+  String? lat;
+  String? logs;
   String? land;
   String? sqm;
   String? bed;
   String? bath;
   String? price;
+  String? searchPublish;
+  int? id;
 
-  SaleModelRequest(
-      {this.ptySaleId,
-      this.ptySaleImage,
-      this.propertyId,
-      this.ptySalePublic,
+  SearchModelRequest(
+      {this.provinceId,
+      this.imageId,
       this.lat,
       this.logs,
-      this.forSaleUser,
-      this.ptySaleKhan,
-      this.address,
       this.land,
       this.sqm,
       this.bed,
       this.bath,
-      this.price});
+      this.price,
+      this.searchPublish,
+      this.id});
 
-  SaleModelRequest.fromJson(Map<String, dynamic> json) {
-    ptySaleId = json['pty_sale_id'];
-    ptySaleImage = json['pty_sale_image'];
-    propertyId = json['property_id'];
-    ptySalePublic = json['pty_sale_public'];
+  SearchModelRequest.fromJson(Map<String, dynamic> json) {
+    provinceId = json['province_id'];
+    imageId = json['image_id'];
     lat = json['lat'];
     logs = json['logs'];
-    forSaleUser = json['for_sale_user'];
-    ptySaleKhan = json['pty_sale_Khan'];
-    address = json['address'];
     land = json['land'];
     sqm = json['sqm'];
     bed = json['bed'];
     bath = json['bath'];
     price = json['price'];
+    searchPublish = json['search_publish'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['pty_sale_id'] = this.ptySaleId;
-    data['pty_sale_image'] = this.ptySaleImage;
-    data['property_id'] = this.propertyId;
-    data['pty_sale_public'] = this.ptySalePublic;
+    data['province_id'] = this.provinceId;
+    data['image_id'] = this.imageId;
     data['lat'] = this.lat;
     data['logs'] = this.logs;
-    data['for_sale_user'] = this.forSaleUser;
-    data['pty_sale_Khan'] = this.ptySaleKhan;
-    data['address'] = this.address;
     data['land'] = this.land;
     data['sqm'] = this.sqm;
     data['bed'] = this.bed;
     data['bath'] = this.bath;
     data['price'] = this.price;
+    data['search_publish'] = this.searchPublish;
+    data['id'] = this.id;
     return data;
   }
 }

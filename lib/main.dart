@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-       //home: Show_autoVerbals(),
-      home: CodeTest(check_property: 1, code: (value) {  },)
+       home: Screen_post(),
+      //home: CodeTest(check_property: 1, code: (value) {  },)
       //home: AddTest(id: '',),
       //home: Add(id: '',),
 

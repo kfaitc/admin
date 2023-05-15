@@ -28,20 +28,12 @@ class _Screen_postState extends State<Screen_post> {
   late TextEditingController Contect;
   late Model_Image_ptys_post model_Image_ptys_post;
   late AutoVerbalRequestModel requestModelAuto;
-  SaleModelRequest? obj;
+late  SearchModelRequest obj;
   @override
   void initState() {
+    //postproperty();
     super.initState();
-    obj = new SaleModelRequest(
-      ptySaleId: 0,
-      ptySaleImage: 0,
-      propertyId: 0,
-      ptySalePublic: 0,
-      lat: 0,
-      logs: 0,
-      forSaleUser: 0,
-      ptySaleKhan: "",
-      address: "",
+    obj = new SearchModelRequest(
       land: "",
       sqm: "",
       bed: "",
@@ -184,8 +176,8 @@ class _Screen_postState extends State<Screen_post> {
 
                           keyboardType: TextInputType.number,
                           // controller: controller,
-                          onSaved: (newValue) {
-                            obj!.land = newValue.toString();
+                          onChanged: (newValue) {
+                            obj.land = newValue.toString();
                           },
                           decoration: InputDecoration(
                             fillColor: kwhite,
@@ -219,8 +211,8 @@ class _Screen_postState extends State<Screen_post> {
                           // controller: sqm,
                           keyboardType: TextInputType.number,
                           // controller: controller,
-                          onSaved: (newValue) {
-                            obj!.sqm = newValue;
+                          onChanged: (newValue) {
+                            obj.sqm = newValue;
                           },
                           decoration: InputDecoration(
                             fillColor: kwhite,
@@ -263,8 +255,8 @@ class _Screen_postState extends State<Screen_post> {
                           // controller: land,
                           keyboardType: TextInputType.number,
                           // controller: controller,
-                          onSaved: (newValue) {
-                            obj!.bed = newValue;
+                          onChanged: (newValue) {
+                            obj.bed = newValue;
                           },
                           decoration: InputDecoration(
                             fillColor: kwhite,
@@ -298,8 +290,8 @@ class _Screen_postState extends State<Screen_post> {
                           // controller: sqm,
                           keyboardType: TextInputType.number,
                           // controller: controller,
-                          onSaved: (newValue) {
-                            obj!.bath = newValue;
+                          onChanged: (newValue) {
+                            obj.bath = newValue;
                           },
                           decoration: InputDecoration(
                             fillColor: kwhite,
@@ -337,7 +329,7 @@ class _Screen_postState extends State<Screen_post> {
                   keyboardType: TextInputType.number,
                   // controller: controller,
                   onChanged: (newValue) {
-                    obj!.price = newValue;
+                    obj.price = newValue;
                   },
                   decoration: InputDecoration(
                     fillColor: kwhite,
@@ -362,38 +354,38 @@ class _Screen_postState extends State<Screen_post> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                margin: EdgeInsets.only(left: 30, right: 30),
-                child: TextFormField(
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                  keyboardType: TextInputType.number,
-                  // controller: controller,
-                  onSaved: (value) {
-                    obj!.propertyId = int.parse(value!);
-                  },
-                  decoration: InputDecoration(
-                    fillColor: kwhite,
-                    filled: true,
-                    labelText: 'Property_ID',
-                    prefixIcon: Icon(Icons.pin_drop_outlined),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 16, 19, 202), width: 2.0),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 1,
-                        color: Color.fromARGB(255, 23, 90, 8),
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.only(left: 30, right: 30),
+              //   child: TextFormField(
+              //     style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              //     keyboardType: TextInputType.number,
+              //     // controller: controller,
+              //     onSaved: (value) {
+              //       obj!.propertyId = int.parse(value!);
+              //     },
+              //     decoration: InputDecoration(
+              //       fillColor: kwhite,
+              //       filled: true,
+              //       labelText: 'Property_ID',
+              //       prefixIcon: Icon(Icons.pin_drop_outlined),
+              //       focusedBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //             color: Color.fromARGB(255, 16, 19, 202), width: 2.0),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           width: 1,
+              //           color: Color.fromARGB(255, 23, 90, 8),
+              //         ),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               TextButton(
                   onPressed: () { 
-                    postproperty(obj!);
+                    postproperty(obj);
                     setState(() {
                       uploadt_image(_file!);  
                       print("Save...");                 
@@ -484,10 +476,10 @@ class _Screen_postState extends State<Screen_post> {
     var responseData = await response.stream.toBytes();
     var result = String.fromCharCodes(responseData);
   }
-  Future<SaleReponseModel> postproperty(SaleModelRequest requestModel) async {
+  Future<SearchReponseModel> postproperty(SearchModelRequest requestModel) async {
     final response = await http.post(
         Uri.parse(
-            'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/property_Poster'),
+            'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/searchprovince'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -496,9 +488,9 @@ class _Screen_postState extends State<Screen_post> {
         );
 
     if (response.statusCode == 200 || response.statusCode == 422) {
-      return SaleReponseModel.fromJson(json.decode(response.body));
+      return SearchReponseModel.fromJson(json.decode(response.body));
     } else if (response.statusCode == 201 || response.statusCode == 401) {
-      return SaleReponseModel.fromJson(json.decode(response.body));
+      return SearchReponseModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load Data');
     }

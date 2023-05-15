@@ -49,8 +49,8 @@ class _CodeTestState extends State<CodeTest> {
       setState(() {
         loading = false;
         code = jsonData;
-        codedisplay = int.parse(code[0]['search']) + 1;
-        print(code[0]['search']);
+        codedisplay = int.parse(code[0]['province_id'].toString()) + 1;
+        print(code[0]['province_id']);
         widget.code(codedisplay);
         print(codedisplay);
       });
