@@ -2,17 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
-import 'package:kfa_admin/search/Search-Verbal-ID%20copy.dart';
+
 import 'Auth/login.dart';
-import 'components/code.dart';
-import 'components/code_copy.dart';
-import 'interface/mobile/navigate_home/AutoVerbal/AutoVerbal.dart';
-import 'interface/mobile/navigate_home/AutoVerbal/Setdata.dart';
-import 'interface/mobile/navigate_home/AutoVerbal/setdatatest.dart';
-import 'interface/mobile/navigate_home/Property/Admin_Post/Screen_post.dart';
-import 'interface/mobile/navigate_home/Property/Admin_Post/Search_property.dart';
-import 'interface/mobile/navigate_home/Property/search/searchdelegate.dart';
-import 'interface/mobile/navigate_setting/auto/auto_list.dart';
+import 'Property copy/Home_Screen_property.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,8 +24,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-       //home: Show_autoVerbals(),
-      home: CodeTest(check_property: 1, code: (value) {  },)
+      //home: Show_autoVerbals(),
+      home: Login(),
+      // home: CodeTest(check_property: 1, code: (value) {  },)
       //home: AddTest(id: '',),
       //home: Add(id: '',),
 
