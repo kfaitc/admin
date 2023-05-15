@@ -20,7 +20,7 @@ class FormSh extends StatelessWidget {
       height: 40,
       child: TextFormField(
         // controller: controller,
-        onSaved: onSaved,
+        onChanged: onSaved,
         decoration: InputDecoration(
           fillColor: kwhite,
           filled: true,

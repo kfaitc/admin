@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
 
-import '../../../../../../../contants.dart';
+import '../../../../../../../../../../contants.dart';
 
 typedef OnChangeCallback = void Function(dynamic value);
 
@@ -134,7 +134,7 @@ class _SearchPlacesScreenState extends State<Search_Map> {
           // builder: (context) => Detail_Map( district: district, commune: commune,  c_id: '', province: (value) {  }, lat: (value) {  }, log: (value) {  },)
           //  ),
           //   );
-          // });         
+          // });
           // },
           // ),
           //infoWindow: InfoWindow(title: 'KFA\'s Developer'),
@@ -170,18 +170,15 @@ class _SearchPlacesScreenState extends State<Search_Map> {
         Find_by_piont(value.latitude, value.longitude);
       },
       // infoWindow: InfoWindow(title: 'KFA\'s Developer'),
-      infoWindow: InfoWindow(
-         onTap: () {
-          setState(() {
-  //           Navigator.of(context).push(
-  //      MaterialPageRoute(
-  //     builder: (context) => Detail_Map( district: district, commune: commune,  c_id: '', province: (value) {  }, lat: (value) {  }, log: (value) {  },)
-  //   ),
-  //  );
-          });
-           
-        }
-      ),
+      infoWindow: InfoWindow(onTap: () {
+        setState(() {
+          //           Navigator.of(context).push(
+          //      MaterialPageRoute(
+          //     builder: (context) => Detail_Map( district: district, commune: commune,  c_id: '', province: (value) {  }, lat: (value) {  }, log: (value) {  },)
+          //   ),
+          //  );
+        });
+      }),
     );
 
     setState(() {
@@ -193,8 +190,7 @@ class _SearchPlacesScreenState extends State<Search_Map> {
       Find_by_piont(latitude, longitude);
       // add the new marker to the list of markers
       _marker.add(newMarker);
-    }
-    );
+    });
   }
 
   int num = 0;
@@ -523,12 +519,6 @@ class _SearchPlacesScreenState extends State<Search_Map> {
 
   final Set<Marker> marker = Set(); //163
 }
-
-
-
-
-
-
 
 // Container(
 //           child: Stack(

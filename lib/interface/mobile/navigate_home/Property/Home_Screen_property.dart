@@ -7,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:kfa_admin/Property%20copy/verval_property/Verbal_add.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/Property/verval_property/Verbal_add.dart';
 
 import '3_Choose/List_Property/List_Rent.dart';
 import '3_Choose/List_Property/List_Sale.dart';

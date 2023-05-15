@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
-import '../../components/contants.dart';
+import '../../../../../components/contants.dart';
 import '../Getx_api/vetbal_controller.dart';
 import '../map_all/map_in_add_verbal.dart';
 import '../propertys/api_property/api.dart';

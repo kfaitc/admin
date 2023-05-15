@@ -2,12 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
-<<<<<<< Updated upstream
-
-import 'Auth/login.dart';
-=======
 import 'package:kfa_admin/Auth/login.dart';
->>>>>>> Stashed changes
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,17 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-<<<<<<< Updated upstream
-      //home: Show_autoVerbals(),
       home: Login(),
-      // home: CodeTest(check_property: 1, code: (value) {  },)
-      //home: AddTest(id: '',),
-      //home: Add(id: '',),
-
-      //home: image_test(),
-=======
-      home: Login(),
->>>>>>> Stashed changes
     );
   }
 }

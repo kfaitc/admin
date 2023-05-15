@@ -19,12 +19,12 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
 
-import '../../../../../../../contants.dart';
+import '../../../../../../../../../../contants.dart';
 
 typedef OnChangeCallback = void Function(dynamic value);
 
-class For_Rent_Map extends StatefulWidget {
-  const For_Rent_Map(
+class For_Sale_Map extends StatefulWidget {
+  const For_Sale_Map(
       {super.key,
       required this.c_id,
       required this.district,
@@ -42,14 +42,14 @@ class For_Rent_Map extends StatefulWidget {
   final OnChangeCallback? image_map;
 
   @override
-  State<For_Rent_Map> createState() => _SearchPlacesScreenState();
+  State<For_Sale_Map> createState() => _SearchPlacesScreenState();
 }
 
 const kGoogleApiKey =
     'AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI&callback=initMapVerbal';
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
-class _SearchPlacesScreenState extends State<For_Rent_Map> {
+class _SearchPlacesScreenState extends State<For_Sale_Map> {
   double latitude = 11.519037; //latitude
   double longitude = 104.915120;
   String sendAddrress = '';
@@ -134,7 +134,7 @@ class _SearchPlacesScreenState extends State<For_Rent_Map> {
           // builder: (context) => Detail_Map( district: district, commune: commune,  c_id: '', province: (value) {  }, lat: (value) {  }, log: (value) {  },)
           //  ),
           //   );
-          // });         
+          // });
           // },
           // ),
           //infoWindow: InfoWindow(title: 'KFA\'s Developer'),
@@ -170,18 +170,15 @@ class _SearchPlacesScreenState extends State<For_Rent_Map> {
         Find_by_piont(value.latitude, value.longitude);
       },
       // infoWindow: InfoWindow(title: 'KFA\'s Developer'),
-      infoWindow: InfoWindow(
-         onTap: () {
-          setState(() {
-  //           Navigator.of(context).push(
-  //      MaterialPageRoute(
-  //     builder: (context) => Detail_Map( district: district, commune: commune,  c_id: '', province: (value) {  }, lat: (value) {  }, log: (value) {  },)
-  //   ),
-  //  );
-          });
-           
-        }
-      ),
+      infoWindow: InfoWindow(onTap: () {
+        setState(() {
+          //           Navigator.of(context).push(
+          //      MaterialPageRoute(
+          //     builder: (context) => Detail_Map( district: district, commune: commune,  c_id: '', province: (value) {  }, lat: (value) {  }, log: (value) {  },)
+          //   ),
+          //  );
+        });
+      }),
     );
 
     setState(() {
@@ -193,8 +190,7 @@ class _SearchPlacesScreenState extends State<For_Rent_Map> {
       Find_by_piont(latitude, longitude);
       // add the new marker to the list of markers
       _marker.add(newMarker);
-    }
-    );
+    });
   }
 
   int num = 0;
@@ -237,6 +233,7 @@ class _SearchPlacesScreenState extends State<For_Rent_Map> {
                   onCameraMove: (CameraPosition cameraPositiona) {
                     cameraPosition = cameraPositiona; //when map is dragging
                   },
+                  zoomControlsEnabled: false,
                   mapType: style_map[index],
                   onTap: (argument) {
                     _addMarker(argument);
@@ -246,10 +243,10 @@ class _SearchPlacesScreenState extends State<For_Rent_Map> {
                   child: Text('Error'),
                 ),
           Container(
-            margin: EdgeInsets.only(left: 20, right: 30),
+            margin: EdgeInsets.only(left: 20, right: 60, top: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              color: Color.fromARGB(231, 168, 168, 168),
+              color: Color.fromARGB(187, 253, 247, 247),
             ),
             child: TextFormField(
               onFieldSubmitted: (value) {
@@ -315,9 +312,9 @@ class _SearchPlacesScreenState extends State<For_Rent_Map> {
                   index = 0;
                 }
               },
-              backgroundColor: Colors.blue[300],
+              backgroundColor: Color.fromARGB(255, 52, 7, 158),
               child: Icon(
-                Icons.mp_sharp,
+                Icons.map,
                 color: Colors.white,
               ),
             ),
@@ -523,12 +520,6 @@ class _SearchPlacesScreenState extends State<For_Rent_Map> {
 
   final Set<Marker> marker = Set(); //163
 }
-
-
-
-
-
-
 
 // Container(
 //           child: Stack(

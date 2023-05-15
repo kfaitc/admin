@@ -19,12 +19,12 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
 
-import '../../../../../../../contants.dart';
+import '../../../../../../../../../../contants.dart';
 
 typedef OnChangeCallback = void Function(dynamic value);
 
-class For_Sale_Map extends StatefulWidget {
-  const For_Sale_Map(
+class For_Rent_Map extends StatefulWidget {
+  const For_Rent_Map(
       {super.key,
       required this.c_id,
       required this.district,
@@ -42,14 +42,14 @@ class For_Sale_Map extends StatefulWidget {
   final OnChangeCallback? image_map;
 
   @override
-  State<For_Sale_Map> createState() => _SearchPlacesScreenState();
+  State<For_Rent_Map> createState() => _SearchPlacesScreenState();
 }
 
 const kGoogleApiKey =
     'AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI&callback=initMapVerbal';
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
-class _SearchPlacesScreenState extends State<For_Sale_Map> {
+class _SearchPlacesScreenState extends State<For_Rent_Map> {
   double latitude = 11.519037; //latitude
   double longitude = 104.915120;
   String sendAddrress = '';
@@ -233,7 +233,6 @@ class _SearchPlacesScreenState extends State<For_Sale_Map> {
                   onCameraMove: (CameraPosition cameraPositiona) {
                     cameraPosition = cameraPositiona; //when map is dragging
                   },
-                  zoomControlsEnabled: false,
                   mapType: style_map[index],
                   onTap: (argument) {
                     _addMarker(argument);
@@ -243,10 +242,10 @@ class _SearchPlacesScreenState extends State<For_Sale_Map> {
                   child: Text('Error'),
                 ),
           Container(
-            margin: EdgeInsets.only(left: 20, right: 60, top: 10),
+            margin: EdgeInsets.only(left: 20, right: 30),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              color: Color.fromARGB(187, 253, 247, 247),
+              color: Color.fromARGB(231, 168, 168, 168),
             ),
             child: TextFormField(
               onFieldSubmitted: (value) {
@@ -312,9 +311,9 @@ class _SearchPlacesScreenState extends State<For_Sale_Map> {
                   index = 0;
                 }
               },
-              backgroundColor: Color.fromARGB(255, 52, 7, 158),
+              backgroundColor: Colors.blue[300],
               child: Icon(
-                Icons.map,
+                Icons.mp_sharp,
                 color: Colors.white,
               ),
             ),

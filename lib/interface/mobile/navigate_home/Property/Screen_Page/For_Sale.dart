@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../model/models/search_model.dart';
+import '../../../../../model/models/search_model.dart';
 import '../Getx_api/for_screen.dart';
 import '../Getx_api/vetbal_controller.dart';
 import '../List_all_Screen/List__Sale_all.dart';

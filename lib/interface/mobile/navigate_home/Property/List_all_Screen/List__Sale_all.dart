@@ -14,38 +14,32 @@ import 'package:printing/printing.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import '../../Profile/contants.dart';
+import '../../../../../contants copy.dart';
 import '../Detail_Screen/Detail_all_list_sale.dart';
-import '../Getx_api/controller_hometype.dart';
 import '../Getx_api/for_screen.dart';
 import '../Getx_api/vetbal_controller.dart';
-import '../verval_property/edit_property _Rent.dart';
 import '../verval_property/edit_property_sale.dart';
 
 typedef OnChangeCallback = void Function(dynamic value);
 
-class Home_Type_use extends StatefulWidget {
-  Home_Type_use(
+class List_Sale_All extends StatefulWidget {
+  List_Sale_All(
       {super.key,
       required this.list_get,
       required this.hometype_api,
-      required this.controller_id_get,
-      required this.refresh_homescreen,
-      required this.refresh});
+      required this.controller_id_get});
   List? list_get;
   final OnChangeCallback controller_id_get;
-  final OnChangeCallback refresh_homescreen;
   String? indexv;
   List? hometype_api;
-  String? refresh;
+
   @override
-  State<Home_Type_use> createState() => _List_Sale_AllState();
+  State<List_Sale_All> createState() => _List_Sale_AllState();
 }
 
-class _List_Sale_AllState extends State<Home_Type_use> {
+class _List_Sale_AllState extends State<List_Sale_All> {
   bool _isLoading = true;
-  String? hometype_wait;
-  var controller_id = controller_for_hometype();
+  var controller_id = controller_for_sale();
   int index = 0;
   bool _isLoading_pick = false;
   bool _isLoading_re = false;
@@ -66,16 +60,15 @@ class _List_Sale_AllState extends State<Home_Type_use> {
   Future<void> _refresh() async {
     _isLoading_re = true;
     await Future.wait([
-      controller_id.value_all_list_2(),
+      controller_id.value_all_list_sale1(),
     ]);
 
     setState(() {
-      widget.refresh_homescreen(hometype_wait);
-      controller_id.list_value_all_2SR.length;
-      controller_id.list_value_all_2SR;
-      widget.controller_id_get(controller_id.list_value_all_2SR);
-      print('legnth = ${controller_id.list_value_all_2SR.length.toString()}');
-      print('value = ${controller_id.list_value_all_2SR}');
+      controller_id.list_value_all1.length;
+      controller_id.list_value_all1;
+      widget.controller_id_get(controller_id.list_value_all1);
+      print('legnth = ${controller_id.list_value_all1.length.toString()}');
+      print('value = ${controller_id.list_value_all1}');
       _isLoading_re = false;
     });
     // All three functions have completed at this point
@@ -84,6 +77,15 @@ class _List_Sale_AllState extends State<Home_Type_use> {
 
   //Delete
   int? id_ptys;
+  delete_verbal() async {
+    _isLoading_pick = true;
+    await Future.wait([
+      _deleteItem(id_ptys),
+    ]);
+    setState(() {
+      _isLoading_pick = false;
+    });
+  }
 
   final controller_list = controller_for_sale();
 
@@ -125,8 +127,8 @@ class _List_Sale_AllState extends State<Home_Type_use> {
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 20, 20, 163),
           centerTitle: true,
-          title: Text('Homeytpe${widget.refresh}'),
-          // title: Text('$hometype_wait'),
+          title: Text('List property For Sale'),
+          // title: Text('$dg_edit'),
         ),
         // after delete and refresh data
         body: _isLoading_re
@@ -134,7 +136,7 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                 child: CircularProgressIndicator(),
               )
             : (widget.list_get!.length != 0 &&
-                    controller_id.list_value_all_2SR.length != null &&
+                    controller_id.list_value_all1.length != null &&
                     pro == 2023)
                 ? SingleChildScrollView(
                     child: Column(
@@ -256,28 +258,27 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                       ),
                       _isLoading_pick
                           ? Center(child: CircularProgressIndicator())
-                          : (controller_id.list_value_all_2SR.length != 0 ||
-                                  controller_id.list_value_all_2SR.length == 0)
+                          : (controller_id.list_value_all1.length != 0 ||
+                                  controller_id.list_value_all1.length == 0)
                               ? Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.7,
                                   width: double.infinity,
                                   child: PageView.builder(
                                     controller: _pageController,
-                                    itemCount: (controller_id
-                                                .list_value_all_2SR.length /
-                                            10)
-                                        .ceil(),
+                                    itemCount:
+                                        (controller_id.list_value_all1.length /
+                                                10)
+                                            .ceil(),
                                     itemBuilder: (context, index) {
                                       int startIndex = index * 10;
                                       int endIndex = (startIndex + 10) >
                                               controller_id
-                                                  .list_value_all_2SR.length
-                                          ? controller_id
-                                              .list_value_all_2SR.length
+                                                  .list_value_all1.length
+                                          ? controller_id.list_value_all1.length
                                           : startIndex + 10;
                                       List<dynamic> items = controller_id
-                                          .list_value_all_2SR
+                                          .list_value_all1
                                           .sublist(startIndex, endIndex);
                                       return ListView.builder(
                                         itemCount: items.length,
@@ -384,7 +385,7 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                           BorderRadius.circular(
                                                                               5)),
                                                                   child: Text(
-                                                                    '${items[index]['type'].toString()}',
+                                                                    'For Sale',
                                                                     style: TextStyle(
                                                                         // fontWeight: FontWeight.bold,
                                                                         color: Color.fromARGB(255, 250, 246, 245),
@@ -677,55 +678,30 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                       width: 30,
                                                                       child: IconButton(
                                                                           onPressed: () {
-                                                                            print('Edit');
-                                                                            if (items[index]['type'].toString() ==
-                                                                                'For Sale') {
-                                                                              Get.to(Edit_verbal_property(
-                                                                                number_hometype: (value) {
-                                                                                  hometype_wait = value;
-                                                                                  setState(() {
-                                                                                    hometype_wait;
-                                                                                  });
-                                                                                },
-                                                                                dg: (value) {
-                                                                                  dg_edit = value.toString();
-                                                                                  setState(() {
-                                                                                    dg_edit;
-                                                                                    print(dg_edit.toString());
-                                                                                    if (dg_edit == 'Success Edit') {
-                                                                                      _refresh();
-                                                                                      print('Ok Edit ready');
-                                                                                      pro = 2023;
-                                                                                      print('Ok Edit ready');
-                                                                                    } else {
-                                                                                      print('No Edit');
-                                                                                    }
-                                                                                  });
-                                                                                },
-                                                                                get_all_homeytpe: items,
-                                                                                indexv: index.toString(),
-                                                                              ));
-                                                                            } else {
-                                                                              Get.to(Edit_verbal_property_Rent(
-                                                                                dg: (value) {
-                                                                                  dg_edit = value.toString();
-                                                                                  setState(() {
-                                                                                    dg_edit;
-                                                                                    print(dg_edit.toString());
-                                                                                    if (dg_edit == 'Success Edit') {
-                                                                                      _refresh();
-                                                                                      print('Ok Edit ready');
-                                                                                      pro = 2023;
-                                                                                      print('Ok Edit ready');
-                                                                                    } else {
-                                                                                      print('No Edit');
-                                                                                    }
-                                                                                  });
-                                                                                },
-                                                                                get_all_homeytpe: items,
-                                                                                indexv: index.toString(),
-                                                                              ));
-                                                                            }
+                                                                            setState(() {
+                                                                              // print(
+                                                                              //     'id_ptys =${widget.list2_Sale_value![index]['id_ptys'].toString()} ');
+                                                                            });
+                                                                            Get.to(Edit_verbal_property(
+                                                                              number_hometype: (value) {},
+                                                                              dg: (value) {
+                                                                                dg_edit = value.toString();
+                                                                                setState(() {
+                                                                                  dg_edit;
+                                                                                  print(dg_edit.toString());
+                                                                                  if (dg_edit == 'Success Edit') {
+                                                                                    _refresh();
+                                                                                    print('Ok Edit ready');
+                                                                                    pro = 2023;
+                                                                                    print('Ok Edit ready');
+                                                                                  } else {
+                                                                                    print('No Edit');
+                                                                                  }
+                                                                                });
+                                                                              },
+                                                                              get_all_homeytpe: items,
+                                                                              indexv: index.toString(),
+                                                                            ));
                                                                           },
                                                                           icon: Icon(
                                                                             Icons.edit_calendar_outlined,
@@ -753,20 +729,11 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                               btnCancelText: 'No',
                                                                               btnCancelColor: Color.fromARGB(255, 133, 8, 8),
                                                                               btnOkOnPress: () {
-                                                                                if (items[index]['type'].toString() == 'For Sale') {
-                                                                                  // print('${items[index]['type'].toString()}');
-                                                                                  delete_property(id_ptys: items[index]['id_ptys'].toString());
-                                                                                  setState(() {
-                                                                                    controller_id.list_value_all_2SR;
-                                                                                  });
-                                                                                } else {
-                                                                                  delete_property_rent(id_ptys: items[index]['id_ptys'].toString());
-                                                                                  setState(() {
-                                                                                    controller_id.list_value_all_2SR;
-                                                                                  });
-                                                                                  // print('${items[index]['type'].toString()}');
-                                                                                }
-
+                                                                                _refresh();
+                                                                                delete_property(id_ptys: items[index]['id_ptys'].toString());
+                                                                                setState(() {
+                                                                                  controller_id.list_value_all1;
+                                                                                });
                                                                                 // setState(
                                                                                 //     () {
                                                                                 //   _get_all();
@@ -814,19 +781,18 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                   child: PageView.builder(
                                     controller: _pageController,
                                     itemCount: (controller_id
-                                            .list_value_all_hometype.length)
+                                            .list_value_hometype.length)
                                         .ceil(),
                                     itemBuilder: (context, index) {
                                       int startIndex = index * 10;
                                       int endIndex = (startIndex + 10) >
                                               controller_id
-                                                  .list_value_all_hometype
-                                                  .length
+                                                  .list_value_hometype.length
                                           ? controller_id
-                                              .list_value_all_hometype.length
+                                              .list_value_hometype.length
                                           : startIndex + 10;
                                       List<dynamic> items = controller_id
-                                          .list_value_all_hometype
+                                          .list_value_hometype
                                           .sublist(startIndex, endIndex);
                                       return ListView.builder(
                                         itemCount: items.length,
@@ -933,7 +899,7 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                           BorderRadius.circular(
                                                                               5)),
                                                                   child: Text(
-                                                                    '${items[index]['type'].toString()}',
+                                                                    'For Sale',
                                                                     style: TextStyle(
                                                                         // fontWeight: FontWeight.bold,
                                                                         color: Color.fromARGB(255, 250, 246, 245),
@@ -1221,54 +1187,26 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                       child: IconButton(
                                                                           onPressed: () {
                                                                             print('Edit');
-                                                                            if (items[index]['type'].toString() ==
-                                                                                'For Sale') {
-                                                                              Get.to(Edit_verbal_property(
-                                                                                number_hometype: (value) {
-                                                                                  hometype_wait = value;
-                                                                                  setState(() {
-                                                                                    hometype_wait;
-                                                                                  });
-                                                                                },
-                                                                                dg: (value) {
-                                                                                  dg_edit = value.toString();
-                                                                                  setState(() {
-                                                                                    dg_edit;
-                                                                                    print(dg_edit.toString());
-                                                                                    if (dg_edit == 'Success Edit') {
-                                                                                      _refresh();
-                                                                                      print('Ok Edit ready');
-                                                                                      pro = 2023;
-                                                                                      print('Ok Edit ready');
-                                                                                    } else {
-                                                                                      print('No Edit');
-                                                                                    }
-                                                                                  });
-                                                                                },
-                                                                                get_all_homeytpe: items,
-                                                                                indexv: index.toString(),
-                                                                              ));
-                                                                            } else {
-                                                                              Get.to(Edit_verbal_property_Rent(
-                                                                                dg: (value) {
-                                                                                  dg_edit = value.toString();
-                                                                                  setState(() {
-                                                                                    dg_edit;
-                                                                                    print(dg_edit.toString());
-                                                                                    if (dg_edit == 'Success Edit') {
-                                                                                      _refresh();
-                                                                                      print('Ok Edit ready');
-                                                                                      pro = 2023;
-                                                                                      print('Ok Edit ready');
-                                                                                    } else {
-                                                                                      print('No Edit');
-                                                                                    }
-                                                                                  });
-                                                                                },
-                                                                                get_all_homeytpe: items,
-                                                                                indexv: index.toString(),
-                                                                              ));
-                                                                            }
+                                                                            Get.to(Edit_verbal_property(
+                                                                              number_hometype: (value) {},
+                                                                              dg: (value) {
+                                                                                dg_edit = value.toString();
+                                                                                setState(() {
+                                                                                  dg_edit;
+                                                                                  print(dg_edit.toString());
+                                                                                  if (dg_edit == 'Success Edit') {
+                                                                                    _refresh();
+                                                                                    print('Ok Edit ready');
+                                                                                    pro = 2023;
+                                                                                    print('Ok Edit ready');
+                                                                                  } else {
+                                                                                    print('No Edit');
+                                                                                  }
+                                                                                });
+                                                                              },
+                                                                              get_all_homeytpe: items,
+                                                                              indexv: index.toString(),
+                                                                            ));
                                                                           },
                                                                           icon: Icon(
                                                                             Icons.edit_calendar_outlined,
@@ -1296,24 +1234,19 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                               btnCancelText: 'No',
                                                                               btnCancelColor: Color.fromARGB(255, 133, 8, 8),
                                                                               btnOkOnPress: () async {
-                                                                                if (items[index]['type'].toString() == 'For Sale') {
-                                                                                  // print('${items[index]['type'].toString()}');
-                                                                                  delete_property(id_ptys: items[index]['id_ptys'].toString());
-                                                                                  setState(() {
-                                                                                    controller_id.list_value_all_2SR;
-                                                                                  });
-                                                                                } else {
-                                                                                  delete_property_rent(id_ptys: items[index]['id_ptys'].toString());
-                                                                                  setState(() {
-                                                                                    controller_id.list_value_all_2SR;
-                                                                                  });
-                                                                                  // print('${items[index]['type'].toString()}');
-                                                                                }
+                                                                                _refresh();
+
                                                                                 // delete_property(id_ptys: items[index]['id_ptys'].toString());
-                                                                                // setState(() {
-                                                                                //   pro = 2023;
-                                                                                //   print('okoko');
+                                                                                setState(() {
+                                                                                  pro = 2023;
+                                                                                  print('okoko');
+                                                                                });
+
+                                                                                // setState(
+                                                                                //     () {
+                                                                                //   _get_all();
                                                                                 // });
+                                                                                // Get.back();
                                                                               },
                                                                               btnCancelOnPress: () {
                                                                                 print('No');
@@ -1598,7 +1531,7 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                         borderRadius:
                                                                             BorderRadius.circular(5)),
                                                                     child: Text(
-                                                                      '${items[index]['type'].toString()}',
+                                                                      'For Sale',
                                                                       style: TextStyle(
                                                                           // fontWeight: FontWeight.bold,
                                                                           color: Color.fromARGB(255, 250, 246, 245),
@@ -1861,55 +1794,30 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                             30,
                                                                         child: IconButton(
                                                                             onPressed: () {
-                                                                              if (items[index]['type'].toString() == 'For Sale') {
-                                                                                // print('For Sale');
-                                                                                Get.to(Edit_verbal_property(
-                                                                                  number_hometype: (value) {
-                                                                                    hometype_wait = value;
-                                                                                    setState(() {
-                                                                                      hometype_wait;
-                                                                                    });
-                                                                                  },
-                                                                                  dg: (value) {
-                                                                                    dg_edit = value.toString();
-                                                                                    setState(() {
-                                                                                      dg_edit;
-                                                                                      print(dg_edit.toString());
-                                                                                      if (dg_edit == 'Success Edit') {
-                                                                                        _refresh();
-                                                                                        print('Ok Edit ready');
-                                                                                        pro = 2023;
-                                                                                        print('Ok Edit ready');
-                                                                                      } else {
-                                                                                        print('No Edit');
-                                                                                      }
-                                                                                    });
-                                                                                  },
-                                                                                  get_all_homeytpe: items,
-                                                                                  indexv: index.toString(),
-                                                                                ));
-                                                                              } else {
-                                                                                // print('For Rent');
-                                                                                Get.to(Edit_verbal_property_Rent(
-                                                                                  dg: (value) {
-                                                                                    dg_edit = value.toString();
-                                                                                    setState(() {
-                                                                                      dg_edit;
-                                                                                      print(dg_edit.toString());
-                                                                                      if (dg_edit == 'Success Edit') {
-                                                                                        _refresh();
-                                                                                        print('Ok Edit ready');
-                                                                                        pro = 2023;
-                                                                                        print('Ok Edit ready');
-                                                                                      } else {
-                                                                                        print('No Edit');
-                                                                                      }
-                                                                                    });
-                                                                                  },
-                                                                                  get_all_homeytpe: items,
-                                                                                  indexv: index.toString(),
-                                                                                ));
-                                                                              }
+                                                                              setState(() {
+                                                                                // print(
+                                                                                //     'id_ptys =${widget.list2_Sale_value![index]['id_ptys'].toString()} ');
+                                                                              });
+                                                                              Get.to(Edit_verbal_property(
+                                                                                number_hometype: (value) {},
+                                                                                dg: (value) {
+                                                                                  dg_edit = value.toString();
+                                                                                  setState(() {
+                                                                                    dg_edit;
+                                                                                    print(dg_edit.toString());
+                                                                                    if (dg_edit == 'Success Edit') {
+                                                                                      _refresh();
+                                                                                      print('Ok Edit ready');
+                                                                                      pro = 2023;
+                                                                                      print('Ok Edit ready');
+                                                                                    } else {
+                                                                                      print('No Edit');
+                                                                                    }
+                                                                                  });
+                                                                                },
+                                                                                get_all_homeytpe: items,
+                                                                                indexv: index.toString(),
+                                                                              ));
                                                                             },
                                                                             icon: Icon(
                                                                               Icons.edit_calendar_outlined,
@@ -1935,7 +1843,7 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                                 btnOkOnPress: () {
                                                                                   delete_property(id_ptys: items[index]['id_ptys'].toString());
                                                                                   setState(() {
-                                                                                    controller_id.list_value_all_2SR;
+                                                                                    controller_id.list_value_all1;
                                                                                   });
                                                                                   // setState(
                                                                                   //     () {
@@ -1972,6 +1880,13 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                       },
                                     ),
                                   )
+                                ///// List Function
+                                // : (_isLoading)
+                                //     ? Center(
+                                //         child: CircularProgressIndicator(),
+                                //       )
+                                //     : (controller_id.list_value_hometype.length != 0)
+                                //         ?
                                 : SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.7,
@@ -1979,19 +1894,18 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                     child: PageView.builder(
                                       controller: _pageController,
                                       itemCount: (controller_id
-                                              .list_value_all_hometype.length)
+                                              .list_value_hometype.length)
                                           .ceil(),
                                       itemBuilder: (context, index) {
                                         int startIndex = index * 10;
                                         int endIndex = (startIndex + 10) >
                                                 controller_id
-                                                    .list_value_all_hometype
-                                                    .length
+                                                    .list_value_hometype.length
                                             ? controller_id
-                                                .list_value_all_hometype.length
+                                                .list_value_hometype.length
                                             : startIndex + 10;
                                         List<dynamic> items = controller_id
-                                            .list_value_all_hometype
+                                            .list_value_hometype
                                             .sublist(startIndex, endIndex);
                                         return ListView.builder(
                                           itemCount: items.length,
@@ -2099,7 +2013,7 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                         borderRadius:
                                                                             BorderRadius.circular(5)),
                                                                     child: Text(
-                                                                      '${items[index]['type'].toString()}',
+                                                                      'For Sale',
                                                                       style: TextStyle(
                                                                           // fontWeight: FontWeight.bold,
                                                                           color: Color.fromARGB(255, 250, 246, 245),
@@ -2356,55 +2270,27 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                             30,
                                                                         child: IconButton(
                                                                             onPressed: () {
-                                                                              if (items[index]['type'].toString() == 'For Sale') {
-                                                                                // print('For Sale');
-                                                                                Get.to(Edit_verbal_property(
-                                                                                  number_hometype: (value) {
-                                                                                    hometype_wait = value;
-                                                                                    setState(() {
-                                                                                      hometype_wait;
-                                                                                    });
-                                                                                  },
-                                                                                  dg: (value) {
-                                                                                    dg_edit = value.toString();
-                                                                                    setState(() {
-                                                                                      dg_edit;
-                                                                                      print(dg_edit.toString());
-                                                                                      if (dg_edit == 'Success Edit') {
-                                                                                        _refresh();
-                                                                                        print('Ok Edit ready');
-                                                                                        pro = 2023;
-                                                                                        print('Ok Edit ready');
-                                                                                      } else {
-                                                                                        print('No Edit');
-                                                                                      }
-                                                                                    });
-                                                                                  },
-                                                                                  get_all_homeytpe: items,
-                                                                                  indexv: index.toString(),
-                                                                                ));
-                                                                              } else {
-                                                                                // print('For Rent');
-                                                                                Get.to(Edit_verbal_property_Rent(
-                                                                                  dg: (value) {
-                                                                                    dg_edit = value.toString();
-                                                                                    setState(() {
-                                                                                      dg_edit;
-                                                                                      print(dg_edit.toString());
-                                                                                      if (dg_edit == 'Success Edit') {
-                                                                                        _refresh();
-                                                                                        print('Ok Edit ready');
-                                                                                        pro = 2023;
-                                                                                        print('Ok Edit ready');
-                                                                                      } else {
-                                                                                        print('No Edit');
-                                                                                      }
-                                                                                    });
-                                                                                  },
-                                                                                  get_all_homeytpe: items,
-                                                                                  indexv: index.toString(),
-                                                                                ));
-                                                                              }
+                                                                              print('Edit');
+                                                                              Get.to(Edit_verbal_property(
+                                                                                number_hometype: (value) {},
+                                                                                dg: (value) {
+                                                                                  dg_edit = value.toString();
+                                                                                  setState(() {
+                                                                                    dg_edit;
+                                                                                    print(dg_edit.toString());
+                                                                                    if (dg_edit == 'Success Edit') {
+                                                                                      _refresh();
+                                                                                      print('Ok Edit ready');
+                                                                                      pro = 2023;
+                                                                                      print('Ok Edit ready');
+                                                                                    } else {
+                                                                                      print('No Edit');
+                                                                                    }
+                                                                                  });
+                                                                                },
+                                                                                get_all_homeytpe: items,
+                                                                                indexv: index.toString(),
+                                                                              ));
                                                                             },
                                                                             icon: Icon(
                                                                               Icons.edit_calendar_outlined,
@@ -2428,28 +2314,15 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                                 btnCancelText: 'No',
                                                                                 btnCancelColor: Color.fromARGB(255, 133, 8, 8),
                                                                                 btnOkOnPress: () async {
-                                                                                  // delete_property(id_ptys: items[index]['id_ptys'].toString());
-                                                                                  // setState(() {
-                                                                                  //   controller_id.list_value_all_2SR;
-                                                                                  // });
+                                                                                  delete_property(id_ptys: items[index]['id_ptys'].toString());
+                                                                                  setState(() {
+                                                                                    controller_id.list_value_all1;
+                                                                                  });
                                                                                   // setState(
                                                                                   //     () {
                                                                                   //   _get_all();
                                                                                   // });
                                                                                   // Get.back();
-                                                                                  if (items[index]['type'].toString() == 'For Sale') {
-                                                                                    // print('${items[index]['type'].toString()}');
-                                                                                    delete_property(id_ptys: items[index]['id_ptys'].toString());
-                                                                                    setState(() {
-                                                                                      controller_id.list_value_all_2SR;
-                                                                                    });
-                                                                                  } else {
-                                                                                    delete_property_rent(id_ptys: items[index]['id_ptys'].toString());
-                                                                                    setState(() {
-                                                                                      controller_id.list_value_all_2SR;
-                                                                                    });
-                                                                                    // print('${items[index]['type'].toString()}');
-                                                                                  }
                                                                                 },
                                                                                 btnCancelOnPress: () {
                                                                                   print('No');
@@ -2566,32 +2439,28 @@ class _List_Sale_AllState extends State<Home_Type_use> {
   }
 
   int? pro;
+  Future<void> _deleteItem(id_ptys) async {
+    try {
+      // Make a DELETE request to the API endpoint with the specified ID
+      await http.delete(Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/verbal_property/delete/${id_ptys}'));
+
+      // If the delete request is successful, remove the item from the local list
+      controller_id.list_value_all_for_Rent
+          .removeWhere((item) => item['id_ptys'] == id_ptys);
+      print('Pro = 1');
+      pro = 1;
+      // controller.list_value_urgentsssss
+      //     .removeWhere((item) => item['id_image'] == id_ptys);
+    } catch (e) {
+      // Handle any errors that occur during the delete request
+      print('Error deleting item: $e');
+    }
+  }
 
   void delete_property({required String id_ptys}) async {
     final response = await http.delete(Uri.parse(
         'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/verbal_property/delete/$id_ptys'));
-    if (response.statusCode == 200) {
-      dg = 'Success Deleted';
-    } else {
-      throw Exception('Delete error occured!');
-    }
-    setState(() {
-      print('Success Deleted');
-      if (dg == 'Success Deleted') {
-        _refresh();
-        setState(() {
-          pro = 2023;
-          print('Ok Refresh ready');
-        });
-      } else {
-        print('No Delete');
-      }
-    });
-  }
-
-  void delete_property_rent({required String id_ptys}) async {
-    final response = await http.delete(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/verbal_property_rent/delete/$id_ptys'));
     if (response.statusCode == 200) {
       dg = 'Success Deleted';
     } else {

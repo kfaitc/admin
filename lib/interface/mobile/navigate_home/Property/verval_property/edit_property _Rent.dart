@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, avoid_print, unused_field, prefer_final_fields, prefer_interpolation_to_compose_strings, unnecessary_brace_in_string_interps, equal_keys_in_map, unrelated_type_equality_checks, body_might_complete_normally_nullable, unused_element, await_only_futures, unnecessary_string_interpolations, unnecessary_cast, must_be_immutable, sized_box_for_whitespace, avoid_unnecessary_containers, unnecessary_null_comparison, avoid_types_as_parameter_names, use_build_context_synchronously, no_leading_underscores_for_local_identifiers, unused_local_variable, curly_braces_in_flow_control_structures
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, avoid_print, unused_field, prefer_final_fields, prefer_interpolation_to_compose_strings, unnecessary_brace_in_string_interps, equal_keys_in_map, unrelated_type_equality_checks, body_might_complete_normally_nullable, unused_element, await_only_futures, unnecessary_string_interpolations, unnecessary_cast, must_be_immutable, sized_box_for_whitespace, avoid_unnecessary_containers, unnecessary_null_comparison, avoid_types_as_parameter_names, use_build_context_synchronously, no_leading_underscores_for_local_identifiers
 
 import 'dart:convert';
 import 'dart:io';
@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
-import '../../components/contants.dart';
+import '../../../../../Profile/contants.dart';
 import '../Getx_api/hometype.dart';
 import '../map_all/map_in_add_verbal.dart';
 import '../propertys/api_property/api.dart';
@@ -17,31 +17,26 @@ import '../Model/update_property.dart';
 
 typedef OnChangeCallback = void Function(dynamic value);
 
-class Edit_verbal_property extends StatefulWidget {
-  Edit_verbal_property(
+class Edit_verbal_property_Rent extends StatefulWidget {
+  Edit_verbal_property_Rent(
       {super.key,
       required this.get_all_homeytpe,
       required this.indexv,
-      required this.dg,
-      required this.number_hometype});
+      required this.dg});
   List? get_all_homeytpe;
   OnChangeCallback? dg;
-  OnChangeCallback? number_hometype;
   String? indexv;
 
-  List? hometype;
-  var controller_id = Controller_hometype();
   @override
-  State<Edit_verbal_property> createState() => _Add_verbal_saleState();
+  State<Edit_verbal_property_Rent> createState() => _Add_verbal_saleState();
 }
 
-class _Add_verbal_saleState extends State<Edit_verbal_property> {
+class _Add_verbal_saleState extends State<Edit_verbal_property_Rent> {
   String? provice;
-  late AutoVerbal_property_update_1 requestAutoVerbal_property;
+  late AutoVerbal_property_update_Rent_k requestAutoVerbal_property;
   final List<String> _items_2 = [
     'For Sale',
   ];
-  var controller = Controller_hometype();
   int? indexN;
   bool? ug;
   int? index_Sale;
@@ -51,10 +46,12 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
   var _items = [];
   String? Urgent_wiget;
   String? Urgent_wiget_lok;
+  String? dsss = 'Success Edit';
+  var controller = Controller_hometype();
   @override
   void initState() {
-    type;
     controller.verbal_Hometype();
+    type;
     indexN = int.parse(widget.indexv.toString());
     Urgent_wiget =
         Urgent_wiget = widget.get_all_homeytpe![indexN!]['urgent'].toString();
@@ -64,9 +61,10 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
       ug = false;
     }
 
+    // _initData();
     type = 'For Sale';
     super.initState();
-    requestAutoVerbal_property = AutoVerbal_property_update_1(
+    requestAutoVerbal_property = AutoVerbal_property_update_Rent_k(
       hometype: widget.get_all_homeytpe![indexN!]['hometype'].toString(),
       id_ptys: widget.get_all_homeytpe![indexN!]['id_ptys'].toString(),
       property_type_id:
@@ -90,28 +88,7 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
   var khan;
   var songkat;
   var provice_map;
-  late Map<String, dynamic> myElement;
-  int? myMatch;
-  void get_value_Edit() async {
-    print('${widget.get_all_homeytpe.toString()}');
-    // List<int> myNumbers = widget.indexv!.split(',').map(int.parse).toList();
-    // int myId = int.parse(widget.verbal_ID!);
-    // for (int num in myNumbers) {
-    //   if (num == myId) {
-    //     myMatch = num;
-    //     break;
-    //   }
-    // }
-    // print(myMatch);
 
-    // myElement = widget.list_get_sale!
-    //     .firstWhere((element) => element['id_ptys'] == myMatch);
-
-    // print(myElement);
-  }
-
-  String? number_type = '202301';
-  String? dsss = 'Success Edit';
   bool switchValue = false;
   String _switchValue = 'Switch';
   bool way = false;
@@ -119,8 +96,8 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
   String? price;
   String? sqm;
   var bed;
-  int? waiting_d;
   var bath;
+  int? waiting_d;
   String? type;
   String? land;
   var address;
@@ -143,8 +120,8 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
               setState(() {
                 address = '${khan} / ${provice_map}';
                 type;
-                urgent;
                 waiting_d = 1;
+                urgent;
               });
               requestAutoVerbal_property.id_ptys =
                   widget.get_all_homeytpe![indexN!]['id_ptys'].toString();
@@ -155,18 +132,16 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
               if (type != null) {
                 APi_property apIservice = APi_property();
                 apIservice
-                    .saveAutoVerbal_Update_property(
+                    .saveAutoVerbal_Update_property_Rent(
                         requestAutoVerbal_property,
                         int.parse(widget.get_all_homeytpe![indexN!]['id_ptys']
                             .toString()))
                     .then(
                   (value) async {
                     setState(() async {
-                      urgent_Sale();
-                      await _upload_Image_Sale_url();
+                      urgent_Rent();
+                      await _upload_Image_Sale_url_rent();
                       widget.dg!(dsss);
-                      widget.number_hometype!(number_type);
-                      // print(dsss.toString());
                       Get.back();
                     });
 
@@ -185,19 +160,15 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
                     } else {
                       if (value.message == "Save Successfully") {
                         AwesomeDialog(
-                            context: context,
-                            animType: AnimType.leftSlide,
-                            headerAnimationLoop: false,
-                            dialogType: DialogType.success,
-                            showCloseIcon: false,
-                            title: value.message,
-                            autoHide: Duration(seconds: 3),
-                            onDismissCallback: (type) {
-                              setState(() {
-                                // String dsss = 'Success Edit111';
-                              });
-                              // Navigator.pop(context);
-                            }).show();
+                                context: context,
+                                animType: AnimType.leftSlide,
+                                headerAnimationLoop: false,
+                                dialogType: DialogType.success,
+                                showCloseIcon: false,
+                                title: value.message,
+                                autoHide: Duration(seconds: 3),
+                                onDismissCallback: (type) {})
+                            .show();
                       } else {
                         AwesomeDialog(
                           context: context,
@@ -241,15 +212,9 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
             ),
-          ),
+          )
         ],
       ),
-      // body: Column(
-      //   children: [
-      //     Text(
-      //         'Edit Property : ${widget.list2_Sale_id![indexN!]['id_ptys'].toString()}'),
-      //   ],
-      // ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
@@ -410,7 +375,11 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
                     print('newValue = $newValue');
                     requestAutoVerbal_property.hometype = newValue;
                     // hometype11 = newValue;
-                    setState(() {});
+                    setState(() {
+                      // print('newValue = $type_select');
+                      // provice = newValue as String;
+                      // print('provice id = $provice');
+                    });
                   },
                   validator: (String? value) {
                     if (value?.isEmpty ?? true) {
@@ -1124,8 +1093,26 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
 
   List? _items1;
   String? provice_pd;
+  // Future<void> Commune_25_all() async {
+  //   var jsonData;
+  //   final response = await http.get(Uri.parse(
+  //       'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/Commune_25/${widget.property_type_id1}'));
 
-  void urgent_Sale() async {
+  //   if (response.statusCode == 200) {
+  //     jsonData = jsonDecode(response.body);
+  //     _items = jsonData;
+  //     setState(() {
+  //       _items1;
+  //       // provice_pd = _items1![index]['Name_cummune'];
+  //       print('provice_pd : $_items1');
+
+  //       // list1 =list2_Sale_id;
+  //       // print('Commune_25_all = ${_items.toString()}');
+  //     });
+  //   }
+  // }
+
+  void urgent_Rent() async {
     print('Post_Sale');
 
     Map<String, dynamic> payload = await {
@@ -1136,7 +1123,7 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
     };
 
     final url = await Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/Urgent_update_sale/${widget.get_all_homeytpe![indexN!]['id_ptys'].toString()}');
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/Urgent_update_rent/${widget.get_all_homeytpe![indexN!]['id_ptys'].toString()}');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -1165,27 +1152,8 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
     }
   }
 
-  ///////////////Update
-  File? _imageFile_input;
-  late File _imageFile_noinput;
-  late File _imageFile_wait;
-  String? image_na =
-      'https://www.oneclickonedollar.com/laravel_kfa_2023/public/data_imgs_kfa/propery_sale/2hh2.jpg';
-  // Future<void> _downloadImage() async {
-  //   final response =
-  //       await http.get(Uri.parse('${widget.list2_Sale12![indexN!]['url']}'));
-  //   final bytes = response.bodyBytes;
-  //   final tempDir = await getTemporaryDirectory();
-  //   final tempFile = File('${tempDir.path}/image.jpg');
-  //   await tempFile.writeAsBytes(bytes);
-  //   setState(() {
-  //     _imageFile_noinput = tempFile;
-  //     print('Run => (_downloadImage)');
-  //     // print('_imageFile$_imageFile_noinput');
-  //   });
-  // }
   File? one;
-  Future<void> _upload_Image_Sale_url() async {
+  Future<void> _upload_Image_Sale_url_rent() async {
     // Convert the image URL to a file
 
     final response = await http
@@ -1209,7 +1177,7 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
       one = _imageFile_input;
     }
     final url = Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/Image_ptys_post_id_last/${widget.get_all_homeytpe![indexN!]['id_ptys'].toString()}');
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/Image_ptys_post_rent_last/${widget.get_all_homeytpe![indexN!]['id_ptys'].toString()}');
 
     final request = http.MultipartRequest('POST', url);
     // request.fields['id_image'] = '202347267';
@@ -1225,7 +1193,7 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
         requestAutoVerbal_property.property_type_id;
 
     request.files
-        .add(await http.MultipartFile.fromPath('image_name_sale', one!.path));
+        .add(await http.MultipartFile.fromPath('image_name_rent', one!.path));
     final response1 = await request.send();
 
     if (response.statusCode == 200) {
@@ -1237,4 +1205,11 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
     // Delete the temporary file
     await tempFile.delete();
   }
+
+  ///////////////Update
+  File? _imageFile_input;
+  late File _imageFile_noinput;
+  late File _imageFile_wait;
+  String? image_na =
+      'https://www.oneclickonedollar.com/laravel_kfa_2023/public/data_imgs_kfa/propery_sale/2hh2.jpg';
 }

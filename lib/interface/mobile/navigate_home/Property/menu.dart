@@ -14,12 +14,11 @@ class MenuProperty extends StatefulWidget {
 
 class _MenuPropertyState extends State<MenuProperty> {
   List<Text> option = const [
-    Text("Property HomeScreen",
+    Text("Property",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
   ];
   List<Icon> optionIconList = const [
-    Icon(Icons.add_circle),
-    Icon(Icons.list_alt_outlined),
+    Icon(Icons.cottage),
   ];
   @override
   Widget build(BuildContext context) {
