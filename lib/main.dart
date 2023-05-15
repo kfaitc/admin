@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 
 import 'Auth/login.dart';
-import 'Property copy/Home_Screen_property.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
