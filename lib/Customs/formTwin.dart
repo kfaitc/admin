@@ -38,7 +38,7 @@ class _FormTwinState extends State<FormTwin> {
               padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
               child: TextFormField(
                 //controller: email,
-                onSaved: widget.onSaved1,
+                onChanged: widget.onSaved1,
                 decoration: InputDecoration(
                   fillColor: kwhite,
                   filled: true,
@@ -70,7 +70,7 @@ class _FormTwinState extends State<FormTwin> {
             child: Padding(
               padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
               child: TextFormField(
-                onSaved: widget.onSaved2,
+                onChanged: widget.onSaved2,
                 decoration: InputDecoration(
                   fillColor: kwhite,
                   filled: true,

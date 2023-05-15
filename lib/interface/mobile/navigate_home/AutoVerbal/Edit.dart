@@ -202,7 +202,7 @@ class _EditState extends State<Edit> with SingleTickerProviderStateMixin {
   late Animation<Offset> offsetAnimation;
   @override
   void initState() {
-    Find_by_piont(double.parse(widget.lng), double.parse(widget.lat));
+    // Find_by_piont(double.parse(widget.lng), double.parse(widget.lat));
     controller = AnimationController(
         duration: const Duration(milliseconds: 645), vsync: this);
     animation = new CurvedAnimation(parent: controller, curve: Curves.linear);
@@ -858,7 +858,6 @@ class _EditState extends State<Edit> with SingleTickerProviderStateMixin {
       setState(() {
         _list2 = jsonData;
         option = _list2[0]['opt_des'];
-        // print(_list);
       });
     }
   }

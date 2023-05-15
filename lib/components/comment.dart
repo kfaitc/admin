@@ -15,13 +15,15 @@ class CommentAndOption extends StatefulWidget {
   final OnChangeCallback id;
   final OnChangeCallback opt_type_id;
   final String? option;
+  final String? comment1;
   const CommentAndOption(
       {Key? key,
       required this.value,
       required this.comment,
       required this.id,
       required this.opt_type_id,
-      this.option})
+      this.option,
+      this.comment1})
       : super(key: key);
 
   @override
@@ -47,6 +49,7 @@ class _CommentAndOptionState extends State<CommentAndOption> {
     return Row(
       children: [
         Expanded(
+          flex: 3,
           child: Container(
             height: 60,
             padding: EdgeInsets.only(left: 30),
@@ -82,6 +85,7 @@ class _CommentAndOptionState extends State<CommentAndOption> {
               decoration: InputDecoration(
                 fillColor: kwhite,
                 filled: true,
+                contentPadding: EdgeInsets.symmetric(vertical: 8),
                 labelText:
                     (widget.option != null) ? widget.option : 'OptionType',
                 hintText: 'Select one',
@@ -105,15 +109,16 @@ class _CommentAndOptionState extends State<CommentAndOption> {
             ),
           ),
         ),
-        SizedBox(
-          width: 10.0,
-        ),
+        SizedBox(width: 5),
         Expanded(
+          flex: 3,
           child: Container(
             height: 60,
             padding: EdgeInsets.only(right: 30),
             child: FormSh(
-              label: 'Comment',
+              label: (widget.comment1 != null)
+                  ? "+ ${widget.comment1.toString()}%"
+                  : 'Comment',
               onSaved: widget.comment,
               iconname: Icon(
                 Icons.comment_sharp,

@@ -4,6 +4,7 @@ import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kfa_admin/Customs/formVLDN.dart';
 import 'package:kfa_admin/Customs/formnum.dart';
 import '../Customs/Contants.dart';
@@ -14,8 +15,10 @@ import 'autoVerbalType.dart';
 typedef OnChangeCallback = void Function(dynamic value);
 
 class LandBuilding extends StatefulWidget {
+  // final double asking_price;
   final String address;
   final int opt;
+
   final String landId;
   final String ID_khan;
   final String ID_sangkat;
@@ -46,14 +49,16 @@ class LandBuilding extends StatefulWidget {
 class _LandBuildingState extends State<LandBuilding> {
   final _formKey = GlobalKey<FormState>();
   List list = [];
-  late int min = 0;
-  late int max = 0;
-  late String des;
-  late String dep;
-  late double area;
+  var formatter = NumberFormat("##,###,###,##0.00", "en_US");
+  int? min;
+  int? max;
+  String? des;
+  String dep = "0";
+  double area = 0;
   late String autoverbalType;
   late String autoverbalTypeValue = '';
-  late double minSqm, maxSqm, totalMin = 0, totalMax = 0;
+  double? minSqm, maxSqm, totalMin, totalMax, total_Area;
+  double h = 0, l = 0;
   bool isApiCallProcess = false;
   var dropdown;
   List<L_B> lb = [L_B('', '', '', '', 0, 0, 0, 0, 0, 0)];
@@ -65,33 +70,64 @@ class _LandBuildingState extends State<LandBuilding> {
     'Agricultural',
   ];
 
+  // ignore: non_constant_identifier_names
   double? Minimum, Maximun;
 
   // late int asking_price;
   void addItemToList() {
-    // print(widget.asking_price);
     setState(() {
-      list.add({
-        "verbal_land_type": autoverbalType,
-        "verbal_land_des": des,
-        "verbal_land_dp": dep,
-        "address": widget.address,
-        "verbal_landid": int.parse(widget.landId),
-        "verbal_land_area": area,
-        "verbal_land_minsqm": minSqm.toStringAsFixed(2),
-        "verbal_land_maxsqm": maxSqm.toStringAsFixed(2),
-        "verbal_land_minvalue": totalMin.toStringAsFixed(2),
-        "verbal_land_maxvalue": totalMax.toStringAsFixed(2),
-      });
-      lb.add(L_B(autoverbalType, des, dep, widget.address,
-          int.parse(widget.landId), area, minSqm, maxSqm, totalMin, totalMax));
-
-      minSqm = 0;
-      maxSqm = 0;
-
-      totalMax = 0;
-      totalMin = 0;
-      area = 0;
+      if (widget.check_property == 1) {
+        list.add({
+          "verbal_land_type": autoverbalType,
+          "verbal_land_des": des ?? '',
+          "verbal_land_dp": dep,
+          "verbal_land_area": area,
+          "verbal_land_minsqm": minSqm!.toStringAsFixed(0),
+          "verbal_land_maxsqm": maxSqm!.toStringAsFixed(0),
+          "verbal_land_minvalue": totalMin!.toStringAsFixed(0),
+          "verbal_land_maxvalue": totalMax!.toStringAsFixed(0),
+          "address": widget.address,
+          "verbal_landid": widget.landId
+        });
+        lb.add(
+          L_B(
+              autoverbalType,
+              des ?? '',
+              dep,
+              widget.address,
+              int.parse(widget.landId),
+              area,
+              minSqm!,
+              maxSqm!,
+              totalMin!,
+              totalMax ?? 0),
+        );
+      } else if (widget.check_property == 2) {
+        list.add({
+          "verbal_land_type": autoverbalType,
+          "verbal_land_des": des ?? '',
+          "verbal_land_dp": dep,
+          "verbal_land_area": area,
+          "verbal_land_minsqm": minSqm!.toStringAsFixed(0),
+          "verbal_land_maxsqm": maxSqm!.toStringAsFixed(0),
+          "verbal_land_minvalue": totalMin!.toStringAsFixed(0),
+          "verbal_land_maxvalue": totalMax!.toStringAsFixed(0),
+          "verbal_landid": widget.landId
+        });
+        lb.add(
+          L_B(
+              autoverbalType,
+              des ?? '',
+              dep,
+              widget.address,
+              int.parse(widget.landId),
+              area,
+              minSqm!,
+              maxSqm!,
+              totalMin!,
+              totalMax ?? 0),
+        );
+      }
     });
     //  print(id);
   }
@@ -112,8 +148,7 @@ class _LandBuildingState extends State<LandBuilding> {
     //  asking_price = 1;
     super.initState();
     // ignore: unnecessary_new
-    des = "";
-    dep = "";
+
     area = 0;
     Minimum = 0;
     Maximun = 0;
@@ -125,18 +160,23 @@ class _LandBuildingState extends State<LandBuilding> {
     return Stack(
       children: [
         Positioned(
-          right: 1.0,
+          right: 0.0,
           top: 2.0,
           child: InkResponse(
             onTap: () {
-              // Note
-              widget.list_lb(lb);
-              widget.list(list);
               Navigator.pop(context);
+              widget.list(list);
+              widget.list_lb(lb);
             },
-            child: CircleAvatar(
-              backgroundColor: Colors.red,
-              child: Icon(Icons.close),
+            child: Column(
+              // ignore: prefer_const_literals_to_create_immutables
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.red,
+                  child: Icon(Icons.close),
+                ),
+              ],
             ),
           ),
         ),
@@ -153,517 +193,474 @@ class _LandBuildingState extends State<LandBuilding> {
               ),
             ),
             SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  // mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      width: 400,
-                      child: AutoVerbalTypeDropdown(
-                        name: (value) {
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 400,
+                    child: AutoVerbalTypeDropdown(
+                      name: (value) {
+                        setState(() {
                           autoverbalType = value;
-                        },
-                        id: (value) {
+                        });
+                      },
+                      id: (value) {
+                        setState(() {
                           autoverbalTypeValue = value;
-                          setState(() {
-                            widget.Avt(autoverbalTypeValue);
-                          });
-                        },
-                      ),
-                    ),
-                    // if (autoverbalTypeValue == 100)
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: 400,
-                      child: FormS(
-                        label: "Desciption",
-                        iconname: Icon(
-                          Icons.book,
-                          color: kImageColor,
-                        ),
-                        onSaved: (newValue) => des = newValue!,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: 400,
-                      child: FormN(
-                        label: "Depreciation",
-                        iconname: Icon(
-                          Icons.format_list_numbered_rtl,
-                          color: kImageColor,
-                        ),
-                        onSaved: (newValue) {
-                          setState(() {
-                            dep = newValue!;
-                          });
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: 400,
-                      child: FormValidateN(
-                        label: "Area",
-                        iconname: Icon(
-                          Icons.layers,
-                          color: kImageColor,
-                        ),
-                        onSaved: (newValue) => area = double.parse(newValue!),
-                      ),
-                    ),
-                    (widget.check_property == 2)
-                        ? Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(top: 10),
-                                width: 400,
-                                child: FormValidateN(
-                                    label: "Minimum",
-                                    iconname: Icon(
-                                      Icons.layers,
-                                      color: kImageColor,
-                                    ),
-                                    onSaved: (newValue) {
-                                      setState(() {
-                                        Minimum = double.parse(newValue);
-                                      });
-                                    }),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 10),
-                                width: 400,
-                                child: FormValidateN(
-                                  label: "Maximum",
-                                  iconname: Icon(
-                                    Icons.layers,
-                                    color: kImageColor,
-                                  ),
-                                  onSaved: (newValue) {
-                                    setState(() {
-                                      Maximun = double.parse(newValue);
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          )
-                        : SizedBox(),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    (autoverbalTypeValue == '100')
-                        ? Column(
-                            children: [
-                              Container(
-                                height: 57,
-                                margin: EdgeInsets.only(
-                                    left: 30, top: 10, right: 30),
-                                child: DropdownButtonFormField<String>(
-                                  value: _selectedValue,
-                                  isExpanded: true,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedValue = value;
-                                      print(_selectedValue);
-                                    });
-                                  },
-                                  onSaved: (value) {
-                                    setState(() {
-                                      _selectedValue = value;
-                                    });
-                                  },
-                                  items: option.map((String val) {
-                                    return DropdownMenuItem(
-                                      value: val,
-                                      child: Text(
-                                        val,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  icon: Icon(
-                                    Icons.arrow_drop_down,
-                                    color: kImageColor,
-                                  ),
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    labelText: 'Option',
-                                    hintText: 'Select',
-                                    prefixIcon: Icon(
-                                      Icons.pix_rounded,
-                                      color: kImageColor,
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: kPrimaryColor, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 1,
-                                        color: kPrimaryColor,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 1,
-                                        color: Colors.black,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 2,
-                                        color: Colors.black,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              // Container(
-                              //   height: 57,
-                              //   margin: EdgeInsets.only(
-                              //       left: 30, top: 10, right: 30),
-                              //   child: DropdownButtonFormField<String>(
-                              //     isExpanded: true,
-                              //     onChanged: (newValue) {
-                              //       setState(() {
-                              //         propertyValue_sangkat =
-                              //             newValue as String;
-                              //         print(newValue);
-                              //       });
-                              //     },
-                              //     validator: (String? value) {
-                              //       if (value?.isEmpty ?? true) {
-                              //         return 'Please select sangkat';
-                              //       }
-                              //       return null;
-                              //     },
-                              //     items: list_sangkat
-                              //         .map<DropdownMenuItem<String>>(
-                              //           (value) => DropdownMenuItem<String>(
-                              //             value: value["Sangkat_ID"].toString(),
-                              //             child: Text(
-                              //               value["Sangkat_Name"],
-                              //               style: TextStyle(fontSize: 15),
-                              //               overflow: TextOverflow.ellipsis,
-                              //             ),
-                              //             onTap: () {
-                              //               setState(() {
-                              //                 getname_sangkat =
-                              //                     value["Sangkat_Name"];
-                              //               });
-                              //             },
-                              //           ),
-                              //         )
-                              //         .toList(),
-                              //     // add extra sugar..
-                              //     icon: Icon(
-                              //       Icons.arrow_drop_down,
-                              //       color: kImageColor,
-                              //     ),
-
-                              //     decoration: InputDecoration(
-                              //       fillColor: Colors.white,
-                              //       filled: true,
-                              //       labelText: 'Sangkat',
-                              //       hintText: 'Select',
-                              //       prefixIcon: Icon(
-                              //         Icons.home_work,
-                              //         color: kImageColor,
-                              //       ),
-                              //       focusedBorder: OutlineInputBorder(
-                              //         borderSide: const BorderSide(
-                              //             color: kPrimaryColor, width: 2.0),
-                              //         borderRadius: BorderRadius.circular(10.0),
-                              //       ),
-                              //       enabledBorder: OutlineInputBorder(
-                              //         borderSide: BorderSide(
-                              //           width: 1,
-                              //           color: kPrimaryColor,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(10.0),
-                              //       ),
-                              //       errorBorder: OutlineInputBorder(
-                              //         borderSide: BorderSide(
-                              //           width: 1,
-                              //           color: Colors.black,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(10.0),
-                              //       ),
-                              //       focusedErrorBorder: OutlineInputBorder(
-                              //         borderSide: BorderSide(
-                              //           width: 2,
-                              //           color: Colors.black,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(10.0),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-                            ],
-                          )
-                        : SizedBox(),
-                    GFButton(
-                      elevation: 5,
-                      type: GFButtonType.solid,
-                      shape: GFButtonShape.pills,
-                      fullWidthButton: true,
-                      text: "Calculator price",
-                      onPressed: () {
-                        if (widget.check_property == 1) {
-                          if (autoverbalTypeValue == '100') {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              calLs(area);
-                            }
-                          } else {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              calElse(area, autoverbalTypeValue);
-                              // Navigator.of(context).pop();
-                            }
-                          }
-                        } else {
-                          setState(() {
-                            maxSqm = Maximun!;
-                            minSqm = Minimum!;
-                            totalMax = area * maxSqm;
-                            totalMin = area * minSqm;
-                            addItemToList();
-                          });
-                        }
+                          widget.Avt(autoverbalTypeValue);
+                        });
                       },
                     ),
-                    SizedBox(
-                      height: 10,
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  FormN(
+                    label: "Head",
+                    iconname: Icon(
+                      Icons.h_plus_mobiledata_outlined,
+                      color: kImageColor,
                     ),
-                    // (widget.check_property==1)?
-                    Container(
-                      width: double.infinity,
-                      height: 350,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: list.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Container(
-                              width: 260,
-                              //height: 210,
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 1, color: kPrimaryColor),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
+                    onSaved: (newValue) {
+                      setState(() {
+                        h = double.parse(newValue!);
+                        if (l != 0) {
+                          total_Area = h * l;
+                          area = total_Area!;
+                        } else {
+                          total_Area = h;
+                        }
+                      });
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  FormN(
+                    label: "Length",
+                    iconname: Icon(
+                      Icons.blur_linear_outlined,
+                      color: kImageColor,
+                    ),
+                    onSaved: (newValue) {
+                      setState(() {
+                        l = double.parse(newValue!);
+                        if (h != 0) {
+                          total_Area = h * l;
+                          area = total_Area!;
+                        } else {
+                          total_Area = l;
+                        }
+                      });
+                    },
+                  ),
+                  if (widget.check_property == 2)
+                    Column(
+                      children: [
+                        SizedBox(height: 10),
+                        FormN(
+                          label: "Min Value",
+                          iconname: Icon(
+                            Icons.price_change,
+                            color: kImageColor,
+                          ),
+                          onSaved: (newValue) {
+                            setState(() {
+                              minSqm = double.parse(newValue.toString());
+                            });
+                          },
+                        ),
+                        SizedBox(height: 10),
+                        FormN(
+                          label: "Max Value",
+                          iconname: Icon(
+                            Icons.price_change,
+                            color: kImageColor,
+                          ),
+                          onSaved: (newValue) {
+                            setState(() {
+                              maxSqm = double.parse(newValue.toString());
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  if (autoverbalTypeValue != '100')
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          width: 400,
+                          child: FormN(
+                            label: "Depreciation(Age)",
+                            iconname: Icon(
+                              Icons.calendar_month_outlined,
+                              color: kImageColor,
+                            ),
+                            onSaved: (newValue) {
+                              setState(() {
+                                dep = newValue!;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          width: 400,
+                          child: FormS(
+                            label: "Floor",
+                            iconname: Icon(
+                              Icons.format_line_spacing_outlined,
+                              color: kImageColor,
+                            ),
+                            onSaved: (newValue) {
+                              setState(() {
+                                des = newValue!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: 400,
+                    child: FormValidateN(
+                      label: (total_Area != 0)
+                          ? "Area: ${formatter.format(total_Area ?? 0)}"
+                          : "Area",
+                      iconname: Icon(
+                        Icons.layers,
+                        color: kImageColor,
+                      ),
+                      onSaved: (newValue) {
+                        setState(() {
+                          area = double.parse(newValue!);
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  if (autoverbalTypeValue == '100')
+                    Column(
+                      children: [
+                        Container(
+                          height: 55,
+                          margin: EdgeInsets.only(left: 5, top: 10, right: 5),
+                          child: DropdownButtonFormField<String>(
+                            value: _selectedValue,
+                            isExpanded: true,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedValue = value;
+                                print(_selectedValue);
+                              });
+                            },
+                            onSaved: (value) {
+                              setState(() {
+                                _selectedValue = value;
+                              });
+                            },
+                            items: option.map((String val) {
+                              return DropdownMenuItem(
+                                value: val,
+                                child: Text(
+                                  val,
+                                ),
+                              );
+                            }).toList(),
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: kImageColor,
+                            ),
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              labelText: 'Option',
+                              hintText: 'Select',
+                              prefixIcon: Icon(
+                                Icons.pix_rounded,
+                                color: kImageColor,
                               ),
-                              child: Column(
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: kPrimaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: kPrimaryColor,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: Colors.black,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 2,
+                                  color: Colors.black,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  GFButton(
+                    elevation: 5,
+                    type: GFButtonType.solid,
+                    shape: GFButtonShape.pills,
+                    fullWidthButton: true,
+                    text: "Calculator price",
+                    onPressed: () {
+                      if (widget.check_property == 1) {
+                        if (autoverbalTypeValue == '100') {
+                          setState(() {
+                            calLs(area);
+                          });
+                        } else {
+                          setState(() {
+                            calElse(area, autoverbalTypeValue);
+                          });
+                        }
+                      } else {
+                        verbal_caculater(area);
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 250,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: list.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          width: 210,
+                          //height: 210,
+                          padding: EdgeInsets.all(10),
+                          margin: EdgeInsets.only(right: 5),
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: kPrimaryColor),
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                          child: Column(
+                            children: [
+                              Stack(
                                 children: [
-                                  Stack(
+                                  Row(
                                     children: [
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              '${list[index]["verbal_land_type"]} ',
-                                              style: NameProperty(),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          '${list[index]["verbal_land_type"].toString()} ',
+                                          style: NameProperty(),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: IconButton(
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                              size: 20,
                                             ),
+                                            onPressed: () {
+                                              setState(() {
+                                                deleteItemToList(index);
+                                                if (list.length == 0) {
+                                                  Navigator.pop(context);
+                                                }
+                                              });
+                                            },
                                           ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Align(
-                                              alignment: Alignment.centerRight,
-                                              child: IconButton(
-                                                icon: Icon(
-                                                  Icons.delete,
-                                                  color: Colors.red,
-                                                  size: 30,
-                                                ),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    deleteItemToList(index);
-                                                    print(list);
-                                                    if (list.length == 0) {
-                                                      Navigator.pop(context);
-                                                    }
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                          )
-                                        ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              if (widget.check_property == 1)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: <InlineSpan>[
+                                        WidgetSpan(
+                                            child: Icon(
+                                          Icons.location_on_sharp,
+                                          color: kPrimaryColor,
+                                          size: 14,
+                                        )),
+                                        TextSpan(
+                                            style: Label(),
+                                            text:
+                                                "${list[index]["address"].toString()} "),
+                                      ],
+                                    ),
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ),
+                              SizedBox(
+                                height: 3.0,
+                              ),
+                              Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: kPrimaryColor,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              // Container(
+                              //   padding: EdgeInsets.only(left: 10),
+                              //   alignment: Alignment.centerLeft,
+                              //   child: Text(
+                              //     list[index]["verbal_land_des"],
+                              //   ),
+                              // ),
+                              Row(
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Depreciation",
+                                        style: Label(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        "Floor",
+                                        style: Label(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        "Area",
+                                        style: Label(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        'Min Value/Sqm',
+                                        style: Label(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        'Max Value/Sqm',
+                                        style: Label(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        'Min Value',
+                                        style: Label(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        'Min Value',
+                                        style: Label(),
                                       ),
                                     ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    child: Text.rich(
-                                      TextSpan(
-                                        children: <InlineSpan>[
-                                          WidgetSpan(
-                                              child: Icon(
-                                            Icons.location_on_sharp,
-                                            color: kPrimaryColor,
-                                            size: 14,
-                                          )),
-                                          TextSpan(
-                                              text:
-                                                  "${list[index]["address"]} "),
-                                        ],
-                                      ),
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 3.0,
-                                  ),
-                                  Divider(
-                                    height: 1,
-                                    thickness: 1,
-                                    color: kPrimaryColor,
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(left: 10),
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      list[index]["verbal_land_des"],
-                                    ),
-                                  ),
-                                  Row(
+                                  SizedBox(width: 15),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(width: 10),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Depreciation",
-                                            style: Label(),
-                                          ),
-                                          SizedBox(height: 3),
-                                          Text(
-                                            "Area",
-                                            style: Label(),
-                                          ),
-                                          SizedBox(height: 3),
-                                          Text(
-                                            'Min Value/Sqm',
-                                            style: Label(),
-                                          ),
-                                          SizedBox(height: 3),
-                                          Text(
-                                            'Max Value/Sqm',
-                                            style: Label(),
-                                          ),
-                                          SizedBox(height: 3),
-                                          Text(
-                                            'Min Value',
-                                            style: Label(),
-                                          ),
-                                          SizedBox(height: 3),
-                                          Text(
-                                            'Min Value',
-                                            style: Label(),
-                                          ),
-                                        ],
+                                      Text(
+                                        ':  ${formatter.format(double.parse(list[index]["verbal_land_dp"].toString()))} ',
+                                        style: Name(),
                                       ),
-                                      SizedBox(width: 15),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(height: 4),
-                                          Text(
-                                            ':   ' +
-                                                list[index]["verbal_land_dp"],
-                                            style: Name(),
-                                          ),
-                                          SizedBox(height: 2),
-                                          Text(
-                                            ':   ' +
-                                                (list[index]["verbal_land_area"]
-                                                        .toInt())
-                                                    .toString() +
-                                                'm' +
-                                                '\u00B2',
-                                            style: Name(),
-                                          ),
-                                          SizedBox(height: 2),
-                                          Text(
-                                            ':   ' +
-                                                (list[index]
-                                                        ["verbal_land_minsqm"])
-                                                    .toString() +
-                                                '\$',
-                                            style: Name(),
-                                          ),
-                                          SizedBox(height: 2),
-                                          Text(
-                                            ':   ' +
-                                                (list[index]
-                                                        ["verbal_land_maxsqm"])
-                                                    .toString() +
-                                                '\$',
-                                            style: Name(),
-                                          ),
-                                          SizedBox(height: 2),
-                                          Text(
-                                            ':   ' +
-                                                (list[index][
-                                                        "verbal_land_minvalue"])
-                                                    .toString() +
-                                                '\$',
-                                            style: Name(),
-                                          ),
-                                          SizedBox(height: 2),
-                                          Text(
-                                            ':   ' +
-                                                (list[index][
-                                                            "verbal_land_maxvalue"]
-                                                        .toString() +
-                                                    '\$'),
-                                            style: Name(),
-                                          ),
-                                        ],
+                                      SizedBox(height: 3),
+                                      Text(
+                                        ':  ${list[index]["verbal_land_des"].toString()} ',
+                                        style: Name(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        ':   ${formatter.format(double.parse((list[index]["verbal_land_area"].toString())))} m' +
+                                            '\u00B2',
+                                        style: Name(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        ':   ' +
+                                            (list[index]["verbal_land_minsqm"])
+                                                .toString() +
+                                            '\$',
+                                        style: Name(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        ':   ' +
+                                            (list[index]["verbal_land_maxsqm"])
+                                                .toString() +
+                                            '\$',
+                                        style: Name(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        ':   ' +
+                                            formatter
+                                                .format(double.parse((list[
+                                                        index]
+                                                    ["verbal_land_minvalue"])))
+                                                .toString() +
+                                            '\$',
+                                        style: Name(),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        ':   ' +
+                                            // (list[index][
+                                            //             "verbal_land_maxvalue"]
+                                            //         .toString() +
+                                            //     '\$'),
+                                            formatter
+                                                .format(double.parse((list[
+                                                        index]
+                                                    ["verbal_land_maxvalue"])))
+                                                .toString() +
+                                            '\$',
+                                        style: Name(),
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
-                            ),
-                          );
-                        },
-                        // separatorBuilder: (BuildContext context, int index) =>
-                        //     const Divider(),
-                      ),
-                    )
-                  ],
-                ),
+                            ],
+                          ),
+                        );
+                      },
+                      // separatorBuilder: (BuildContext context, int index) =>
+                      //     const Divider(),
+                    ),
+                  )
+                ],
               ),
             ),
           ],
@@ -701,11 +698,13 @@ class _LandBuildingState extends State<LandBuilding> {
       // minSqm = ((widget.asking_price * (100 - min) / 100) +
       //     (((widget.asking_price * (100 - min)) / 100) * (widget.opt / 100)));
       if (widget.opt_type_id != '0') {
-        totalMin = (minSqm * area) * (double.parse(widget.opt_type_id) / 100);
-        totalMax = (maxSqm * area) * (double.parse(widget.opt_type_id) / 100);
+        totalMin = (minSqm! * area) + (double.parse(widget.opt_type_id) / 100);
+        totalMax = (maxSqm! * area) + (double.parse(widget.opt_type_id) / 100);
+        addItemToList();
       } else {
-        totalMin = minSqm * area;
-        totalMax = maxSqm * area;
+        totalMin = minSqm! * area;
+        totalMax = maxSqm! * area;
+        addItemToList();
       }
 
       // print(widget.asking_price);
@@ -713,7 +712,6 @@ class _LandBuildingState extends State<LandBuilding> {
       // print(maxSqm);
       // print(totalMin);
       // print(totalMax);
-      addItemToList();
     });
   }
 
@@ -722,35 +720,59 @@ class _LandBuildingState extends State<LandBuilding> {
       isApiCallProcess = true;
     });
     var rs = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/type?autoverbal_id=$autoverbalTypeValue'));
-    //  if (rs.statusCode == 200) {
-    var jsonData = jsonDecode(rs.body);
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/type?autoverbal_id=${autoverbalTypeValue}'));
+
     setState(() {
+      var jsonData = jsonDecode(rs.body);
       isApiCallProcess = false;
-      maxSqm = double.parse(jsonData[0]['max']);
-      minSqm = double.parse(jsonData[0]['min']);
+      maxSqm = double.parse(jsonData[0]['max'].toString());
+      minSqm = double.parse(jsonData[0]['min'].toString());
       if (widget.opt_type_id != '0') {
-        totalMin = (minSqm * area) * (double.parse(widget.opt_type_id) / 100);
-        totalMax = (maxSqm * area) * (double.parse(widget.opt_type_id) / 100);
+        totalMin = (minSqm! * area) +
+            (double.parse(widget.opt_type_id.toString()) / 100);
+        totalMax = (maxSqm! * area) +
+            (double.parse(widget.opt_type_id.toString()) / 100);
+
+        addItemToList();
       } else {
-        totalMin = minSqm * area;
-        totalMax = maxSqm * area;
+        totalMin = minSqm! * area;
+        totalMax = maxSqm! * area;
+        addItemToList();
       }
-      addItemToList();
+    });
+  }
+
+  Future<void> verbal_caculater(double area) async {
+    setState(() {
+      isApiCallProcess = true;
+    });
+    setState(() {
+      if (widget.opt_type_id != '0') {
+        totalMin = (minSqm! * area) +
+            (double.parse(widget.opt_type_id.toString()) / 100);
+        totalMax = (maxSqm! * area) +
+            (double.parse(widget.opt_type_id.toString()) / 100);
+
+        addItemToList();
+      } else {
+        totalMin = minSqm! * area;
+        totalMax = maxSqm! * area;
+        addItemToList();
+      }
     });
   }
 
   TextStyle Label() {
-    return TextStyle(color: kPrimaryColor, fontSize: 13);
+    return TextStyle(color: kPrimaryColor, fontSize: 9);
   }
 
   TextStyle Name() {
     return TextStyle(
-        color: kImageColor, fontSize: 14, fontWeight: FontWeight.bold);
+        color: kImageColor, fontSize: 9, fontWeight: FontWeight.bold);
   }
 
   TextStyle NameProperty() {
     return TextStyle(
-        color: kImageColor, fontSize: 11, fontWeight: FontWeight.bold);
+        color: kImageColor, fontSize: 10, fontWeight: FontWeight.bold);
   }
 }

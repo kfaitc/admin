@@ -15,6 +15,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:kfa_admin/components/map/map_for_verbal_and_autoverbal.dart';
 
 import '../../../../Customs/formTwinN.dart';
@@ -69,7 +70,7 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
   late List<dynamic> list_Khan;
 
   int id_khan = 0;
-
+  var formatter = NumberFormat("##,###,###,##0.00", "en_US");
   var a;
 
   var opt_type_id = '0';
@@ -302,7 +303,6 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
 
   Widget addVerbal(BuildContext context) {
     return Column(
-      // ignore: prefer_const_literals_to_create_immutables, duplicate_ignore
       children: [
         Code(
           code: (value) {
@@ -318,13 +318,19 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
               await SlideUp(context);
             },
             child: Container(
-                height: 180,
-                width: MediaQuery.of(context).size.width * 1,
-                margin: EdgeInsets.only(top: 15, right: 13, left: 15),
-                child: Image.network(
-                  'https://maps.googleapis.com/maps/api/staticmap?center=${lat},${log}&zoom=20&size=1080x920&maptype=hybrid&markers=color:red%7C%7C${lat},${log}&key=AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI',
-                  fit: BoxFit.fill,
-                )),
+              height: 180,
+              width: MediaQuery.of(context).size.width * 1,
+              margin: EdgeInsets.only(top: 15, right: 13, left: 15),
+              child: FadeInImage.assetNetwork(
+                placeholderCacheHeight: 50,
+                placeholderCacheWidth: 50,
+                fit: BoxFit.cover,
+                placeholderFit: BoxFit.fill,
+                placeholder: 'assets/earth.gif',
+                image:
+                    'https://maps.googleapis.com/maps/api/staticmap?center=${lat},${log}&zoom=20&size=1080x920&maptype=hybrid&markers=color:red%7C%7C${lat},${log}&key=AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI',
+              ),
+            ),
           )
         else if (lat1 != null)
           InkWell(
@@ -348,149 +354,60 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
           )
         else
           SizedBox(),
-
-        SizedBox(
-          height: 10.0,
-        ),
-        Column(
-          children: [
-            if (_file != null)
-              Container(
-                height: 200,
-                width: 400,
-                // child: Image.file(File(_file!.path)),
-                child: Image.memory(imagebytes!),
-              ),
-            if (_file == null)
-              TextButton(
-                onPressed: () async {
-                  await openImage();
-                  setState(() {
-                    _file;
-                  });
-                },
-                child: FractionallySizedBox(
-                  widthFactor: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 22, right: 22),
-                    child: Container(
-                      height: 60,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: kPrimaryColor,
+        SingleChildScrollView(
+            child: Column(children: [
+          _file != null
+              ? Container(
+                  height: 200,
+                  width: 300,
+                  child: Image.file(File(_file!.path)),
+                )
+              : SizedBox(),
+          _file == null
+              ? TextButton(
+                  onPressed: () async {
+                    await openImage(ImageSource.gallery);
+                    setState(() {
+                      _file;
+                    });
+                  },
+                  child: FractionallySizedBox(
+                    widthFactor: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 22, right: 22),
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: kPrimaryColor,
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
                         ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
+                        // padding: EdgeInsets.only(left: 30, right: 30),
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Icon(
+                                  Icons.image_outlined,
+                                  color: kImageColor,
+                                ),
+                                SizedBox(width: 10),
+                                Text((imagepath == "")
+                                    ? 'Choose Photo'
+                                    : 'choosed Photo'),
+                              ],
+                            )),
                       ),
-                      // padding: EdgeInsets.only(left: 30, right: 30),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              SizedBox(width: 10),
-                              Icon(
-                                Icons.map_sharp,
-                                color: kImageColor,
-                              ),
-                              SizedBox(width: 10),
-                              Text((imagepath == "")
-                                  ? 'Choose Photo'
-                                  : 'choosed Photo'),
-                            ],
-                          )),
                     ),
                   ),
-                ),
-              ),
-          ],
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        PropertyDropdown(
-          name: (value) {
-            propertyType = value;
-          },
-          id: (value) {
-            requestModelAuto.property_type_id = value;
-          },
-          // pro: list[0]['property_type_name'],
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        BankDropdown(
-          bank: (value) {
-            requestModelAuto.bank_id = value;
-          },
-          bankbranch: (value) {
-            requestModelAuto.bank_branch_id = value;
-          },
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        FormTwinN(
-          Label1: 'Owner',
-          Label2: 'Contact',
-          onSaved1: (input) {
-            requestModelAuto.owner = input!;
-          },
-          onSaved2: (input) {
-            requestModelAuto.contact = input!;
-          },
-          icon1: Icon(
-            Icons.person,
-            color: kImageColor,
-          ),
-          icon2: Icon(
-            Icons.phone,
-            color: kImageColor,
-          ),
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        // DateComponents(
-        //   date: (value) {
-        //     requestModelAuto.date = value;
-        //   },
-        // ),
-        SizedBox(
-          height: 10.0,
-        ),
-        FormTwinN(
-          Label1: 'Bank Officer',
-          Label2: 'Contact',
-          onSaved1: (input) {
-            requestModelAuto.bank_officer = input!;
-          },
-          onSaved2: (input) {
-            setState(() {
-              requestModelAuto.bank_contact = input!;
-            });
-          },
-          icon1: Icon(
-            Icons.work,
-            color: kImageColor,
-          ),
-          icon2: Icon(
-            Icons.phone,
-            color: kImageColor,
-          ),
-        ),
-
-        SizedBox(
-          height: 10,
-        ),
-        ForceSaleAndValuation(
-          value: (value) {
-            requestModelAuto.verbal_con = value;
-          },
-          // fsl: list[0]['verbal_con'],
-        ),
+                )
+              : SizedBox()
+        ])),
         SizedBox(
           height: 10,
         ),
@@ -500,6 +417,7 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
               opt = int.parse(value);
             });
           },
+          comment1: (opt != null) ? opt.toString() : null,
           id: (value) {
             setState(() {
               requestModelAuto.option = value.toString();
@@ -515,42 +433,7 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
               opt_type_id = value.toString();
             });
           },
-          // option: list[0]['verbal_option'],
         ),
-        SizedBox(
-          height: 10,
-        ),
-        ApprovebyAndVerifyby(
-          approve: (value) {
-            setState(() {
-              requestModelAuto.approve_id = value.toString();
-            });
-          },
-          verify: (value) {
-            setState(() {
-              requestModelAuto.agent = value.toString();
-            });
-          },
-          // appro: list[0]['approve_name'],
-          // vfy: list[0]['VerifyAgent'],
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        FormS(
-          label: 'Address',
-          onSaved: (input) {
-            requestModelAuto.address = input!.toString();
-          },
-          iconname: Icon(
-            Icons.location_on_rounded,
-            color: kImageColor,
-          ),
-        ),
-        SizedBox(
-          height: 3.0,
-        ),
-
         if (id_khan != 0)
           InkWell(
             onTap: () {
@@ -558,16 +441,10 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
               ++i;
             },
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.6,
+              width: MediaQuery.of(context).size.width * 0.8,
               height: 40,
+              margin: EdgeInsets.only(top: 5),
               decoration: BoxDecoration(
-                  border: Border(),
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 2,
-                        color: Color.fromARGB(160, 0, 0, 0),
-                        offset: Offset(0, 1.5))
-                  ],
                   color: Colors.lightBlueAccent[700],
                   borderRadius: BorderRadius.circular(30)),
               child: Row(
@@ -610,7 +487,7 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
         if (i >= 0)
           Container(
             width: 500,
-            height: 270,
+            height: (lb.length > 1) ? 280 : 0,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -664,25 +541,6 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
                                 ),
                               ],
                             ),
-                            // Padding(
-                            //   padding:
-                            //       const EdgeInsets.only(left: 10, right: 10),
-                            //   child: Text.rich(
-                            //     TextSpan(
-                            //       children: <InlineSpan>[
-                            //         WidgetSpan(
-                            //             child: Icon(
-                            //           Icons.location_on_sharp,
-                            //           color: kPrimaryColor,
-                            //           size: 14,
-                            //         )),
-                            //         TextSpan(text: "${lb[i].address} "),
-                            //       ],
-                            //     ),
-                            //     textAlign: TextAlign.left,
-                            //     style: TextStyle(fontSize: 12),
-                            //   ),
-                            // ),
                             SizedBox(
                               height: 3.0,
                             ),
@@ -694,22 +552,27 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
                             SizedBox(
                               height: 5,
                             ),
-                            Container(
-                              padding: EdgeInsets.only(left: 10),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                lb[i].verbal_land_des,
-                              ),
+                            Text(
+                              '${lb[i].address} ',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold),
                             ),
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(width: 10),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "Depreciation",
+                                      style: Label(),
+                                    ),
+                                    SizedBox(height: 3),
+                                    Text(
+                                      "Floor",
                                       style: Label(),
                                     ),
                                     SizedBox(height: 3),
@@ -751,8 +614,15 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
                                     ),
                                     SizedBox(height: 2),
                                     Text(
+                                      ':   ' + lb[i].verbal_land_des,
+                                      style: Name(),
+                                    ),
+                                    SizedBox(height: 2),
+                                    Text(
                                       ':   ' +
-                                          (lb[i].verbal_land_area.toInt())
+                                          (formatter.format(lb[i]
+                                                  .verbal_land_area
+                                                  .toInt()))
                                               .toString() +
                                           'm' +
                                           '\u00B2',
@@ -777,7 +647,8 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
                                     SizedBox(height: 2),
                                     Text(
                                       ':   ' +
-                                          (lb[i].verbal_land_minvalue)
+                                          (formatter.format(
+                                                  lb[i].verbal_land_minvalue))
                                               .toString() +
                                           '\$',
                                       style: Name(),
@@ -785,8 +656,9 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
                                     SizedBox(height: 2),
                                     Text(
                                       ':   ' +
-                                          (lb[i]
-                                                  .verbal_land_maxvalue
+                                          (formatter
+                                                  .format(lb[i]
+                                                      .verbal_land_maxvalue)
                                                   .toString() +
                                               '\$'),
                                       style: Name(),
@@ -803,6 +675,169 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
               ),
             ),
           ),
+        SizedBox(
+          height: 10.0,
+        ),
+        PropertyDropdown(
+          name: (value) {
+            propertyType = value;
+          },
+          id: (value) {
+            requestModelAuto.property_type_id = value;
+          },
+        ),
+        SizedBox(
+          height: 5.0,
+        ),
+        BankDropdown(
+          bank: (value) {
+            requestModelAuto.bank_id = value;
+          },
+          bankbranch: (value) {
+            requestModelAuto.bank_branch_id = value;
+          },
+        ),
+        SizedBox(
+          height: 5.0,
+        ),
+        FormTwinN(
+          Label1: 'Owner',
+          Label2: 'Contact',
+          onSaved1: (input) {
+            requestModelAuto.owner = input!;
+          },
+          onSaved2: (input) {
+            requestModelAuto.contact = input!;
+          },
+          icon1: Icon(
+            Icons.person,
+            color: kImageColor,
+          ),
+          icon2: Icon(
+            Icons.phone,
+            color: kImageColor,
+          ),
+        ),
+        SizedBox(
+          height: 5.0,
+        ),
+        // DateComponents(
+        //   date: (value) {
+        //     requestModelAuto.date = value;
+        //   },
+        // ),
+        SizedBox(
+          height: 5.0,
+        ),
+        FormTwinN(
+          Label1: 'Bank Officer',
+          Label2: 'Contact',
+          onSaved1: (input) {
+            requestModelAuto.bank_officer = input!;
+          },
+          onSaved2: (input) {
+            requestModelAuto.bank_contact = input!;
+          },
+          icon1: Icon(
+            Icons.work,
+            color: kImageColor,
+          ),
+          icon2: Icon(
+            Icons.phone,
+            color: kImageColor,
+          ),
+        ),
+
+        SizedBox(
+          height: 5,
+        ),
+        ForceSaleAndValuation(
+          value: (value) {
+            requestModelAuto.verbal_con = value;
+          },
+        ),
+
+        SizedBox(
+          height: 10,
+        ),
+        ApprovebyAndVerifyby(
+          approve: (value) {
+            requestModelAuto.approve_id = value;
+          },
+          verify: (value) {
+            requestModelAuto.agent = value;
+          },
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: FormS(
+            label: 'Phum optional',
+            onSaved: (input) {
+              requestModelAuto.address = input!;
+            },
+            iconname: Icon(
+              Icons.location_on_rounded,
+              color: kImageColor,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 30.0,
+        ),
+
+        // TextButton(
+        //   onPressed: () {
+        //     SlideUp(context);
+        //   },
+        //   child: FractionallySizedBox(
+        //     widthFactor: 1,
+        //     child: Padding(
+        //       padding: const EdgeInsets.only(left: 22, right: 22),
+        //       child: Container(
+        //         height: 60,
+        //         decoration: BoxDecoration(
+        //           border: Border.all(
+        //             width: 1,
+        //             color: kPrimaryColor,
+        //           ),
+        //           borderRadius: BorderRadius.all(
+        //             Radius.circular(10),
+        //           ),
+        //         ),
+        //         // padding: EdgeInsets.only(left: 30, right: 30),
+        //         child: Align(
+        //             alignment: Alignment.centerLeft,
+        //             child: Row(
+        //               // ignore: prefer_const_literals_to_create_immutables
+        //               children: [
+        //                 SizedBox(width: 10),
+        //                 Icon(
+        //                   Icons.map_sharp,
+        //                   color: kImageColor,
+        //                 ),
+        //                 SizedBox(width: 10),
+        //                 Text((asking_price == 1)
+        //                     ? 'Choose Location'
+        //                     : 'Choosed Location'),
+        //               ],
+        //             )),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+
+        // FileOpen(),
+        // SizedBox(
+        //   height: 5,
+        // ),
+
+        // ImageController(),
+        // ImageOpen(
+        //   set_Image: (value) {
+        //     requestModelAuto.image = value;
+        //   },
+        // ),
       ],
     );
   }
@@ -957,42 +992,42 @@ class _AddState extends State<New_Veba> with SingleTickerProviderStateMixin {
   Uint8List? imagebytes;
   final ImagePicker imgpicker = ImagePicker();
   String imagepath = "";
-  Future openImage() async {
+  dynamic openImage(ImageSource source) async {
     try {
-      XFile? pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
+      XFile? pickedFile = await ImagePicker().pickImage(source: source);
       //you can use ImageCourse.camera for Camera capture
       if (pickedFile != null) {
         imagepath = pickedFile.path;
-        CroppedFile? cropFile = await ImageCropper().cropImage(
-          sourcePath: pickedFile.path,
-          uiSettings: [
-            AndroidUiSettings(
-                lockAspectRatio: false,
-                backgroundColor: Colors.blue,
-                initAspectRatio: CropAspectRatioPreset.original)
-          ],
-          aspectRatioPresets: [
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.ratio16x9,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio5x3,
-            CropAspectRatioPreset.ratio5x4,
-            CropAspectRatioPreset.ratio7x5,
-            CropAspectRatioPreset.square,
-          ],
-        );
+        CroppedFile? cropFile = await ImageCropper()
+            .cropImage(sourcePath: pickedFile.path, aspectRatioPresets: [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio16x9,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.square,
+        ], uiSettings: [
+          AndroidUiSettings(
+              lockAspectRatio: false,
+              backgroundColor: Colors.black,
+              initAspectRatio: CropAspectRatioPreset.original)
+        ]);
         _file = XFile(cropFile!.path);
-        // imagebytes = _file.path;
-        // imagepath = pickedFile.path;
-        File? imagefile = File(cropFile.path); //convert Path to File
-        imagebytes = await imagefile.readAsBytes(); //convert to bytes
+        imagepath = pickedFile.path;
+        // _file = imagefile;
+        // XFile? imagefile;
+
+        //output /data/user/0/com.example.testapp/cache/image_picker7973898508152261600.jpg
+        File? imagefile = File(imagepath); //convert Path to File
+        // saveAutoVerbal(imagefile);
+        Uint8List imagebytes = await imagefile.readAsBytes(); //convert to bytes
         String base64string =
-            base64.encode(imagebytes!); //convert bytes to base64 string
+            base64.encode(imagebytes); //convert bytes to base64 string
         Uint8List decodedbytes = base64.decode(base64string);
         //decode base64 stirng to bytes
-        setState(() {
+        setState(() async {
           _file = imagefile as XFile;
         });
       } else {

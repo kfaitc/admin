@@ -38,7 +38,7 @@ class _AutoVerbalTypeDropdownState extends State<AutoVerbalTypeDropdown> {
   Widget build(BuildContext context) {
     return Container(
       height: 55,
-      padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: DropdownButtonFormField<String>(
         isExpanded: true,
         //value: genderValue,
@@ -48,8 +48,8 @@ class _AutoVerbalTypeDropdownState extends State<AutoVerbalTypeDropdown> {
             widget.name(newValue.split(",")[1]);
             widget.id(newValue.split(",")[0]);
             // ignore: avoid_print
-            print(newValue.split(" ")[0]);
-            print(newValue.split(" ")[1]);
+            // print(newValue.split(" ")[0]);
+            // print(newValue.split(" ")[1]);
           });
         },
         items: _list
@@ -61,8 +61,9 @@ class _AutoVerbalTypeDropdownState extends State<AutoVerbalTypeDropdown> {
                   value["type"],
                   overflow: TextOverflow.visible,
                   style: TextStyle(
-                      fontSize: MediaQuery.textScaleFactorOf(context) * 12,
-                      height: 0.1),
+                    overflow: TextOverflow.visible,
+                    fontSize: MediaQuery.textScaleFactorOf(context) * 11,
+                  ),
                 ),
               ),
             )
@@ -76,6 +77,7 @@ class _AutoVerbalTypeDropdownState extends State<AutoVerbalTypeDropdown> {
         decoration: InputDecoration(
           fillColor: kwhite,
           filled: true,
+          contentPadding: EdgeInsets.symmetric(vertical: 8),
           labelText: 'Type',
           hintText: 'Select one',
           prefixIcon: Icon(

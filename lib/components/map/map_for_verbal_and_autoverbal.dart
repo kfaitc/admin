@@ -147,7 +147,7 @@ class _SearchPlacesScreenState extends State<Map_verbal_add> {
   int id = 1;
   Set<Polyline> _polylines = Set<Polyline>();
   List<MapType> style_map = [
-    MapType.hybrid,
+    MapType.satellite,
     MapType.normal,
   ];
   TextEditingController Tcon = new TextEditingController();
@@ -172,7 +172,12 @@ class _SearchPlacesScreenState extends State<Map_verbal_add> {
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
         centerTitle: true,
-        title: const Text("KFA's Map"),
+        title: const Text("Property Location"),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.system_update_tv_rounded)),
       ),
       body: Stack(
         children: [

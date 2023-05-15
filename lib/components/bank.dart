@@ -91,7 +91,8 @@ class _BankDropdownState extends State<BankDropdown> {
 
               decoration: InputDecoration(
                 fillColor: kwhite,
-                filled: true,
+                filled: true, contentPadding: EdgeInsets.symmetric(vertical: 8),
+
                 labelText: ((widget.bn == null) ? 'Bank' : widget.bn),
                 hintText: 'Select',
 
@@ -169,6 +170,8 @@ class _BankDropdownState extends State<BankDropdown> {
 
               decoration: InputDecoration(
                 fillColor: kwhite,
+                contentPadding: EdgeInsets.symmetric(vertical: 8),
+
                 filled: true,
                 labelText: ((widget.brn == null) ? 'Branch' : widget.bn),
                 hintText: 'Select',

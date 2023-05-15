@@ -3,29 +3,31 @@
 import '../components/contants.dart';
 import 'package:flutter/material.dart';
 
-class FormSh extends StatelessWidget {
+class Box extends StatelessWidget {
   final String label;
+  final String value;
   final Widget iconname;
-  final FormFieldSetter<String> onSaved;
-  const FormSh({
+
+  const Box({
     Key? key,
     required this.label,
     required this.iconname,
-    required this.onSaved,
+    required this.value,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 40,
+    return Padding(
+      padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
       child: TextFormField(
         // controller: controller,
-        onSaved: onSaved,
+        initialValue: value,
+        readOnly: true,
+
         decoration: InputDecoration(
           fillColor: kwhite,
           filled: true,
           labelText: label,
-          contentPadding: EdgeInsets.symmetric(vertical: 8),
           prefixIcon: iconname,
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: kPrimaryColor, width: 2.0),

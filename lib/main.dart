@@ -2,8 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
+<<<<<<< Updated upstream
 
 import 'Auth/login.dart';
+=======
+import 'package:kfa_admin/Auth/login.dart';
+>>>>>>> Stashed changes
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,8 +18,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+<<<<<<< Updated upstream
       //home: Show_autoVerbals(),
       home: Login(),
       // home: CodeTest(check_property: 1, code: (value) {  },)
@@ -30,6 +33,9 @@ class MyApp extends StatelessWidget {
       //home: Add(id: '',),
 
       //home: image_test(),
+=======
+      home: Login(),
+>>>>>>> Stashed changes
     );
   }
 }

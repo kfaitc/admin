@@ -83,6 +83,8 @@ class _ProfileState extends State<Profile> {
                             lname: '',
                             labelText1: 'First Name',
                             labelText2: 'Last Name',
+                            get_fname: (value) {},
+                            get_lname: (value) {},
                           ),
                           SizedBox(
                             height: 2,
@@ -100,11 +102,19 @@ class _ProfileState extends State<Profile> {
                           SizedBox(
                             height: 2,
                           ),
-                          Field_box(name: 'Email', email: ''),
+                          Field_box(
+                            name: 'Email',
+                            email: '',
+                            get_email: (value) {},
+                          ),
                           SizedBox(
                             height: 2,
                           ),
-                          Field_box(name: 'Address', email: ''),
+                          Field_box(
+                            name: 'Address',
+                            email: '',
+                            get_email: (value) {},
+                          ),
                           SizedBox(
                             height: 2,
                           ),

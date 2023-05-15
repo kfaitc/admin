@@ -257,6 +257,8 @@ class _PictureState extends State<Picture> {
                             labelText2: 'Last Name',
                             fname: '',
                             lname: '',
+                            get_fname: (value) {},
+                            get_lname: (value) {},
                           ),
                           SizedBox(
                             height: 2,
@@ -277,6 +279,7 @@ class _PictureState extends State<Picture> {
                           Field_box(
                             name: 'Email',
                             email: '',
+                            get_email: (value) {},
                           ),
                           SizedBox(
                             height: 2,
@@ -284,6 +287,7 @@ class _PictureState extends State<Picture> {
                           Field_box(
                             name: 'Address',
                             email: '',
+                            get_email: (value) {},
                           ),
                           SizedBox(
                             height: 2,

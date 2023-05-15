@@ -1,27 +1,29 @@
-// ignore_for_file: prefer_const_constructors, unused_import, non_constant_identifier_names, avoid_print, prefer_is_empty
-
+// ignore_for_file: unused_import, non_constant_identifier_names, prefer_const_constructors, avoid_print, prefer_is_empty
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:kfa_admin/Auth/register.dart';
 import 'package:kfa_admin/Customs/ProgressHUD.dart';
 import 'package:kfa_admin/Customs/responsive.dart';
 import 'package:kfa_admin/Memory/Local_data.dart';
+import 'package:kfa_admin/Profile/contants.dart';
 import 'package:kfa_admin/model/models/login_model.dart';
-import 'package:kfa_admin/server/api_service.dart';
-import '../../components/contants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:kfa_admin/server/api_service.dart';
 
 import '../interface/homepage.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({required this.lat, required this.log, Key? key, required thi})
+      : super(key: key);
+  double? lat;
+  double? log;
 
   @override
   Widget build(BuildContext context) {
+    // ignore: prefer_const_constructors
     return Login();
   }
 }
@@ -63,9 +65,10 @@ class _LoginState extends State<Login> {
       });
     } else {
       setState(() {
+        int i = list.length - 1;
         status = true;
-        Email = TextEditingController(text: list[0].name);
-        Password = TextEditingController(text: list[0].password);
+        Email = TextEditingController(text: list[i].name);
+        Password = TextEditingController(text: list[i].password);
       });
     }
   }
@@ -75,7 +78,6 @@ class _LoginState extends State<Login> {
     selectPeople();
     status;
     list;
-
     super.initState();
     requestModel = LoginRequestModel(email: "", password: "");
   }
@@ -93,17 +95,18 @@ class _LoginState extends State<Login> {
   Widget _uiSteup(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[400],
+        backgroundColor: kwhite_new,
         elevation: 0,
         centerTitle: true,
         title: Image.asset(
+          // 'assets/images/KFA-Logo.png',
           'assets/images/New_KFA_Logo.png',
-          height: 100,
-          width: 140,
+          height: 120,
+          width: 150,
         ),
         toolbarHeight: 100,
       ),
-      backgroundColor: Colors.blue[400],
+      backgroundColor: kwhite_new,
       body: Container(
         height: double.infinity,
         decoration: BoxDecoration(
@@ -160,19 +163,18 @@ class _LoginState extends State<Login> {
         key: _formKey,
         child: Column(
           children: [
-            Text(
+            const Text(
               'Welcome to KFA system',
-              textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: MediaQuery.of(context).textScaleFactor * 20,
+                fontSize: 25.0,
                 fontWeight: FontWeight.bold,
                 color: kPrimaryColor,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10.0,
             ),
-            Text.rich(
+            const Text.rich(
               TextSpan(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
@@ -199,17 +201,8 @@ class _LoginState extends State<Login> {
             SizedBox(
               height: 30.0,
             ),
-            // FormValidate(
-            //   label: 'Email',
-            //   onSaved: (input) => requestModel.email = input!,
-            //   iconname: Icon(
-            //     Icons.email,
-            //     color: kImageColor,
-            //   ),
-            // ),
-
             ((status == false) ? input(context) : Output(context)),
-            // input(context),
+
             SizedBox(
               height: 10.0,
             ),
@@ -218,10 +211,12 @@ class _LoginState extends State<Login> {
               width: 150,
               child: AnimatedButton(
                 text: 'Login',
-                color: kPrimaryColor,
+                color: kwhite_new,
                 pressEvent: () {
                   if (validateAndSave()) {
                     setState(() {
+                      // final player = AudioPlayer();
+                      // player.play(AssetSource('nor.mp3'));
                       isApiCallProcess = true;
                     });
                     APIservice apIservice = APIservice();
@@ -231,7 +226,14 @@ class _LoginState extends State<Login> {
                         isApiCallProcess = false;
                       });
                       if (value.message == "Login Successfully!") {
+                        var people = PeopleModel(
+                          id: 0,
+                          name: requestModel.email,
+                          password: requestModel.password,
+                        );
+                        PeopleController().insertPeople(people);
                         AwesomeDialog(
+                          btnOkOnPress: () {},
                           context: context,
                           animType: AnimType.leftSlide,
                           headerAnimationLoop: false,
@@ -272,32 +274,13 @@ class _LoginState extends State<Login> {
                         print(value.message);
                       }
                     });
-
+                    // ignore: avoid_print
                     print(requestModel.toJson());
-                  }
-                  if (list.length > 0) {
-                    if (list.elementAt(0).name.toString() !=
-                        requestModel.email) {
-                      var people = PeopleModel(
-                        id: 0,
-                        name: requestModel.email,
-                        password: requestModel.password,
-                      );
-                      PeopleController().insertPeople(people);
-                    }
-                  }
-                  if (list.length <= 0) {
-                    var people = PeopleModel(
-                      id: 0,
-                      name: requestModel.email,
-                      password: requestModel.password,
-                    );
-                    PeopleController().insertPeople(people);
                   }
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             Text.rich(TextSpan(children: [
@@ -348,6 +331,7 @@ class _LoginState extends State<Login> {
         from = jsonData['known_from'];
         tel = jsonData['tel_num'];
       });
+      print(id.toString());
     }
   }
 

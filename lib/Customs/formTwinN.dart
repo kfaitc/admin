@@ -64,6 +64,7 @@ class _FormTwinNState extends State<FormTwinN> {
                       decoration: InputDecoration(
                         fillColor: kwhite,
                         filled: true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 8),
                         labelText: widget.Label1,
                         prefixIcon: widget.icon1,
                         focusedBorder: OutlineInputBorder(
@@ -94,6 +95,7 @@ class _FormTwinNState extends State<FormTwinN> {
                         fillColor: kwhite,
                         filled: true,
                         labelText: widget.Label1,
+                        contentPadding: EdgeInsets.symmetric(vertical: 8),
                         prefixIcon: widget.icon1,
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
@@ -138,6 +140,7 @@ class _FormTwinNState extends State<FormTwinN> {
                       decoration: InputDecoration(
                         fillColor: kwhite,
                         filled: true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 8),
                         labelText: widget.Label2,
                         prefixIcon: widget.icon2,
                         focusedBorder: OutlineInputBorder(
@@ -174,6 +177,7 @@ class _FormTwinNState extends State<FormTwinN> {
                       decoration: InputDecoration(
                         fillColor: kwhite,
                         filled: true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 8),
                         labelText: widget.Label2,
                         prefixIcon: widget.icon2,
                         focusedBorder: OutlineInputBorder(

@@ -35,7 +35,7 @@ class _ToFromDateState extends State<ToFromDate> {
         Expanded(
           child: Container(
             height: 55,
-            padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
+            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
             child: Center(
               child: TextField(
                 controller: fromdate, //editing controller of this TextField
@@ -45,18 +45,23 @@ class _ToFromDateState extends State<ToFromDate> {
                     color: kImageColor,
                   ), //icon of text field
                   labelText: "From Date",
+                  floatingLabelStyle: TextStyle(color: Colors.black, shadows: [
+                    Shadow(
+                      color: Colors.black,
+                      offset: Offset(0.5, 0),
+                      blurRadius: 2,
+                    ),
+                  ]),
+                  contentPadding: EdgeInsets.symmetric(vertical: 8),
                   fillColor: kwhite,
                   filled: true,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(color: kPrimaryColor, width: 2.0),
+                        const BorderSide(color: Colors.green, width: 2.0),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 1,
-                      color: kPrimaryColor,
-                    ),
+                    borderSide: BorderSide(width: 1, color: Colors.green),
                     borderRadius: BorderRadius.circular(10.0),
                   ), //label text of field
                 ),
@@ -66,8 +71,8 @@ class _ToFromDateState extends State<ToFromDate> {
                   //  var date = DateTime.now();
                   DateTime? pickedDate = await showDatePicker(
                     context: context,
-                    initialDate: DateTime(2020, 01, 01),
-                    firstDate: DateTime(2000),
+                    initialDate: DateTime(2022, 01, 01),
+                    firstDate: DateTime(2002),
                     lastDate: DateTime(2101),
                   );
                   if (pickedDate != null) {
@@ -98,28 +103,34 @@ class _ToFromDateState extends State<ToFromDate> {
         Expanded(
           child: Container(
             height: 55,
-            padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+            padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: Center(
               child: TextField(
                 controller: todate, //editing controller of this TextField
                 decoration: InputDecoration(
+                  isCollapsed: false,
                   prefixIcon: Icon(
                     Icons.calendar_today,
                     color: kImageColor,
                   ), //icon of text field
                   labelText: "To Date",
+                  contentPadding: EdgeInsets.symmetric(vertical: 8),
                   fillColor: kwhite,
                   filled: true,
+                  floatingLabelStyle: TextStyle(color: Colors.black, shadows: [
+                    Shadow(
+                      color: Colors.black,
+                      offset: Offset(0.5, 0),
+                      blurRadius: 2,
+                    ),
+                  ]),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(color: kPrimaryColor, width: 2.0),
+                        const BorderSide(color: Colors.green, width: 2.0),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 1,
-                      color: kPrimaryColor,
-                    ),
+                    borderSide: BorderSide(width: 1, color: Colors.green),
                     borderRadius: BorderRadius.circular(10.0),
                   ), //label text of field
                 ),

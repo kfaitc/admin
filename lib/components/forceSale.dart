@@ -33,7 +33,7 @@ class _ForceSaleAndValuationState extends State<ForceSaleAndValuation> {
       children: [
         Expanded(
           child: Container(
-            height: 58,
+            height: 50,
             padding: EdgeInsets.only(left: 30),
             child: FormShN(
               label: 'Valuation Fee',
@@ -50,7 +50,7 @@ class _ForceSaleAndValuationState extends State<ForceSaleAndValuation> {
         ),
         Expanded(
           child: Container(
-            height: 58,
+            height: 50,
             padding: EdgeInsets.only(right: 30),
             child: DropdownButtonFormField<String>(
               //value: genderValue,
@@ -91,6 +91,7 @@ class _ForceSaleAndValuationState extends State<ForceSaleAndValuation> {
                   Icons.attach_money_rounded,
                   color: kImageColor,
                 ),
+                contentPadding: EdgeInsets.symmetric(vertical: 8),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: kPrimaryColor, width: 2.0),

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/Verbal/map_in_list_search.dart';
 
 import 'New_Verbal.dart';
 import 'Verbal_list.dart';
@@ -25,12 +26,18 @@ class _MenuVerbalState extends State<MenuVerbal> {
             fontWeight: FontWeight.bold,
             fontSize: 20,
             color: Color.fromARGB(255, 36, 0, 156))),
+    Text("Map Search Verbal",
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Color.fromARGB(255, 36, 0, 156))),
     // Text("Verbal Search",
     //     style: TextStyle(
     //         fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
   ];
   List<Image> optionIconList = const [
     Image(image: AssetImage('assets/New_verbal.png')),
+    Image(image: AssetImage('assets/List_verbal.png')),
     Image(image: AssetImage('assets/List_verbal.png')),
   ];
   @override
@@ -69,6 +76,20 @@ class _MenuVerbalState extends State<MenuVerbal> {
                   if (i == 1) {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => Verbals_list()));
+                  }
+                  if (i == 2) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Map_List_search(
+                              get_commune: (value) {},
+                              get_district: (value) {},
+                              get_lat: (value) {},
+                              get_log: (value) {},
+                              get_max1: (value) {},
+                              get_max2: (value) {},
+                              get_min1: (value) {},
+                              get_min2: (value) {},
+                              get_province: (value) {},
+                            )));
                   }
                 },
                 child: Container(

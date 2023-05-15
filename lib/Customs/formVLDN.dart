@@ -17,7 +17,7 @@ class FormValidateN extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: TextFormField(
         keyboardType: TextInputType.number,
         inputFormatters: <TextInputFormatter>[
@@ -32,6 +32,7 @@ class FormValidateN extends StatelessWidget {
           filled: true,
           labelText: label,
           prefixIcon: iconname,
+          contentPadding: EdgeInsets.symmetric(vertical: 8),
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(
                 color: Color.fromRGBO(0, 126, 250, 1), width: 2.0),

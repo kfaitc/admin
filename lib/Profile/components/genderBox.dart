@@ -20,6 +20,7 @@ class GenderBox extends StatelessWidget {
       children: [
         Dropdown(
           gender: gender,
+          get_gender: (value) {},
         ),
         SizedBox(
           width: 6,

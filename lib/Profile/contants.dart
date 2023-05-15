@@ -7,7 +7,7 @@ import 'package:sizer/sizer.dart';
 // list of colors that we use in our app
 const kBackgroundColor = Color.fromARGB(255, 250, 248, 250);
 const kPrimaryColor = Color.fromRGBO(6, 121, 249, 1);
-
+const kwhite_new = Color.fromARGB(235, 7, 9, 145);
 const kTextColor = Color(0xFF000839);
 const kBlueColor = Color(0xFF40BAD5);
 const kImageColor = Color.fromRGBO(169, 203, 56, 1);

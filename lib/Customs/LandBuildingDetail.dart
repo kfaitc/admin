@@ -341,7 +341,6 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
 
       setState(() {
         data_of_land = jsonData;
-        print('############ + ++ == ${data_of_land[0]['verbal_land_type']}');
       });
     }
   }

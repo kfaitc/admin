@@ -19,21 +19,22 @@ class FormN extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: TextFormField(
         // controller: controller,
         keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          // for below version 2 use this
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-          // for version 2 and greater youcan also use this
-          FilteringTextInputFormatter.digitsOnly
-        ],
+        // inputFormatters: <TextInputFormatter>[
+        //   // for below version 2 use this
+        //   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+        //   // for version 2 and greater youcan also use this
+        //   FilteringTextInputFormatter.digitsOnly
+        // ],
         onChanged: onSaved,
         decoration: InputDecoration(
           fillColor: kwhite,
           filled: true,
           labelText: label,
+          contentPadding: EdgeInsets.symmetric(vertical: 8),
           prefixIcon: iconname,
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: kPrimaryColor, width: 2.0),

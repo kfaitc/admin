@@ -18,8 +18,7 @@ class APIservice {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: requestModel.toJson()
-        );
+        body: requestModel.toJson());
 
     if (response.statusCode == 200 || response.statusCode == 422) {
       return LoginReponseModel.fromJson(json.decode(response.body));
@@ -48,6 +47,20 @@ class APIservice {
     } else {
       throw Exception('Failed to load Data');
     }
+  }
+
+  Future<RegisterReponseModel_update> update_user(
+      RegisterRequestModel_update requestModel, int id_user) async {
+    final response = await http.put(
+        Uri.parse(
+            'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/user/edit/${id_user.toString()}'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: requestModel.toJson());
+
+    return RegisterReponseModel_update.fromJson(json.decode(response.body));
   }
 
   Future<AutoVerbalReponseModel> saveAutoVerbal(

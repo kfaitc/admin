@@ -18,7 +18,7 @@ class FormValidate extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
       child: TextFormField(
-        onSaved: onSaved,
+        onChanged: onSaved,
         decoration: InputDecoration(
           fillColor: Color.fromARGB(255, 255, 255, 255),
           filled: true,

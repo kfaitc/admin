@@ -88,6 +88,8 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
                 // labelText: 'Verify by',
                 labelText: (widget.vfy != null) ? widget.vfy : 'Verify by',
                 hintText: 'Select one',
+                contentPadding: EdgeInsets.symmetric(vertical: 8),
+
                 prefixIcon: const Icon(
                   Icons.person_sharp,
                   color: kImageColor,
@@ -142,6 +144,7 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
 
               decoration: InputDecoration(
                 fillColor: kwhite,
+                contentPadding: EdgeInsets.symmetric(vertical: 8),
                 filled: true,
                 labelText: (widget.appro != null) ? widget.appro : 'Approve by',
                 hintText: 'Select one',
