@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class controller_api extends GetxController {
   var list_value_all = [].obs;
+  int? count;
   String? province;
 
   /// For Rent
@@ -33,15 +34,20 @@ class controller_api extends GetxController {
       print('Error value_all_list $e');
     }
   }
-  // Future<void> value_all_list(property_type_id_province) async {
-  //   // ignore: prefer_typing_uninitialized_variables
-  //   var jsonData;
-  //   final response = await http.get(Uri.parse(
-  //       'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/get_all_Sale_b/$property_type_id_province'));
 
-  //   if (response.statusCode == 200) {
-  //     jsonData = jsonDecode(response.body);
-  //     list_value_all = jsonData;
-  //   }
-  // }
+  Future<void> count_verbal() async {
+    try {
+      final response = await http.get(Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/get_nativigatoin'));
+
+      if (response.statusCode == 200) {
+        int count_body = jsonDecode(response.body);
+        count = int.parse(count_body.toString());
+      } else {
+        print('Error value_all_list');
+      }
+    } catch (e) {
+      print('Error value_all_list $e');
+    }
+  }
 }

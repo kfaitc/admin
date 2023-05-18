@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kfa_admin/interface/mobile/navigate_home/User/control_user.dart';
 
+import 'list_notivigation.dart';
+
 class MenuUser extends StatefulWidget {
   MenuUser({Key? key, required this.id}) : super(key: key);
   final String id;
@@ -23,11 +25,15 @@ class _MenuUserState extends State<MenuUser> {
     Text("Control User",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+    Text("List Notivagation",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
   ];
   List<Icon> optionIconList = const [
     Icon(Icons.add_circle, color: Colors.white),
     Icon(Icons.add_task, color: Colors.white),
     Icon(Icons.person_search_outlined, color: Colors.white),
+    Icon(Icons.notifications_active_outlined, color: Colors.white),
   ];
   @override
   Widget build(BuildContext context) {
@@ -59,6 +65,8 @@ class _MenuUserState extends State<MenuUser> {
                   if (i == 2) {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => CTL_User()));
+                  } else if (i == 3) {
+                    Get.to(Notivigation_day());
                   }
                 },
                 child: Container(

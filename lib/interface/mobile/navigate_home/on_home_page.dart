@@ -14,8 +14,10 @@ import 'Valuation/menu.dart';
 import 'Verbal/menu.dart';
 
 class NoBodyHome extends StatefulWidget {
-  const NoBodyHome({Key? key, required this.id}) : super(key: key);
+  NoBodyHome({Key? key, required this.id, required this.nativigation})
+      : super(key: key);
   final String id;
+  bool? nativigation;
   @override
   State<NoBodyHome> createState() => _NoBodyHomeState();
 }
@@ -62,9 +64,6 @@ class _NoBodyHomeState extends State<NoBodyHome> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          // SizedBox(
-          //   height: 2,
-          // ),
           for (int i = 0; i < 8; i++)
             InkWell(
               hoverColor: Color.fromARGB(161, 255, 249, 87),

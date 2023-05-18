@@ -1,12 +1,23 @@
-// ignore_for_file: non_constant_identifier_names, prefer_const_constructors_in_immutables, unnecessary_this, prefer_interpolation_to_compose_strings, avoid_print, unnecessary_const, avoid_unnecessary_containers, sized_box_for_whitespace, prefer_const_constructors
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors_in_immutables, unnecessary_this, prefer_interpolation_to_compose_strings, avoid_print, unnecessary_const, avoid_unnecessary_containers, sized_box_for_whitespace, prefer_const_constructors, deprecated_member_use, unused_import, unnecessary_import, unused_local_variable, unused_element
+import 'dart:convert';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get/get.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
-
+import 'package:getwidget/components/badge/gf_badge.dart';
+import 'package:getwidget/components/badge/gf_button_badge.dart';
+import 'package:getwidget/components/badge/gf_icon_badge.dart';
+import 'package:getwidget/components/button/gf_icon_button.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/Property/Getx_api/controller_api.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/User/menu.dart';
 import '../Account/account.dart';
+import 'mobile/navigate_home/User/list_notivigation.dart';
 import 'mobile/navigate_home/on_home_page.dart';
 import 'mobile/navigate_setting/memu_propety.dart';
 import '../respon.dart';
@@ -49,10 +60,21 @@ class _HomePageState extends State<HomePage>
     fontFamily: 'Horizon',
     fontWeight: FontWeight.bold,
   );
+  String? date_0;
+  String? date_1;
+  bool? nativigation;
+  // var controller = controller_count();
   @override
   void initState() {
+    DateTime now = DateTime.now();
+    DateTime onewday = DateTime(now.year, now.month, now.day);
+    DateTime twowday = DateTime(now.year, now.month, now.day + 1);
+    String formattedDate_now = DateFormat('yyyy-MM-dd').format(onewday);
+    String formattedDate_ago = DateFormat('yyyy-MM-dd').format(twowday);
+    count_verbal(formattedDate_now, formattedDate_ago);
     pages = [
       NoBodyHome(
+        nativigation: nativigation,
         id: widget.id,
       ),
       On_property(
@@ -76,8 +98,34 @@ class _HomePageState extends State<HomePage>
         id: widget.id,
       ),
     ];
+
     print("widget id = " + widget.id);
     super.initState();
+  }
+
+  String? count_string;
+
+  void count_verbal(formattedDate_now, formattedDate_ago) async {
+    try {
+      final response = await http.get(Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/get_nativigatoin?start=${formattedDate_now}&end=${formattedDate_ago}'));
+      if (response.statusCode == 200) {
+        int count_body = jsonDecode(response.body);
+        int count = int.parse(count_body.toString());
+        // print('Count = ${count.toString()}');
+        count_string = count.toString();
+        setState(() {
+          count_string;
+          // print(formattedDate_now.toString());
+          // print(formattedDate_ago.toString());
+        });
+        // print('Count_String = ${count_string}');
+      } else {
+        print('Error value_all_list');
+      }
+    } catch (e) {
+      print('Error value_all_list $e');
+    }
   }
 
   @override
@@ -232,12 +280,20 @@ class _HomePageState extends State<HomePage>
             ],
           ),
           actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.auto_graph_outlined,
-                size: 40,
+            GFIconBadge(
+              position: GFBadgePosition.topEnd(top: 15),
+              child: GFIconButton(
+                onPressed: () {
+                  // count_verbal(formattedDate_now, formattedDate_ago);
+                  // controller.count_verbal();
+                  Get.to(Notivigation_day());
+                },
+                icon: Icon(Icons.notifications_active_outlined),
               ),
-              onPressed: () {},
+              counterChild: GFBadge(
+                child: Text("${count_string}"),
+                shape: GFBadgeShape.circle,
+              ),
             ),
             const SizedBox(
               width: 20,
