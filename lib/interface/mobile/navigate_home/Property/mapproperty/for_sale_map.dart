@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
 
-import '../../../../../../../../../../contants.dart';
+import '../../../../../../../contants.dart';
 
 typedef OnChangeCallback = void Function(dynamic value);
 

@@ -14,7 +14,7 @@ import 'package:printing/printing.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import '../../../../../contants copy.dart';
+import '../../../../../components/contants.dart';
 import '../Detail_Screen/Detail_all_list_sale.dart';
 import '../Getx_api/for_screen.dart';
 import '../Getx_api/vetbal_controller.dart';

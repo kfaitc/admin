@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../../components/contants.dart';
 import '../Getx_api/hometype.dart';
-import '../map_all/map_in_add_verbal.dart';
+import '../mapproperty/map_in_add_verbal.dart';
 import '../propertys/api_property/api.dart';
 import '../Model/update_property.dart';
 
@@ -136,7 +136,7 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
         centerTitle: true,
         title: (waiting_d != null)
             ? Text('please waiting...!')
-            : Text('property Edit Rent'),
+            : Text('property Edit Sale'),
         actions: <Widget>[
           InkWell(
             onTap: () async {
@@ -163,7 +163,9 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
                   (value) async {
                     setState(() async {
                       urgent_Sale();
-                      await _upload_Image_Sale_url();
+                      if (_imageFile_input != null) {
+                        await _upload_Image_Sale_url();
+                      }
                       widget.dg!(dsss);
                       widget.number_hometype!(number_type);
                       // print(dsss.toString());

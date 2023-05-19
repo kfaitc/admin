@@ -8,10 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-
-import '../../../../../Profile/contants.dart';
+import '../../../../../components/contants.dart';
 import '../Getx_api/hometype.dart';
-import '../map_all/map_in_add_verbal.dart';
+import '../mapproperty/map_in_add_verbal.dart';
 import '../propertys/api_property/api.dart';
 import '../Model/update_property.dart';
 
@@ -140,7 +139,9 @@ class _Add_verbal_saleState extends State<Edit_verbal_property_Rent> {
                   (value) async {
                     setState(() async {
                       urgent_Rent();
-                      await _upload_Image_Sale_url_rent();
+                      if (_imageFile_input != null) {
+                        await _upload_Image_Sale_url_rent();
+                      }
                       widget.dg!(dsss);
                       Get.back();
                     });

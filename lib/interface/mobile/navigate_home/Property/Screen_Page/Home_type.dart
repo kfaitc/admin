@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, camel_case_types, body_might_complete_normally_nullable, prefer_const_literals_to_create_immutables, unused_import, non_constant_identifier_names, prefer_typing_uninitialized_variables, unused_field, prefer_final_fields, avoid_print, unnecessary_string_interpolations, sized_box_for_whitespace, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation, unnecessary_brace_in_string_interps, unused_local_variable, must_be_immutable, curly_braces_in_flow_control_structures, prefer_const_constructors_in_immutables, unnecessary_null_comparison, prefer_is_empty
+// ignore_for_file: prefer_const_constructors, camel_case_types, body_might_complete_normally_nullable, prefer_const_literals_to_create_immutables, unused_import, non_constant_identifier_names, prefer_typing_uninitialized_variables, unused_field, prefer_final_fields, avoid_print, unnecessary_string_interpolations, sized_box_for_whitespace, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation, unnecessary_brace_in_string_interps, unused_local_variable, must_be_immutable, curly_braces_in_flow_control_structures, prefer_const_constructors_in_immutables, unnecessary_null_comparison, prefer_is_empty, unrelated_type_equality_checks, unused_element
 
 import 'dart:convert';
 
@@ -8,13 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:pdf/widgets.dart' as pw;
-
-import '../../../../../Profile/contants.dart';
+import '../../../../../contants copy.dart';
 import '../Detail_Screen/Detail_all_list_sale.dart';
 import '../Getx_api/controller_hometype.dart';
 import '../Getx_api/for_screen.dart';
@@ -31,10 +29,13 @@ class Home_Type_use extends StatefulWidget {
       required this.hometype_api,
       required this.controller_id_get,
       required this.refresh_homescreen,
-      required this.refresh});
+      required this.refresh,
+      required this.delete_refresh});
   List? list_get;
   final OnChangeCallback controller_id_get;
   final OnChangeCallback refresh_homescreen;
+  final OnChangeCallback delete_refresh;
+
   String? indexv;
   List? hometype_api;
   String? refresh;
@@ -63,6 +64,7 @@ class _List_Sale_AllState extends State<Home_Type_use> {
     });
   }
 
+  int? leghnt_convert;
   Future<void> _refresh() async {
     _isLoading_re = true;
     await Future.wait([
@@ -70,12 +72,26 @@ class _List_Sale_AllState extends State<Home_Type_use> {
     ]);
 
     setState(() {
-      widget.refresh_homescreen(hometype_wait);
       controller_id.list_value_all_2SR.length;
       controller_id.list_value_all_2SR;
-      widget.controller_id_get(controller_id.list_value_all_2SR);
-      print('legnth = ${controller_id.list_value_all_2SR.length.toString()}');
-      print('value = ${controller_id.list_value_all_2SR}');
+
+      _isLoading_re = false;
+    });
+    // All three functions have completed at this point
+    // Do any additional initialization here
+  }
+
+  bool _isLoading_reff = false;
+  Future<void> _refresh_real() async {
+    _isLoading_re = true;
+    await Future.wait([
+      controller_id.value_all_list_2(),
+    ]);
+
+    setState(() {
+      controller_id.list_value_all_2SR.length;
+      controller_id.list_value_all_2SR;
+
       _isLoading_re = false;
     });
     // All three functions have completed at this point
@@ -114,6 +130,7 @@ class _List_Sale_AllState extends State<Home_Type_use> {
     });
   }
 
+// pel khae hz trov jenh value widget dombong ke oy show
   bool _isLoading_pick_111 = false;
 
   String? dg_edit;
@@ -122,22 +139,1313 @@ class _List_Sale_AllState extends State<Home_Type_use> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 20, 20, 163),
-          centerTitle: true,
-          title: Text('Homeytpe${widget.refresh}'),
-          // title: Text('$hometype_wait'),
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 20, 20, 163),
+        centerTitle: true,
+
+        title: Text('Homeytpe'),
+        // title: Text('${widget.list_get!.length}'),
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         setState(() {
+        //           _refresh();
+        //           // controller_id.list_value_all_2SR.length = leghnt_convert!;
+        //           // print('lehgnt = ${leghnt_convert}');
+        //         });
+        //       },
+        //       icon: Icon(Icons.abc)),
+        // ],
+        leading: IconButton(
+          onPressed: () {
+            setState(() {
+              widget.refresh_homescreen(hometype_wait);
+              widget.delete_refresh(pro);
+              widget.controller_id_get(controller_id.list_value_all_2SR);
+              // print(
+
+              //     'legnth = ${controller_id.list_value_all_2SR.length.toString()}');
+              // print('value = ${controller_id.list_value_all_2SR}');
+            });
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back),
         ),
-        // after delete and refresh data
-        body: _isLoading_re
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : (widget.list_get!.length != 0 &&
-                    controller_id.list_value_all_2SR.length != null &&
-                    pro == 2023)
-                ? SingleChildScrollView(
-                    child: Column(
+      ),
+
+      // after delete and refresh data
+      body: _isLoading_re
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : (pro == 2023)
+              ? SingleChildScrollView(
+                  child: Column(
+                  children: [
+                    // Text('sdfsdf'),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              onChanged: (newValue) {
+                                newValue!;
+
+                                hometype_get = newValue;
+                                setState(() {
+                                  hometype_get;
+                                  fetchData();
+                                });
+                              },
+                              validator: (String? value) {
+                                if (value?.isEmpty ?? true) {
+                                  return 'Please select bank';
+                                }
+                                return null;
+                              },
+                              items: widget.hometype_api!
+                                  .map<DropdownMenuItem<String>>(
+                                    (value) => DropdownMenuItem<String>(
+                                      value: value["hometype"].toString(),
+                                      child: Text(
+                                        value["hometype"],
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize:
+                                                MediaQuery.textScaleFactorOf(
+                                                        context) *
+                                                    13,
+                                            height: 1),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              // add extra sugar..
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: kImageColor,
+                              ),
+                              //property_type_id
+                              decoration: InputDecoration(
+                                fillColor: kwhite,
+                                filled: true,
+                                labelText: 'Hometpye',
+                                hintText: 'Select',
+                                prefixIcon: Icon(
+                                  Icons.home_work,
+                                  color: kImageColor,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: kPrimaryColor, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: kPrimaryColor,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: kerror,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: 2,
+                                    color: kerror,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                //   decoration: InputDecoration(
+                                //       labelText: 'From',
+                                //       prefixIcon: Icon(Icons.business_outlined)),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                hometype_get = 'dragon';
+                              });
+                              // controller_id.value_all_list_urgent(hometype);
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 50,
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 47, 11, 168),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                'All List',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    _isLoading_pick
+                        ? Center(child: CircularProgressIndicator())
+                        : (controller_id.list_value_all_2SR.length != 0 ||
+                                controller_id.list_value_all_2SR.length == 0)
+                            ? Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.7,
+                                width: double.infinity,
+                                child: PageView.builder(
+                                  controller: _pageController,
+                                  itemCount:
+                                      (controller_id.list_value_all_2SR.length /
+                                              10)
+                                          .ceil(),
+                                  itemBuilder: (context, index) {
+                                    int startIndex = index * 10;
+                                    int endIndex = (startIndex + 10) >
+                                            controller_id
+                                                .list_value_all_2SR.length
+                                        ? controller_id
+                                            .list_value_all_2SR.length
+                                        : startIndex + 10;
+                                    List<dynamic> items = controller_id
+                                        .list_value_all_2SR
+                                        .sublist(startIndex, endIndex);
+                                    return ListView.builder(
+                                      itemCount: items.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10, top: 10),
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.25,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                color: Color.fromARGB(
+                                                    255, 197, 195, 195)),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Stack(
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            detail_property_id(
+                                                                index,
+                                                                items[index][
+                                                                        'id_ptys']
+                                                                    .toString());
+                                                            setState(() {
+                                                              verbal_ID = items[
+                                                                          index]
+                                                                      [
+                                                                      'id_ptys']
+                                                                  .toString();
+                                                              // print(verbal_ID);
+                                                            });
+                                                          },
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 4,
+                                                                    bottom: 4,
+                                                                    top: 4),
+                                                            child: Container(
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  0.23,
+                                                              width: 130,
+                                                              // decoration: BoxDecoration(
+                                                              //   shape: BoxShape.circle,
+                                                              //   image: DecorationImage(image: NetworkImage('${list2_Sale12[index]['url'].toString()}'))
+                                                              // ),
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                imageUrl: items[
+                                                                            index]
+                                                                        ['url']
+                                                                    .toString(),
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                progressIndicatorBuilder:
+                                                                    (context,
+                                                                            url,
+                                                                            downloadProgress) =>
+                                                                        Center(
+                                                                  child: CircularProgressIndicator(
+                                                                      value: downloadProgress
+                                                                          .progress),
+                                                                ),
+                                                                errorWidget: (context,
+                                                                        url,
+                                                                        error) =>
+                                                                    Icon(Icons
+                                                                        .error),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Positioned(
+                                                          top: 140,
+                                                          left: 10,
+                                                          child: Row(
+                                                            children: [
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                height: 25,
+                                                                width: 50,
+                                                                decoration: BoxDecoration(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            109,
+                                                                            160,
+                                                                            6),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            5)),
+                                                                child: Text(
+                                                                  '${items[index]['type'].toString()}',
+                                                                  style:
+                                                                      TextStyle(
+                                                                          // fontWeight: FontWeight.bold,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              250,
+                                                                              246,
+                                                                              245),
+                                                                          fontSize:
+                                                                              12),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 20,
+                                                              ),
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                decoration: BoxDecoration(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            29,
+                                                                            7,
+                                                                            174),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            5)),
+                                                                height: 25,
+                                                                width: 50,
+                                                                child: Text(
+                                                                  '${items[index]['urgent'].toString()}',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 4,
+                                                              bottom: 4,
+                                                              top: 4),
+                                                      child: Container(
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.23,
+                                                        width: 200,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(7),
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              239,
+                                                              241,
+                                                              238),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                children: [
+                                                                  Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                        'Property ID :',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        'Price :',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        'Land :',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        'bed :',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        'bath :',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                        '${items[index]['id_ptys'].toString()}',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        '${items[index]['price'].toString()} \$',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        '${items[index]['land'].toString()} ' +
+                                                                            'm' +
+                                                                            '\u00B2',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        '${items[index]['bed'].toString()}',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        '${items[index]['bath'].toString()}',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Divider(
+                                                                height: 10,
+                                                                thickness: 2,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                children: [
+                                                                  Container(
+                                                                    height: 40,
+                                                                    width: 30,
+                                                                    child: IconButton(
+                                                                        onPressed: () async {
+                                                                          // print(items[index]
+                                                                          //         [
+                                                                          //         'id_ptys']
+                                                                          //     .toString());
+                                                                          await Printing.layoutPdf(
+                                                                              onLayout: (format) => _generatePdf(format, widget.list_get!, index));
+                                                                          // print(index
+                                                                          //     .toString());
+                                                                        },
+                                                                        icon: Icon(
+                                                                          Icons
+                                                                              .print,
+                                                                          size:
+                                                                              25,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              19,
+                                                                              14,
+                                                                              164),
+                                                                        )),
+                                                                  ),
+                                                                  Container(
+                                                                    height: 40,
+                                                                    width: 30,
+                                                                    child: IconButton(
+                                                                        onPressed: () {
+                                                                          detail_property_id(
+                                                                              index,
+                                                                              items[index]['id_ptys'].toString());
+                                                                          setState(
+                                                                              () {
+                                                                            verbal_ID =
+                                                                                items[index]['id_ptys'].toString();
+                                                                            // print(verbal_ID);
+                                                                          });
+                                                                        },
+                                                                        icon: Icon(
+                                                                          Icons
+                                                                              .details_outlined,
+                                                                          size:
+                                                                              25,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              64,
+                                                                              132,
+                                                                              9),
+                                                                        )),
+                                                                  ),
+                                                                  Container(
+                                                                    height: 40,
+                                                                    width: 30,
+                                                                    child: IconButton(
+                                                                        onPressed: () {
+                                                                          print(
+                                                                              'Edit');
+                                                                          if (items[index]['type'].toString() ==
+                                                                              'For Sale') {
+                                                                            Get.to(Edit_verbal_property(
+                                                                              number_hometype: (value) {
+                                                                                hometype_wait = value;
+                                                                                setState(() {
+                                                                                  hometype_wait;
+                                                                                });
+                                                                              },
+                                                                              dg: (value) {
+                                                                                dg_edit = value.toString();
+                                                                                setState(() {
+                                                                                  dg_edit;
+                                                                                  print(dg_edit.toString());
+                                                                                  if (dg_edit == 'Success Edit') {
+                                                                                    _refresh();
+                                                                                    print('Ok Edit ready');
+                                                                                    pro = 2023;
+                                                                                    print('Ok Edit ready');
+                                                                                  } else {
+                                                                                    print('No Edit');
+                                                                                  }
+                                                                                });
+                                                                              },
+                                                                              get_all_homeytpe: items,
+                                                                              indexv: index.toString(),
+                                                                            ));
+                                                                          } else {
+                                                                            Get.to(Edit_verbal_property_Rent(
+                                                                              dg: (value) {
+                                                                                dg_edit = value.toString();
+                                                                                setState(() {
+                                                                                  dg_edit;
+                                                                                  print(dg_edit.toString());
+                                                                                  if (dg_edit == 'Success Edit') {
+                                                                                    _refresh();
+                                                                                    print('Ok Edit ready');
+                                                                                    pro = 2023;
+                                                                                    print('Ok Edit ready');
+                                                                                  } else {
+                                                                                    print('No Edit');
+                                                                                  }
+                                                                                });
+                                                                              },
+                                                                              get_all_homeytpe: items,
+                                                                              indexv: index.toString(),
+                                                                            ));
+                                                                          }
+                                                                        },
+                                                                        icon: Icon(
+                                                                          Icons
+                                                                              .edit_calendar_outlined,
+                                                                          size:
+                                                                              25,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              147,
+                                                                              8,
+                                                                              59),
+                                                                        )),
+                                                                  ),
+                                                                  Container(
+                                                                    height: 40,
+                                                                    width: 30,
+                                                                    child: IconButton(
+                                                                        onPressed: () {
+                                                                          AwesomeDialog(
+                                                                            context:
+                                                                                context,
+                                                                            title:
+                                                                                'Confirmation',
+                                                                            desc:
+                                                                                'Are you sure you want to delete this item?',
+                                                                            btnOkText:
+                                                                                'Yes',
+                                                                            btnOkColor: Color.fromARGB(
+                                                                                255,
+                                                                                72,
+                                                                                157,
+                                                                                11),
+                                                                            btnCancelText:
+                                                                                'No',
+                                                                            btnCancelColor: Color.fromARGB(
+                                                                                255,
+                                                                                133,
+                                                                                8,
+                                                                                8),
+                                                                            btnOkOnPress:
+                                                                                () {
+                                                                              if (items[index]['type'].toString() == 'For Sale') {
+                                                                                // print('${items[index]['type'].toString()}');
+                                                                                delete_property(id_ptys: items[index]['id_ptys'].toString());
+                                                                                setState(() {
+                                                                                  controller_id.list_value_all_2SR;
+                                                                                });
+                                                                              } else {
+                                                                                delete_property_rent(id_ptys: items[index]['id_ptys'].toString());
+                                                                                setState(() {
+                                                                                  controller_id.list_value_all_2SR;
+                                                                                });
+                                                                                // print('${items[index]['type'].toString()}');
+                                                                              }
+
+                                                                              // setState(
+                                                                              //     () {
+                                                                              //   _get_all();
+                                                                              // });
+                                                                              // Get.back();
+                                                                            },
+                                                                            btnCancelOnPress:
+                                                                                () {
+                                                                              print('No');
+                                                                            },
+                                                                          ).show();
+                                                                        },
+                                                                        icon: Icon(
+                                                                          Icons
+                                                                              .delete,
+                                                                          size:
+                                                                              25,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              147,
+                                                                              8,
+                                                                              59),
+                                                                        )),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              )
+                            : SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.7,
+                                width: double.infinity,
+                                child: PageView.builder(
+                                  controller: _pageController,
+                                  itemCount: (controller_id
+                                          .list_value_all_hometype.length)
+                                      .ceil(),
+                                  itemBuilder: (context, index) {
+                                    int startIndex = index * 10;
+                                    int endIndex = (startIndex + 10) >
+                                            controller_id
+                                                .list_value_all_hometype.length
+                                        ? controller_id
+                                            .list_value_all_hometype.length
+                                        : startIndex + 10;
+                                    List<dynamic> items = controller_id
+                                        .list_value_all_hometype
+                                        .sublist(startIndex, endIndex);
+                                    return ListView.builder(
+                                      itemCount: items.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10, top: 10),
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.25,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                color: Color.fromARGB(
+                                                    255, 197, 195, 195)),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Stack(
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            detail_property_id(
+                                                                index,
+                                                                items[index][
+                                                                        'id_ptys']
+                                                                    .toString());
+                                                            setState(() {
+                                                              verbal_ID = items[
+                                                                          index]
+                                                                      [
+                                                                      'id_ptys']
+                                                                  .toString();
+                                                              // print(verbal_ID);
+                                                            });
+                                                          },
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 4,
+                                                                    bottom: 4,
+                                                                    top: 4),
+                                                            child: Container(
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  0.23,
+                                                              width: 130,
+                                                              // decoration: BoxDecoration(
+                                                              //   shape: BoxShape.circle,
+                                                              //   image: DecorationImage(image: NetworkImage('${list2_Sale12[index]['url'].toString()}'))
+                                                              // ),
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                imageUrl: items[
+                                                                            index]
+                                                                        ['url']
+                                                                    .toString(),
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                progressIndicatorBuilder:
+                                                                    (context,
+                                                                            url,
+                                                                            downloadProgress) =>
+                                                                        Center(
+                                                                  child: CircularProgressIndicator(
+                                                                      value: downloadProgress
+                                                                          .progress),
+                                                                ),
+                                                                errorWidget: (context,
+                                                                        url,
+                                                                        error) =>
+                                                                    Icon(Icons
+                                                                        .error),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Positioned(
+                                                          top: 140,
+                                                          left: 10,
+                                                          child: Row(
+                                                            children: [
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                height: 25,
+                                                                width: 50,
+                                                                decoration: BoxDecoration(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            109,
+                                                                            160,
+                                                                            6),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            5)),
+                                                                child: Text(
+                                                                  '${items[index]['type'].toString()}',
+                                                                  style:
+                                                                      TextStyle(
+                                                                          // fontWeight: FontWeight.bold,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              250,
+                                                                              246,
+                                                                              245),
+                                                                          fontSize:
+                                                                              12),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 20,
+                                                              ),
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                decoration: BoxDecoration(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            29,
+                                                                            7,
+                                                                            174),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            5)),
+                                                                height: 25,
+                                                                width: 50,
+                                                                child: Text(
+                                                                  '${items[index]['urgent'].toString()}',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 4,
+                                                              bottom: 4,
+                                                              top: 4),
+                                                      child: Container(
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.23,
+                                                        width: 200,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(7),
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              239,
+                                                              241,
+                                                              238),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                children: [
+                                                                  Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                        'Property ID :',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        'Price :',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        'Land :',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        'bed :',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        'bath :',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                        '${items[index]['id_ptys'].toString()}',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        '${items[index]['price'].toString()} \$',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        '${items[index]['land'].toString()} ' +
+                                                                            'm' +
+                                                                            '\u00B2',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        '${items[index]['bed'].toString()}',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        '${items[index]['bath'].toString()}',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Divider(
+                                                                height: 10,
+                                                                thickness: 2,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                children: [
+                                                                  Container(
+                                                                    height: 40,
+                                                                    width: 30,
+                                                                    child: IconButton(
+                                                                        onPressed: () async {
+                                                                          await Printing.layoutPdf(
+                                                                              onLayout: (format) => _generatePdf(format, items, index));
+                                                                        },
+                                                                        icon: Icon(
+                                                                          Icons
+                                                                              .print,
+                                                                          size:
+                                                                              25,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              19,
+                                                                              14,
+                                                                              164),
+                                                                        )),
+                                                                  ),
+                                                                  Container(
+                                                                    height: 40,
+                                                                    width: 30,
+                                                                    child: IconButton(
+                                                                        onPressed: () {
+                                                                          detail_property_id(
+                                                                              index,
+                                                                              items[index]['id_ptys'].toString());
+                                                                          setState(
+                                                                              () {
+                                                                            verbal_ID =
+                                                                                items[index]['id_ptys'].toString();
+                                                                            // print(verbal_ID);
+                                                                          });
+                                                                        },
+                                                                        icon: Icon(
+                                                                          Icons
+                                                                              .details_outlined,
+                                                                          size:
+                                                                              25,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              64,
+                                                                              132,
+                                                                              9),
+                                                                        )),
+                                                                  ),
+                                                                  Container(
+                                                                    height: 40,
+                                                                    width: 30,
+                                                                    child: IconButton(
+                                                                        onPressed: () {
+                                                                          print(
+                                                                              'Edit');
+                                                                          if (items[index]['type'].toString() ==
+                                                                              'For Sale') {
+                                                                            Get.to(Edit_verbal_property(
+                                                                              number_hometype: (value) {
+                                                                                hometype_wait = value;
+                                                                                setState(() {
+                                                                                  hometype_wait;
+                                                                                });
+                                                                              },
+                                                                              dg: (value) {
+                                                                                dg_edit = value.toString();
+                                                                                setState(() {
+                                                                                  dg_edit;
+                                                                                  print(dg_edit.toString());
+                                                                                  if (dg_edit == 'Success Edit') {
+                                                                                    _refresh();
+                                                                                    print('Ok Edit ready');
+                                                                                    pro = 2023;
+                                                                                    print('Ok Edit ready');
+                                                                                  } else {
+                                                                                    print('No Edit');
+                                                                                  }
+                                                                                });
+                                                                              },
+                                                                              get_all_homeytpe: items,
+                                                                              indexv: index.toString(),
+                                                                            ));
+                                                                          } else {
+                                                                            Get.to(Edit_verbal_property_Rent(
+                                                                              dg: (value) {
+                                                                                dg_edit = value.toString();
+                                                                                setState(() {
+                                                                                  dg_edit;
+                                                                                  print(dg_edit.toString());
+                                                                                  if (dg_edit == 'Success Edit') {
+                                                                                    _refresh();
+                                                                                    print('Ok Edit ready');
+                                                                                    pro = 2023;
+                                                                                    print('Ok Edit ready');
+                                                                                  } else {
+                                                                                    print('No Edit');
+                                                                                  }
+                                                                                });
+                                                                              },
+                                                                              get_all_homeytpe: items,
+                                                                              indexv: index.toString(),
+                                                                            ));
+                                                                          }
+                                                                        },
+                                                                        icon: Icon(
+                                                                          Icons
+                                                                              .edit_calendar_outlined,
+                                                                          size:
+                                                                              25,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              147,
+                                                                              8,
+                                                                              59),
+                                                                        )),
+                                                                  ),
+                                                                  Container(
+                                                                    height: 40,
+                                                                    width: 30,
+                                                                    child: IconButton(
+                                                                        onPressed: () async {
+                                                                          AwesomeDialog(
+                                                                            context:
+                                                                                context,
+                                                                            title:
+                                                                                'Confirmation',
+                                                                            desc:
+                                                                                'Are you sure you want to delete this item?',
+                                                                            btnOkText:
+                                                                                'Yes',
+                                                                            btnOkColor: Color.fromARGB(
+                                                                                255,
+                                                                                72,
+                                                                                157,
+                                                                                11),
+                                                                            btnCancelText:
+                                                                                'No',
+                                                                            btnCancelColor: Color.fromARGB(
+                                                                                255,
+                                                                                133,
+                                                                                8,
+                                                                                8),
+                                                                            btnOkOnPress:
+                                                                                () async {
+                                                                              if (items[index]['type'].toString() == 'For Sale') {
+                                                                                // print('${items[index]['type'].toString()}');
+                                                                                delete_property(id_ptys: items[index]['id_ptys'].toString());
+                                                                                setState(() {
+                                                                                  controller_id.list_value_all_2SR;
+                                                                                });
+                                                                              } else {
+                                                                                delete_property_rent(id_ptys: items[index]['id_ptys'].toString());
+                                                                                setState(() {
+                                                                                  controller_id.list_value_all_2SR;
+                                                                                });
+                                                                                // print('${items[index]['type'].toString()}');
+                                                                              }
+                                                                              // delete_property(id_ptys: items[index]['id_ptys'].toString());
+                                                                              // setState(() {
+                                                                              //   pro = 2023;
+                                                                              //   print('okoko');
+                                                                              // });
+                                                                            },
+                                                                            btnCancelOnPress:
+                                                                                () {
+                                                                              print('No');
+                                                                            },
+                                                                          ).show();
+                                                                        },
+                                                                        icon: Icon(
+                                                                          Icons
+                                                                              .delete,
+                                                                          size:
+                                                                              25,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              147,
+                                                                              8,
+                                                                              59),
+                                                                        )),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                  ],
+                ))
+              // ? Text('ook')
+              ////////////////////////////// Screen No delete
+              : SingleChildScrollView(
+                  child: Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -256,28 +1564,24 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                       ),
                       _isLoading_pick
                           ? Center(child: CircularProgressIndicator())
-                          : (controller_id.list_value_all_2SR.length != 0 ||
-                                  controller_id.list_value_all_2SR.length == 0)
+                          : (hometype_get == 'dragon')
+                              ////////////////  From Hometype
+
                               ? Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.7,
                                   width: double.infinity,
                                   child: PageView.builder(
                                     controller: _pageController,
-                                    itemCount: (controller_id
-                                                .list_value_all_2SR.length /
-                                            10)
-                                        .ceil(),
+                                    itemCount:
+                                        (widget.list_get!.length / 10).ceil(),
                                     itemBuilder: (context, index) {
                                       int startIndex = index * 10;
                                       int endIndex = (startIndex + 10) >
-                                              controller_id
-                                                  .list_value_all_2SR.length
-                                          ? controller_id
-                                              .list_value_all_2SR.length
+                                              widget.list_get!.length
+                                          ? widget.list_get!.length
                                           : startIndex + 10;
-                                      List<dynamic> items = controller_id
-                                          .list_value_all_2SR
+                                      List<dynamic> items = widget.list_get!
                                           .sublist(startIndex, endIndex);
                                       return ListView.builder(
                                         itemCount: items.length,
@@ -677,9 +1981,9 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                       width: 30,
                                                                       child: IconButton(
                                                                           onPressed: () {
-                                                                            print('Edit');
                                                                             if (items[index]['type'].toString() ==
                                                                                 'For Sale') {
+                                                                              // print('For Sale');
                                                                               Get.to(Edit_verbal_property(
                                                                                 number_hometype: (value) {
                                                                                   hometype_wait = value;
@@ -706,6 +2010,7 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                                 indexv: index.toString(),
                                                                               ));
                                                                             } else {
+                                                                              // print('For Rent');
                                                                               Get.to(Edit_verbal_property_Rent(
                                                                                 dg: (value) {
                                                                                   dg_edit = value.toString();
@@ -753,20 +2058,10 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                               btnCancelText: 'No',
                                                                               btnCancelColor: Color.fromARGB(255, 133, 8, 8),
                                                                               btnOkOnPress: () {
-                                                                                if (items[index]['type'].toString() == 'For Sale') {
-                                                                                  // print('${items[index]['type'].toString()}');
-                                                                                  delete_property(id_ptys: items[index]['id_ptys'].toString());
-                                                                                  setState(() {
-                                                                                    controller_id.list_value_all_2SR;
-                                                                                  });
-                                                                                } else {
-                                                                                  delete_property_rent(id_ptys: items[index]['id_ptys'].toString());
-                                                                                  setState(() {
-                                                                                    controller_id.list_value_all_2SR;
-                                                                                  });
-                                                                                  // print('${items[index]['type'].toString()}');
-                                                                                }
-
+                                                                                delete_property(id_ptys: items[index]['id_ptys'].toString());
+                                                                                setState(() {
+                                                                                  controller_id.list_value_all_2SR;
+                                                                                });
                                                                                 // setState(
                                                                                 //     () {
                                                                                 //   _get_all();
@@ -807,6 +2102,8 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                     },
                                   ),
                                 )
+
+                              ////////////////  From Hometype
                               : SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height * 0.7,
@@ -1220,9 +2517,9 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                       width: 30,
                                                                       child: IconButton(
                                                                           onPressed: () {
-                                                                            print('Edit');
                                                                             if (items[index]['type'].toString() ==
                                                                                 'For Sale') {
+                                                                              // print('For Sale');
                                                                               Get.to(Edit_verbal_property(
                                                                                 number_hometype: (value) {
                                                                                   hometype_wait = value;
@@ -1249,6 +2546,7 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                                 indexv: index.toString(),
                                                                               ));
                                                                             } else {
+                                                                              // print('For Rent');
                                                                               Get.to(Edit_verbal_property_Rent(
                                                                                 dg: (value) {
                                                                                   dg_edit = value.toString();
@@ -1296,6 +2594,15 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                               btnCancelText: 'No',
                                                                               btnCancelColor: Color.fromARGB(255, 133, 8, 8),
                                                                               btnOkOnPress: () async {
+                                                                                // delete_property(id_ptys: items[index]['id_ptys'].toString());
+                                                                                // setState(() {
+                                                                                //   controller_id.list_value_all_2SR;
+                                                                                // });
+                                                                                // setState(
+                                                                                //     () {
+                                                                                //   _get_all();
+                                                                                // });
+                                                                                // Get.back();
                                                                                 if (items[index]['type'].toString() == 'For Sale') {
                                                                                   // print('${items[index]['type'].toString()}');
                                                                                   delete_property(id_ptys: items[index]['id_ptys'].toString());
@@ -1309,11 +2616,6 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                                                                   });
                                                                                   // print('${items[index]['type'].toString()}');
                                                                                 }
-                                                                                // delete_property(id_ptys: items[index]['id_ptys'].toString());
-                                                                                // setState(() {
-                                                                                //   pro = 2023;
-                                                                                //   print('okoko');
-                                                                                // });
                                                                               },
                                                                               btnCancelOnPress: () {
                                                                                 print('No');
@@ -1349,1194 +2651,62 @@ class _List_Sale_AllState extends State<Home_Type_use> {
                                     },
                                   ),
                                 ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                _pageController.previousPage(
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 36,
+                                width: MediaQuery.of(context).size.width * 0.2,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Color.fromARGB(255, 152, 33, 25)),
+                                child: Text(
+                                  'Back',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _pageController.nextPage(
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 36,
+                                width: MediaQuery.of(context).size.width * 0.2,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Color.fromARGB(255, 18, 36, 142)),
+                                child: Text(
+                                  'Next',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
-                  ))
-                // ? Text('ook')
-                ////////////////////////////// Screen No delete
-                : SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 50,
-                                width: MediaQuery.of(context).size.width * 0.75,
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                child: DropdownButtonFormField<String>(
-                                  isExpanded: true,
-                                  onChanged: (newValue) {
-                                    newValue!;
-
-                                    hometype_get = newValue;
-                                    setState(() {
-                                      hometype_get;
-                                      fetchData();
-                                    });
-                                  },
-                                  validator: (String? value) {
-                                    if (value?.isEmpty ?? true) {
-                                      return 'Please select bank';
-                                    }
-                                    return null;
-                                  },
-                                  items: widget.hometype_api!
-                                      .map<DropdownMenuItem<String>>(
-                                        (value) => DropdownMenuItem<String>(
-                                          value: value["hometype"].toString(),
-                                          child: Text(
-                                            value["hometype"],
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontSize: MediaQuery
-                                                        .textScaleFactorOf(
-                                                            context) *
-                                                    13,
-                                                height: 1),
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                  // add extra sugar..
-                                  icon: Icon(
-                                    Icons.arrow_drop_down,
-                                    color: kImageColor,
-                                  ),
-                                  //property_type_id
-                                  decoration: InputDecoration(
-                                    fillColor: kwhite,
-                                    filled: true,
-                                    labelText: 'Hometpye',
-                                    hintText: 'Select',
-                                    prefixIcon: Icon(
-                                      Icons.home_work,
-                                      color: kImageColor,
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: kPrimaryColor, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 1,
-                                        color: kPrimaryColor,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 1,
-                                        color: kerror,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 2,
-                                        color: kerror,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    //   decoration: InputDecoration(
-                                    //       labelText: 'From',
-                                    //       prefixIcon: Icon(Icons.business_outlined)),
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    hometype_get = 'dragon';
-                                  });
-                                  // controller_id.value_all_list_urgent(hometype);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.2,
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 47, 11, 168),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    'All List',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        _isLoading_pick
-                            ? Center(child: CircularProgressIndicator())
-                            : (hometype_get == 'dragon')
-                                ? Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.7,
-                                    width: double.infinity,
-                                    child: PageView.builder(
-                                      controller: _pageController,
-                                      itemCount:
-                                          (widget.list_get!.length / 10).ceil(),
-                                      itemBuilder: (context, index) {
-                                        int startIndex = index * 10;
-                                        int endIndex = (startIndex + 10) >
-                                                widget.list_get!.length
-                                            ? widget.list_get!.length
-                                            : startIndex + 10;
-                                        List<dynamic> items = widget.list_get!
-                                            .sublist(startIndex, endIndex);
-                                        return ListView.builder(
-                                          itemCount: items.length,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10, right: 10, top: 10),
-                                              child: Container(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.25,
-                                                width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7),
-                                                    color: Color.fromARGB(
-                                                        255, 197, 195, 195)),
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Stack(
-                                                          children: [
-                                                            InkWell(
-                                                              onTap: () {
-                                                                detail_property_id(
-                                                                    index,
-                                                                    items[index]
-                                                                            [
-                                                                            'id_ptys']
-                                                                        .toString());
-                                                                setState(() {
-                                                                  verbal_ID = items[
-                                                                              index]
-                                                                          [
-                                                                          'id_ptys']
-                                                                      .toString();
-                                                                  // print(verbal_ID);
-                                                                });
-                                                              },
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left: 4,
-                                                                        bottom:
-                                                                            4,
-                                                                        top: 4),
-                                                                child:
-                                                                    Container(
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.23,
-                                                                  width: 130,
-                                                                  // decoration: BoxDecoration(
-                                                                  //   shape: BoxShape.circle,
-                                                                  //   image: DecorationImage(image: NetworkImage('${list2_Sale12[index]['url'].toString()}'))
-                                                                  // ),
-                                                                  child:
-                                                                      CachedNetworkImage(
-                                                                    imageUrl: items[index]
-                                                                            [
-                                                                            'url']
-                                                                        .toString(),
-                                                                    fit: BoxFit
-                                                                        .cover,
-                                                                    progressIndicatorBuilder: (context,
-                                                                            url,
-                                                                            downloadProgress) =>
-                                                                        Center(
-                                                                      child: CircularProgressIndicator(
-                                                                          value:
-                                                                              downloadProgress.progress),
-                                                                    ),
-                                                                    errorWidget: (context,
-                                                                            url,
-                                                                            error) =>
-                                                                        Icon(Icons
-                                                                            .error),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Positioned(
-                                                              top: 140,
-                                                              left: 10,
-                                                              child: Row(
-                                                                children: [
-                                                                  Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    height: 25,
-                                                                    width: 50,
-                                                                    decoration: BoxDecoration(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            109,
-                                                                            160,
-                                                                            6),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5)),
-                                                                    child: Text(
-                                                                      '${items[index]['type'].toString()}',
-                                                                      style: TextStyle(
-                                                                          // fontWeight: FontWeight.bold,
-                                                                          color: Color.fromARGB(255, 250, 246, 245),
-                                                                          fontSize: 12),
-                                                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 20,
-                                                                  ),
-                                                                  Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    decoration: BoxDecoration(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            29,
-                                                                            7,
-                                                                            174),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5)),
-                                                                    height: 25,
-                                                                    width: 50,
-                                                                    child: Text(
-                                                                      '${items[index]['urgent'].toString()}',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color:
-                                                                              Colors.white),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 4,
-                                                                  bottom: 4,
-                                                                  top: 4),
-                                                          child: Container(
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.23,
-                                                            width: 200,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          7),
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      239,
-                                                                      241,
-                                                                      238),
-                                                            ),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Column(
-                                                                children: [
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceAround,
-                                                                    children: [
-                                                                      Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Text(
-                                                                            'Property ID :',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            'Price :',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            'Land :',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            'bed :',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            'bath :',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Text(
-                                                                            '${items[index]['id_ptys'].toString()}',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            '${items[index]['price'].toString()} \$',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            '${items[index]['land'].toString()} ' +
-                                                                                'm' +
-                                                                                '\u00B2',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            '${items[index]['bed'].toString()}',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            '${items[index]['bath'].toString()}',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Divider(
-                                                                    height: 10,
-                                                                    thickness:
-                                                                        2,
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceAround,
-                                                                    children: [
-                                                                      Container(
-                                                                        height:
-                                                                            40,
-                                                                        width:
-                                                                            30,
-                                                                        child: IconButton(
-                                                                            onPressed: () async {
-                                                                              // print(items[index]
-                                                                              //         [
-                                                                              //         'id_ptys']
-                                                                              //     .toString());
-                                                                              await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, widget.list_get!, index));
-                                                                              // print(index
-                                                                              //     .toString());
-                                                                            },
-                                                                            icon: Icon(
-                                                                              Icons.print,
-                                                                              size: 25,
-                                                                              color: Color.fromARGB(255, 19, 14, 164),
-                                                                            )),
-                                                                      ),
-                                                                      Container(
-                                                                        height:
-                                                                            40,
-                                                                        width:
-                                                                            30,
-                                                                        child: IconButton(
-                                                                            onPressed: () {
-                                                                              detail_property_id(index, items[index]['id_ptys'].toString());
-                                                                              setState(() {
-                                                                                verbal_ID = items[index]['id_ptys'].toString();
-                                                                                // print(verbal_ID);
-                                                                              });
-                                                                            },
-                                                                            icon: Icon(
-                                                                              Icons.details_outlined,
-                                                                              size: 25,
-                                                                              color: Color.fromARGB(255, 64, 132, 9),
-                                                                            )),
-                                                                      ),
-                                                                      Container(
-                                                                        height:
-                                                                            40,
-                                                                        width:
-                                                                            30,
-                                                                        child: IconButton(
-                                                                            onPressed: () {
-                                                                              if (items[index]['type'].toString() == 'For Sale') {
-                                                                                // print('For Sale');
-                                                                                Get.to(Edit_verbal_property(
-                                                                                  number_hometype: (value) {
-                                                                                    hometype_wait = value;
-                                                                                    setState(() {
-                                                                                      hometype_wait;
-                                                                                    });
-                                                                                  },
-                                                                                  dg: (value) {
-                                                                                    dg_edit = value.toString();
-                                                                                    setState(() {
-                                                                                      dg_edit;
-                                                                                      print(dg_edit.toString());
-                                                                                      if (dg_edit == 'Success Edit') {
-                                                                                        _refresh();
-                                                                                        print('Ok Edit ready');
-                                                                                        pro = 2023;
-                                                                                        print('Ok Edit ready');
-                                                                                      } else {
-                                                                                        print('No Edit');
-                                                                                      }
-                                                                                    });
-                                                                                  },
-                                                                                  get_all_homeytpe: items,
-                                                                                  indexv: index.toString(),
-                                                                                ));
-                                                                              } else {
-                                                                                // print('For Rent');
-                                                                                Get.to(Edit_verbal_property_Rent(
-                                                                                  dg: (value) {
-                                                                                    dg_edit = value.toString();
-                                                                                    setState(() {
-                                                                                      dg_edit;
-                                                                                      print(dg_edit.toString());
-                                                                                      if (dg_edit == 'Success Edit') {
-                                                                                        _refresh();
-                                                                                        print('Ok Edit ready');
-                                                                                        pro = 2023;
-                                                                                        print('Ok Edit ready');
-                                                                                      } else {
-                                                                                        print('No Edit');
-                                                                                      }
-                                                                                    });
-                                                                                  },
-                                                                                  get_all_homeytpe: items,
-                                                                                  indexv: index.toString(),
-                                                                                ));
-                                                                              }
-                                                                            },
-                                                                            icon: Icon(
-                                                                              Icons.edit_calendar_outlined,
-                                                                              size: 25,
-                                                                              color: Color.fromARGB(255, 147, 8, 59),
-                                                                            )),
-                                                                      ),
-                                                                      Container(
-                                                                        height:
-                                                                            40,
-                                                                        width:
-                                                                            30,
-                                                                        child: IconButton(
-                                                                            onPressed: () {
-                                                                              AwesomeDialog(
-                                                                                context: context,
-                                                                                title: 'Confirmation',
-                                                                                desc: 'Are you sure you want to delete this item?',
-                                                                                btnOkText: 'Yes',
-                                                                                btnOkColor: Color.fromARGB(255, 72, 157, 11),
-                                                                                btnCancelText: 'No',
-                                                                                btnCancelColor: Color.fromARGB(255, 133, 8, 8),
-                                                                                btnOkOnPress: () {
-                                                                                  delete_property(id_ptys: items[index]['id_ptys'].toString());
-                                                                                  setState(() {
-                                                                                    controller_id.list_value_all_2SR;
-                                                                                  });
-                                                                                  // setState(
-                                                                                  //     () {
-                                                                                  //   _get_all();
-                                                                                  // });
-                                                                                  // Get.back();
-                                                                                },
-                                                                                btnCancelOnPress: () {
-                                                                                  print('No');
-                                                                                },
-                                                                              ).show();
-                                                                            },
-                                                                            icon: Icon(
-                                                                              Icons.delete,
-                                                                              size: 25,
-                                                                              color: Color.fromARGB(255, 147, 8, 59),
-                                                                            )),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  )
-                                : SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.7,
-                                    width: double.infinity,
-                                    child: PageView.builder(
-                                      controller: _pageController,
-                                      itemCount: (controller_id
-                                              .list_value_all_hometype.length)
-                                          .ceil(),
-                                      itemBuilder: (context, index) {
-                                        int startIndex = index * 10;
-                                        int endIndex = (startIndex + 10) >
-                                                controller_id
-                                                    .list_value_all_hometype
-                                                    .length
-                                            ? controller_id
-                                                .list_value_all_hometype.length
-                                            : startIndex + 10;
-                                        List<dynamic> items = controller_id
-                                            .list_value_all_hometype
-                                            .sublist(startIndex, endIndex);
-                                        return ListView.builder(
-                                          itemCount: items.length,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10, right: 10, top: 10),
-                                              child: Container(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.25,
-                                                width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7),
-                                                    color: Color.fromARGB(
-                                                        255, 197, 195, 195)),
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Stack(
-                                                          children: [
-                                                            InkWell(
-                                                              onTap: () {
-                                                                detail_property_id(
-                                                                    index,
-                                                                    items[index]
-                                                                            [
-                                                                            'id_ptys']
-                                                                        .toString());
-                                                                setState(() {
-                                                                  verbal_ID = items[
-                                                                              index]
-                                                                          [
-                                                                          'id_ptys']
-                                                                      .toString();
-                                                                  // print(verbal_ID);
-                                                                });
-                                                              },
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left: 4,
-                                                                        bottom:
-                                                                            4,
-                                                                        top: 4),
-                                                                child:
-                                                                    Container(
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.23,
-                                                                  width: 130,
-                                                                  // decoration: BoxDecoration(
-                                                                  //   shape: BoxShape.circle,
-                                                                  //   image: DecorationImage(image: NetworkImage('${list2_Sale12[index]['url'].toString()}'))
-                                                                  // ),
-                                                                  child:
-                                                                      CachedNetworkImage(
-                                                                    imageUrl: items[index]
-                                                                            [
-                                                                            'url']
-                                                                        .toString(),
-                                                                    fit: BoxFit
-                                                                        .cover,
-                                                                    progressIndicatorBuilder: (context,
-                                                                            url,
-                                                                            downloadProgress) =>
-                                                                        Center(
-                                                                      child: CircularProgressIndicator(
-                                                                          value:
-                                                                              downloadProgress.progress),
-                                                                    ),
-                                                                    errorWidget: (context,
-                                                                            url,
-                                                                            error) =>
-                                                                        Icon(Icons
-                                                                            .error),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Positioned(
-                                                              top: 140,
-                                                              left: 10,
-                                                              child: Row(
-                                                                children: [
-                                                                  Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    height: 25,
-                                                                    width: 50,
-                                                                    decoration: BoxDecoration(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            109,
-                                                                            160,
-                                                                            6),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5)),
-                                                                    child: Text(
-                                                                      '${items[index]['type'].toString()}',
-                                                                      style: TextStyle(
-                                                                          // fontWeight: FontWeight.bold,
-                                                                          color: Color.fromARGB(255, 250, 246, 245),
-                                                                          fontSize: 12),
-                                                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 20,
-                                                                  ),
-                                                                  Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    decoration: BoxDecoration(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            29,
-                                                                            7,
-                                                                            174),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5)),
-                                                                    height: 25,
-                                                                    width: 50,
-                                                                    child: Text(
-                                                                      '${items[index]['urgent'].toString()}',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color:
-                                                                              Colors.white),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 4,
-                                                                  bottom: 4,
-                                                                  top: 4),
-                                                          child: Container(
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.23,
-                                                            width: 200,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          7),
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      239,
-                                                                      241,
-                                                                      238),
-                                                            ),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Column(
-                                                                children: [
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceAround,
-                                                                    children: [
-                                                                      Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Text(
-                                                                            'Property ID :',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            'Price :',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            'Land :',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            'bed :',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            'bath :',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Text(
-                                                                            '${items[index]['id_ptys'].toString()}',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            '${items[index]['price'].toString()} \$',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            '${items[index]['land'].toString()} ' +
-                                                                                'm' +
-                                                                                '\u00B2',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            '${items[index]['bed'].toString()}',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            '${items[index]['bath'].toString()}',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Divider(
-                                                                    height: 10,
-                                                                    thickness:
-                                                                        2,
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceAround,
-                                                                    children: [
-                                                                      Container(
-                                                                        height:
-                                                                            40,
-                                                                        width:
-                                                                            30,
-                                                                        child: IconButton(
-                                                                            onPressed: () async {
-                                                                              await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, items, index));
-                                                                            },
-                                                                            icon: Icon(
-                                                                              Icons.print,
-                                                                              size: 25,
-                                                                              color: Color.fromARGB(255, 19, 14, 164),
-                                                                            )),
-                                                                      ),
-                                                                      Container(
-                                                                        height:
-                                                                            40,
-                                                                        width:
-                                                                            30,
-                                                                        child: IconButton(
-                                                                            onPressed: () {
-                                                                              detail_property_id(index, items[index]['id_ptys'].toString());
-                                                                              setState(() {
-                                                                                verbal_ID = items[index]['id_ptys'].toString();
-                                                                                // print(verbal_ID);
-                                                                              });
-                                                                            },
-                                                                            icon: Icon(
-                                                                              Icons.details_outlined,
-                                                                              size: 25,
-                                                                              color: Color.fromARGB(255, 64, 132, 9),
-                                                                            )),
-                                                                      ),
-                                                                      Container(
-                                                                        height:
-                                                                            40,
-                                                                        width:
-                                                                            30,
-                                                                        child: IconButton(
-                                                                            onPressed: () {
-                                                                              if (items[index]['type'].toString() == 'For Sale') {
-                                                                                // print('For Sale');
-                                                                                Get.to(Edit_verbal_property(
-                                                                                  number_hometype: (value) {
-                                                                                    hometype_wait = value;
-                                                                                    setState(() {
-                                                                                      hometype_wait;
-                                                                                    });
-                                                                                  },
-                                                                                  dg: (value) {
-                                                                                    dg_edit = value.toString();
-                                                                                    setState(() {
-                                                                                      dg_edit;
-                                                                                      print(dg_edit.toString());
-                                                                                      if (dg_edit == 'Success Edit') {
-                                                                                        _refresh();
-                                                                                        print('Ok Edit ready');
-                                                                                        pro = 2023;
-                                                                                        print('Ok Edit ready');
-                                                                                      } else {
-                                                                                        print('No Edit');
-                                                                                      }
-                                                                                    });
-                                                                                  },
-                                                                                  get_all_homeytpe: items,
-                                                                                  indexv: index.toString(),
-                                                                                ));
-                                                                              } else {
-                                                                                // print('For Rent');
-                                                                                Get.to(Edit_verbal_property_Rent(
-                                                                                  dg: (value) {
-                                                                                    dg_edit = value.toString();
-                                                                                    setState(() {
-                                                                                      dg_edit;
-                                                                                      print(dg_edit.toString());
-                                                                                      if (dg_edit == 'Success Edit') {
-                                                                                        _refresh();
-                                                                                        print('Ok Edit ready');
-                                                                                        pro = 2023;
-                                                                                        print('Ok Edit ready');
-                                                                                      } else {
-                                                                                        print('No Edit');
-                                                                                      }
-                                                                                    });
-                                                                                  },
-                                                                                  get_all_homeytpe: items,
-                                                                                  indexv: index.toString(),
-                                                                                ));
-                                                                              }
-                                                                            },
-                                                                            icon: Icon(
-                                                                              Icons.edit_calendar_outlined,
-                                                                              size: 25,
-                                                                              color: Color.fromARGB(255, 147, 8, 59),
-                                                                            )),
-                                                                      ),
-                                                                      Container(
-                                                                        height:
-                                                                            40,
-                                                                        width:
-                                                                            30,
-                                                                        child: IconButton(
-                                                                            onPressed: () async {
-                                                                              AwesomeDialog(
-                                                                                context: context,
-                                                                                title: 'Confirmation',
-                                                                                desc: 'Are you sure you want to delete this item?',
-                                                                                btnOkText: 'Yes',
-                                                                                btnOkColor: Color.fromARGB(255, 72, 157, 11),
-                                                                                btnCancelText: 'No',
-                                                                                btnCancelColor: Color.fromARGB(255, 133, 8, 8),
-                                                                                btnOkOnPress: () async {
-                                                                                  // delete_property(id_ptys: items[index]['id_ptys'].toString());
-                                                                                  // setState(() {
-                                                                                  //   controller_id.list_value_all_2SR;
-                                                                                  // });
-                                                                                  // setState(
-                                                                                  //     () {
-                                                                                  //   _get_all();
-                                                                                  // });
-                                                                                  // Get.back();
-                                                                                  if (items[index]['type'].toString() == 'For Sale') {
-                                                                                    // print('${items[index]['type'].toString()}');
-                                                                                    delete_property(id_ptys: items[index]['id_ptys'].toString());
-                                                                                    setState(() {
-                                                                                      controller_id.list_value_all_2SR;
-                                                                                    });
-                                                                                  } else {
-                                                                                    delete_property_rent(id_ptys: items[index]['id_ptys'].toString());
-                                                                                    setState(() {
-                                                                                      controller_id.list_value_all_2SR;
-                                                                                    });
-                                                                                    // print('${items[index]['type'].toString()}');
-                                                                                  }
-                                                                                },
-                                                                                btnCancelOnPress: () {
-                                                                                  print('No');
-                                                                                },
-                                                                              ).show();
-                                                                            },
-                                                                            icon: Icon(
-                                                                              Icons.delete,
-                                                                              size: 25,
-                                                                              color: Color.fromARGB(255, 147, 8, 59),
-                                                                            )),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  _pageController.previousPage(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 36,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.2,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Color.fromARGB(255, 152, 33, 25)),
-                                  child: Text(
-                                    'Back',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  _pageController.nextPage(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 36,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.2,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Color.fromARGB(255, 18, 36, 142)),
-                                  child: Text(
-                                    'Next',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ));
+                  ),
+                ),
+    );
   }
 
   String? verbal_ID;

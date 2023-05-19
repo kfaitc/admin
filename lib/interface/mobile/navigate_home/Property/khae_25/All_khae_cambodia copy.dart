@@ -2,7 +2,6 @@
 
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
-// import 'package:url_launcher/url_launcher.dart';
 // import '../Detail_Screen/porperty_khae_id.dart';
 // import 'Propert_khae.dart';
 
@@ -39,13 +38,13 @@
 //               Get.to(Detail_khae_id(
 //                 value: '0',
 //               ));
-//               const url =
-//                   'https://www.google.com/maps/place/Battambang+Province/@13.5378954,102.6313534,7z/data=!4m6!3m5!1s0x310539b6f12b360d:0xc252532b6e35e364!8m2!3d13.0286971!4d102.989615!16zL20vMDJoMjJ3';
-//               await launch(
-//                 url,
-//                 forceSafariVC: false,
-//                 forceWebView: false,
-//               );
+//               // const url =
+//               //     'https://www.google.com/maps/place/Battambang+Province/@13.5378954,102.6313534,7z/data=!4m6!3m5!1s0x310539b6f12b360d:0xc252532b6e35e364!8m2!3d13.0286971!4d102.989615!16zL20vMDJoMjJ3';
+//               // await launch(
+//               //   url,
+//               //   forceSafariVC: false,
+//               //   forceWebView: false,
+//               // );
 //             },
 //           ),
 //           PartnersCard_khae(

@@ -14,7 +14,6 @@ import '../Getx_api/for_screen.dart';
 import '../Getx_api/vetbal_controller.dart';
 import '../List_all_Screen/List__Sale_all.dart';
 import '../List_all_Screen/List_all_Rent.dart';
-
 import '../map_property/Google_Sale_just_Screen.dart';
 import '../verval_property/Verbal_add.dart';
 import '../Detail_Screen/Detail_all_list_sale.dart';
@@ -86,23 +85,32 @@ class SearchPropertyState extends State<For_Rent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 20, 20, 163),
+        backgroundColor: Color.fromRGBO(20, 20, 163, 1),
         centerTitle: true,
         title: Text('For Rent'),
         leading: IconButton(
           onPressed: () {
             setState(() {
-              if (list_get != null) {
+              if (list_get != null &&
+                  controller_list.list_value_all.length == 0) {
                 jj = 'khae data';
+                // print('1');
+                widget.listget_homescreen!(jj);
+                Get.back();
+              } else if (controller_list.list_value_all.length != 0 &&
+                  list_get != null) {
+                jj = 'khae data';
+                // print('2');
+
                 widget.listget_homescreen!(jj);
                 Get.back();
               } else {
                 jj = 'no data';
+                print('Back');
                 widget.listget_homescreen!(jj);
                 Get.back();
               }
             });
-            Get.back();
           },
           icon: Icon(Icons.arrow_back),
         ),

@@ -91,15 +91,26 @@ class SearchPropertyState extends State<For_Sale> {
         leading: IconButton(
           onPressed: () {
             setState(() {
-              if (list_get != null) {
+              if (list_get != null &&
+                  controller_list.list_value_all.length == 0) {
                 jj = 'khae data';
+                // print('1');
                 widget.listget_homescreen!(jj);
+                Get.back();
+              } else if (controller_list.list_value_all.length != 0 &&
+                  list_get != null) {
+                jj = 'khae data';
+                // print('2');
+
+                widget.listget_homescreen!(jj);
+                Get.back();
               } else {
                 jj = 'no data';
+                print('Back');
                 widget.listget_homescreen!(jj);
+                Get.back();
               }
             });
-            Get.back();
           },
           icon: Icon(Icons.arrow_back),
         ),
