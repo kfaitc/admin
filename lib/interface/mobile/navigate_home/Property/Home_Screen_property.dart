@@ -5,14 +5,15 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/button/gf_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:kfa_admin/interface/mobile/navigate_home/Property/verval_property/Verbal_add.dart';
 
-import '../Verbal/map_in_list_search.dart';
+import '../../../../components/contants.dart';
 import '3_Choose/List_Property/List_Rent.dart';
 import '3_Choose/List_Property/List_Sale.dart';
-import 'Detail_Screen/Detail_all_list_Rent.dart';
-import 'Detail_Screen/Detail_all_list_sale.dart';
+
+import 'Detail_Screen/Detail_all_list_Screen.dart';
 import 'Getx_api/controller_api.dart';
 import 'Getx_api/controller_hometype.dart';
 import 'Getx_api/for_rent.dart';
@@ -21,8 +22,10 @@ import 'Getx_api/hometype.dart';
 import 'Screen_Page/For_Rent.dart';
 import 'Screen_Page/For_Sale.dart';
 import 'Screen_Page/Home_type.dart';
+import 'Search_button/Screen_search.dart';
 import 'khae_25/All_khae_cambodia.dart';
 import 'khae_25/Propert_khae.dart';
+import 'mapproperty/Search_Screen.dart';
 
 class Home_Screen_property extends StatefulWidget {
   const Home_Screen_property({super.key});
@@ -50,6 +53,8 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
   void initState() {
     first_time();
     button();
+    query = '';
+    _search(query);
     super.initState();
   }
 
@@ -102,6 +107,783 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
     });
   }
 
+  String? _selectedLocation; // Option 2
+  String? selectedValue;
+  String? bedrooms;
+  List<String> list_bathrooms = <String>[
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10'
+  ];
+  List<String> list_bedrooms = <String>[
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10'
+  ];
+  List<String> list_price = <String>[
+    '1k',
+    '2k',
+    '5k',
+    '10k',
+    '20k',
+    '50k',
+    '100k',
+    '200k',
+    '500k',
+  ];
+  List<String> list_hometype = <String>[
+    'Agircultural Land',
+    'Apartment Building',
+    'Apartment Unit',
+    'Borey Development',
+    'Building',
+    'Commercial Land',
+    'Condo',
+    'Factory',
+    'Flat',
+    'Guesthouse',
+    /////////
+    'Hotel',
+    'House',
+    'Industrial Land',
+    'Land',
+    'Link House',
+    'Link House - LB',
+    'Link House - LD1',
+    'Link House - LD2',
+    'Link House - LE',
+    'Link House New - LA',
+    ////////
+    'Link House New - LC1',
+    'Link House New - LC2',
+    'Link House Old - LA',
+    'Link House Old - LC1',
+    'Link House Old - LC2',
+    'Mix Use Development',
+    'Office',
+    'Office Building',
+    'Office Space',
+    'Residential Land',
+    ////////////
+    'Resort',
+    'Retail',
+    'Retail Space',
+    'Shop House1',
+    'Shop House A',
+    'Shop House B',
+    'Shopping Center',
+    'SOHO',
+    'Studio',
+    'Super Market',
+    ////////////
+    'Townhouse',
+    'Villa',
+    'Villa jasmina',
+    'Villa King',
+    'Villa King A',
+    'Villa King B',
+    'Villa Prince',
+    'Villa Queen',
+    'Villa Queen A',
+    'Villa Queen B',
+    ////////////
+    'Villa Rosana',
+    'Villa Twin',
+    'Villa Twin B',
+    'Villa Twin C',
+    'Villa Twin New',
+    'Villa Twin Old',
+    'Warehouse',
+  ];
+  List<String> list_province = <String>[
+    'Battambong',
+    'Phnom Penh',
+    'Bonteaymeanchey',
+    'KamponChnang',
+    'KampongThom',
+    'Kandal',
+    'kam pot',
+    'Kep',
+    'Kracheh',
+    'Oudormeanchey',
+    /////////
+    'Preah Vihea',
+    'Prey Veng',
+    'Rathanakiri',
+    'Siehanuk',
+    'Siem reab',
+    'Steng Treng',
+    'Svang Rieng',
+    'Ta kao',
+    'TbongKhmom',
+    'Pur sat',
+    ////////
+    'Pai lin',
+    'Mun duolmiri',
+    'Kohkong',
+  ];
+  double h = 0;
+  int i22 = 0;
+  List? search_list;
+  Future<void> proerty_search(query) async {
+    var jsonData;
+    final response = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/link_all_search_down?search=$query'));
+
+    if (response.statusCode == 200) {
+      jsonData = jsonDecode(response.body);
+      search_list = jsonData;
+
+      setState(() {
+        search_list;
+
+        if (h == 0 || h < 250) {
+          for (int i = 0; i < search_list!.length; i++) {
+            if (search_list!.length == 1) {
+              print('1');
+              h = MediaQuery.of(context).size.height * 0.09;
+            } else if (search_list!.length == 2) {
+              h = MediaQuery.of(context).size.height * 0.19;
+              print('2');
+            } else if (search_list!.length == 3 || search_list!.length > 3) {
+              h = MediaQuery.of(context).size.height * 0.28;
+              print('3');
+            }
+          }
+        }
+      });
+    }
+  }
+
+  bool? _search_reloard = false;
+  Future<void> detail_property_id_1(List list, String ID) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Detail_property_sale_all(
+          verbal_ID: ID.toString(),
+          list_get_sale: list,
+        ),
+      ),
+    );
+  }
+
+  bool _isLoading_re = false;
+  Future<void> _search(query) async {
+    _search_reloard = true;
+    await Future.wait([proerty_search(query)]);
+
+    setState(() {
+      _search_reloard = false;
+    });
+    // All three functions have completed at this point
+    // Do any additional initialization here
+  }
+
+  String? query;
+  String? bathroom_dropdown;
+  String? bedhroom_dropdown;
+  String? price_dropdown_min;
+  String? price_dropdown_max;
+  String? type_dropdown;
+  String? province_dropdown;
+  String? dropdownValue;
+  void showConfirmationBottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.5,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+              color: Color.fromARGB(255, 239, 239, 244),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      'More Option',
+                      style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.height * 0.03,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    GFButton(
+                      color: Color.fromARGB(255, 160, 41, 32),
+                      onPressed: () {
+                        setState(() {
+                          bathroom_dropdown = null;
+                          bedhroom_dropdown = null;
+                          price_dropdown_min = null;
+                          price_dropdown_max = null;
+                          type_dropdown = null;
+                          province_dropdown = null;
+                          dropdownValue = null;
+                        });
+                        Navigator.pop(context);
+                      },
+                      text: "Clear",
+                      icon: Icon(
+                        Icons.do_not_disturb_alt_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.height * 0.22,
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            fillColor: kwhite,
+                            filled: true,
+                            labelText: 'Bedrooms',
+                            hintText: 'Bedrooms',
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: kPrimaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kPrimaryColor,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            //   decoration: InputDecoration(
+                            //       labelText: 'From',
+                            //       prefixIcon: Icon(Icons.business_outlined)),
+                          ),
+                          value: bedhroom_dropdown,
+                          icon: const Icon(Icons.arrow_circle_down_outlined),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.black,
+                          ),
+                          items: list_bedrooms
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value.toString(),
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height *
+                                            0.015,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              value;
+                              bedhroom_dropdown = value;
+                              bedhroom_dropdown;
+                            });
+                          },
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.height * 0.22,
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            fillColor: kwhite,
+                            filled: true,
+                            labelText: 'bathrooms',
+                            hintText: 'bathrooms',
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: kPrimaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kPrimaryColor,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            //   decoration: InputDecoration(
+                            //       labelText: 'From',
+                            //       prefixIcon: Icon(Icons.business_outlined)),
+                          ),
+                          value: bathroom_dropdown,
+                          icon: const Icon(Icons.arrow_circle_down_outlined),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.black,
+                          ),
+                          items: list_bathrooms
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value.toString(),
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height *
+                                            0.015,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              value;
+                              bathroom_dropdown = value;
+                              bathroom_dropdown;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.height * 0.22,
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            fillColor: kwhite,
+                            filled: true,
+                            labelText: 'Province/City',
+                            hintText: 'Province/City',
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: kPrimaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kPrimaryColor,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            //   decoration: InputDecoration(
+                            //       labelText: 'From',
+                            //       prefixIcon: Icon(Icons.business_outlined)),
+                          ),
+                          value: province_dropdown,
+                          icon: const Icon(Icons.arrow_circle_down_outlined),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.black,
+                          ),
+                          items: list_province
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value.toString(),
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height *
+                                            0.015,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              value;
+                              province_dropdown = value;
+                              province_dropdown;
+                            });
+                          },
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.height * 0.22,
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            fillColor: kwhite,
+                            filled: true,
+                            labelText: 'PropertyType',
+                            hintText: 'ProepertyType',
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: kPrimaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kPrimaryColor,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            //   decoration: InputDecoration(
+                            //       labelText: 'From',
+                            //       prefixIcon: Icon(Icons.business_outlined)),
+                          ),
+                          value: type_dropdown,
+                          icon: const Icon(Icons.arrow_circle_down_outlined),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.black,
+                          ),
+                          items: list_hometype
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value.toString(),
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height *
+                                            0.015,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              value;
+                              type_dropdown = value;
+                              type_dropdown;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.height * 0.22,
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            fillColor: kwhite,
+                            filled: true,
+                            labelText: 'Pirce Min',
+                            hintText: 'Pirce Min',
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: kPrimaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kPrimaryColor,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            //   decoration: InputDecoration(
+                            //       labelText: 'From',
+                            //       prefixIcon: Icon(Icons.business_outlined)),
+                          ),
+                          value: price_dropdown_min,
+                          icon: const Icon(Icons.arrow_circle_down_outlined),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.black,
+                          ),
+                          items: list_price
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value.toString(),
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height *
+                                            0.015,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              value;
+                              price_dropdown_min = value;
+                              price_dropdown_min;
+                            });
+                          },
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.height * 0.22,
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            fillColor: kwhite,
+                            filled: true,
+                            labelText: 'Pirce Max',
+                            hintText: 'Pirce Max',
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: kPrimaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kPrimaryColor,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            //   decoration: InputDecoration(
+                            //       labelText: 'From',
+                            //       prefixIcon: Icon(Icons.business_outlined)),
+                          ),
+                          value: price_dropdown_max,
+                          icon: const Icon(Icons.arrow_circle_down_outlined),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.black,
+                          ),
+                          items: list_price
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value.toString(),
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height *
+                                            0.015,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              value;
+                              price_dropdown_max = value;
+                              price_dropdown_max;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, left: 10),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Note* ',
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.017,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(172, 143, 10, 10)),
+                      ),
+                      Text(
+                        'Price Min and Price Max You need select Min and Max',
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.017,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(173, 158, 158, 158)),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return Screen_detail_Search(
+                          province: province_dropdown,
+                          hometype: type_dropdown,
+                          bathroom: bathroom_dropdown,
+                          bedhroom: bedhroom_dropdown,
+                          max: price_dropdown_max,
+                          min: price_dropdown_min,
+                        );
+                      },
+                    ));
+                  },
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(right: 20, left: 20, top: 20),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 18, 26, 136),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.search,
+                            size: MediaQuery.of(context).size.height * 0.04,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            'Search',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize:
+                                    MediaQuery.of(context).size.height * 0.03),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   String? re_hometype;
   final controller_list = controller_for_sale();
   int index2 = 1;
@@ -113,55 +895,62 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
           centerTitle: true,
           // title: Text('Property Listing:$list_get_ForSale'),
           title: Text('Property Listing'),
-          // actions: [
-          //   IconButton(
-          //       onPressed: () {
-          //         first_time_reloard();
-          //       },
-          //       icon: Icon(Icons.read_more))
-          // ],
         ),
-        // body: Column(
-        //   children: [
-        //     (refresh_hometype != '202301' &&
-        //             (list_get_ForRent == null || list_get_ForSale == null))
-        //         ? Text('okok')
-        //         : ((list_get_ForRent == null || list_get_ForSale == null))
-        //             ? Text('No')
-        //             : (list_get_ForRent != null || list_get_ForSale != null)
-        //                 ? Text('double no null')
-        //                 : Text(''),
-        //     TextButton(
-        //         onPressed: () {
-        //           Get.to(For_Sale(
-        //             listget_homescreen: (value) {
-        //               list_get_ForSale = value;
-        //               setState(() {
-        //                 list_get_ForSale;
-        //                 print(
-        //                     'list of For Sale : ${list_get_ForSale.toString()}');
-        //               });
-        //             },
-        //           ));
-        //         },
-        //         child: Text('Go'))
-        //   ],
-        // ),
         body: isLoading
             ? Center(
                 child: CircularProgressIndicator(),
               )
             : ListView(
                 children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Find Your New House',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Find Your New House',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.022),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            showConfirmationBottomSheet(context);
+                          },
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            width: MediaQuery.of(context).size.width * 0.33,
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 100, 98, 106),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Icon(
+                                    Icons.menu_open,
+                                    color: Colors.white,
+                                    size: MediaQuery.of(context).size.height *
+                                        0.02,
+                                  ),
+                                  Text(
+                                    'More Option',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize:
+                                          MediaQuery.of(context).size.height *
+                                              0.017,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
@@ -170,16 +959,32 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
                     child: Row(
                       children: [
                         Container(
-                          height: 50,
+                          height: MediaQuery.of(context).size.height * 0.07,
                           width: MediaQuery.of(context).size.width * 0.6,
                           child: Padding(
                             padding: const EdgeInsets.all(1.0),
-                            child: TextField(
+                            child: TextFormField(
+                                onChanged: (value) {
+                                  setState(() {
+                                    query = value;
+                                    _search(query);
+                                  });
+                                  // if (value != null) {
+                                  //   searchFromVerbalDate = value;
+                                  //   print('1');
+                                  // } else if (value == 0) {
+                                  //   searchFromVerbalDate = null;
+                                  //   print('2');
+                                  // } else {
+                                  //   print('3');
+                                  //   searchFromVerbalDate = null;
+                                  // }
+                                },
                                 decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(),
-                              hintText: 'Search listing here...',
-                            )),
+                                  prefixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(),
+                                  hintText: 'Search listing here...',
+                                )),
                           ),
                         ),
                         SizedBox(
@@ -187,24 +992,10 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
                         ),
                         InkWell(
                           onTap: () {
-                            Get.to(Map_List_search(
-                              get_province: (value) {},
-                              get_district: (value) {},
-                              get_commune: (value) {},
-                              get_log: (value) {},
-                              get_lat: (value) {},
-                              get_min1: (value) {},
-                              get_max1: (value) {},
-                              get_min2: (value) {},
-                              get_max2: (value) {},
-                            ));
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => SearchProperty()),
-                            // );
+                            _search(query);
                           },
                           child: Container(
-                            height: 50,
+                            height: MediaQuery.of(context).size.height * 0.07,
                             width: MediaQuery.of(context).size.width * 0.3,
                             decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 20, 20, 163),
@@ -229,6 +1020,46 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
                       ],
                     ),
                   ),
+                  (_search_reloard!)
+                      ? Center(child: CircularProgressIndicator())
+                      : (search_list!.length != 0)
+                          ? Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 221, 220, 220),
+                                    borderRadius: BorderRadius.circular(10)),
+                                height: h,
+                                width: double.infinity,
+                                child: ListView.builder(
+                                  itemCount: search_list!.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        // print(
+                                        //     'ID = ${search_list![index]['id_ptys']}');
+                                        detail_property_id_1(
+                                            search_list!,
+                                            search_list![index]['id_ptys']
+                                                .toString());
+                                      },
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 20, left: 20, top: 15),
+                                          child: Text(
+                                            '${search_list![index]['address']} / ${search_list![index]['hometype']} / ${search_list![index]['urgent']} / ${search_list![index]['type']} / ${search_list![index]['id_ptys']}',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          )),
+                                    );
+                                  },
+                                ),
+                              ),
+                            )
+                          : (search_list.toString() == '[]')
+                              ? SizedBox()
+                              : SizedBox(),
                   SizedBox(
                     height: 10,
                   ),
@@ -364,9 +1195,9 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
                     width: 10,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    padding: const EdgeInsets.only(left: 3, right: 3),
                     child: Container(
-                      height: 130,
+                      height: MediaQuery.of(context).size.height * 0.2,
                       width: double.infinity,
                       child: Property_25(
                         get_index_province: (value) {
@@ -387,7 +1218,7 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
                     height: 10,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 20, left: 20),
+                    padding: const EdgeInsets.only(right: 10, left: 10),
                     child: Container(
                       height: 70,
                       child: Row(
@@ -595,8 +1426,31 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
                               ),
                             ],
                           ),
-                          SizedBox(
-                            width: 10,
+                          Column(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    Get.to(Map_List_search_property(
+                                      get_province: (value) {},
+                                      get_district: (value) {},
+                                      get_commune: (value) {},
+                                      get_log: (value) {},
+                                      get_lat: (value) {},
+                                      get_min1: (value) {},
+                                      get_max1: (value) {},
+                                      get_min2: (value) {},
+                                      get_max2: (value) {},
+                                    ));
+                                  },
+                                  icon: Icon(
+                                    Icons.search,
+                                    size: 28,
+                                  )),
+                              Text(
+                                "Search",
+                                style: TextStyle(fontSize: 11),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -1379,22 +2233,6 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
         builder: (context) => Detail_property_sale_all(
           verbal_ID: verbal_ID.toString(),
           list_get_sale: widget_list,
-        ),
-      ),
-    );
-  }
-
-  Future<void> detail_property_rent(int index, String ID) async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Detail_property_rent_all(
-          indexv: index.toString(),
-          list2_Sale12: list2_rent_image,
-          list2_Sale_id5: list2_rent_ur,
-          list2_Sale_id: List_value_rent,
-          // property_id: list2_Sale_id[index]['property_type_id'].toString(),
-          // id_image: list2_Sale_id[index]['id_ptys'].toString(),
         ),
       ),
     );

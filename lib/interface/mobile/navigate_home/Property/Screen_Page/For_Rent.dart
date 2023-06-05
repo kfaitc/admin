@@ -16,7 +16,7 @@ import '../List_all_Screen/List__Sale_all.dart';
 import '../List_all_Screen/List_all_Rent.dart';
 import '../map_property/Google_Sale_just_Screen.dart';
 import '../verval_property/Verbal_add.dart';
-import '../Detail_Screen/Detail_all_list_sale.dart';
+import '../Detail_Screen/Detail_all_list_Screen.dart';
 import '../map_property/Google_Sale_map.dart';
 import '../map_property/Google_Sale_map_full.dart';
 import 'package:http/http.dart' as http;

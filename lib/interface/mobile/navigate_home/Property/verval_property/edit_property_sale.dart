@@ -1,13 +1,18 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, avoid_print, unused_field, prefer_final_fields, prefer_interpolation_to_compose_strings, unnecessary_brace_in_string_interps, equal_keys_in_map, unrelated_type_equality_checks, body_might_complete_normally_nullable, unused_element, await_only_futures, unnecessary_string_interpolations, unnecessary_cast, must_be_immutable, sized_box_for_whitespace, avoid_unnecessary_containers, unnecessary_null_comparison, avoid_types_as_parameter_names, use_build_context_synchronously, no_leading_underscores_for_local_identifiers, unused_local_variable, curly_braces_in_flow_control_structures
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, avoid_print, unused_field, prefer_final_fields, prefer_interpolation_to_compose_strings, unnecessary_brace_in_string_interps, equal_keys_in_map, unrelated_type_equality_checks, body_might_complete_normally_nullable, unused_element, await_only_futures, unnecessary_string_interpolations, unnecessary_cast, must_be_immutable, sized_box_for_whitespace, avoid_unnecessary_containers, unnecessary_null_comparison, avoid_types_as_parameter_names, use_build_context_synchronously, no_leading_underscores_for_local_identifiers, unused_local_variable, curly_braces_in_flow_control_structures, unused_catch_clause
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../../components/contants.dart';
 import '../Getx_api/hometype.dart';
@@ -110,6 +115,71 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
     // print(myElement);
   }
 
+  String? map_address;
+  List<String> list_hometype = <String>[
+    'Agircultural Land',
+    'Apartment Building',
+    'Apartment Unit',
+    'Borey Development',
+    'Building',
+    'Commercial Land',
+    'Condo',
+    'Factory',
+    'Flat',
+    'Guesthouse',
+    /////////
+    'Hotel',
+    'House',
+    'Industrial Land',
+    'Land',
+    'Link House',
+    'Link House - LB',
+    'Link House - LD1',
+    'Link House - LD2',
+    'Link House - LE',
+    'Link House New - LA',
+    ////////
+    'Link House New - LC1',
+    'Link House New - LC2',
+    'Link House Old - LA',
+    'Link House Old - LC1',
+    'Link House Old - LC2',
+    'Mix Use Development',
+    'Office',
+    'Office Building',
+    'Office Space',
+    'Residential Land',
+    ////////////
+    'Resort',
+    'Retail',
+    'Retail Space',
+    'Shop House1',
+    'Shop House A',
+    'Shop House B',
+    'Shopping Center',
+    'SOHO',
+    'Studio',
+    'Super Market',
+    ////////////
+    'Townhouse',
+    'Villa',
+    'Villa jasmina',
+    'Villa King',
+    'Villa King A',
+    'Villa King B',
+    'Villa Prince',
+    'Villa Queen',
+    'Villa Queen A',
+    'Villa Queen B',
+    ////////////
+    'Villa Rosana',
+    'Villa Twin',
+    'Villa Twin B',
+    'Villa Twin C',
+    'Villa Twin New',
+    'Villa Twin Old',
+    'Warehouse',
+  ];
   String? number_type = '202301';
   String? dsss = 'Success Edit';
   bool switchValue = false;
@@ -128,1002 +198,1061 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
   String urgent = 'N/A';
   String? property_id_p;
   String? property_id_1;
+  String? province_dropdown;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 20, 20, 163),
-        centerTitle: true,
-        title: (waiting_d != null)
-            ? Text('please waiting...!')
-            : Text('property Edit Sale'),
-        actions: <Widget>[
-          InkWell(
-            onTap: () async {
-              setState(() {
-                address = '${khan} / ${provice_map}';
-                type;
-                urgent;
-                waiting_d = 1;
-              });
-              requestAutoVerbal_property.id_ptys =
-                  widget.get_all_homeytpe![indexN!]['id_ptys'].toString();
-              requestAutoVerbal_property.address =
-                  widget.get_all_homeytpe![indexN!]['address'].toString();
-              requestAutoVerbal_property.type =
-                  widget.get_all_homeytpe![indexN!]['type'].toString();
-              if (type != null) {
-                APi_property apIservice = APi_property();
-                apIservice
-                    .saveAutoVerbal_Update_property(
-                        requestAutoVerbal_property,
-                        int.parse(widget.get_all_homeytpe![indexN!]['id_ptys']
-                            .toString()))
-                    .then(
-                  (value) async {
-                    setState(() async {
-                      urgent_Sale();
-                      if (_imageFile_input != null) {
-                        await _upload_Image_Sale_url();
-                      }
-                      widget.dg!(dsss);
-                      widget.number_hometype!(number_type);
-                      // print(dsss.toString());
-                      Get.back();
-                    });
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 20, 20, 163),
+          centerTitle: true,
+          title: Text('property Edit Sale'),
+          actions: <Widget>[
+            InkWell(
+              onTap: () async {
+                setState(() {
+                  address = '${khan} / ${provice_map}';
+                  type;
+                  urgent;
+                  waiting_d = 1;
+                });
+                requestAutoVerbal_property.id_ptys =
+                    widget.get_all_homeytpe![indexN!]['id_ptys'].toString();
+                (map_address == 'ok')
+                    ? requestAutoVerbal_property.address = address
+                    : requestAutoVerbal_property.address =
+                        widget.get_all_homeytpe![indexN!]['address'].toString();
+                requestAutoVerbal_property.type =
+                    widget.get_all_homeytpe![indexN!]['type'].toString();
+                if (type != null) {
+                  APi_property apIservice = APi_property();
+                  apIservice
+                      .saveAutoVerbal_Update_property(
+                          requestAutoVerbal_property,
+                          int.parse(widget.get_all_homeytpe![indexN!]['id_ptys']
+                              .toString()))
+                      .then(
+                    (value) async {
+                      setState(() async {
+                        (urgent != null) ? urgent_Sale() : null;
 
-                    if (requestAutoVerbal_property.id_ptys.isEmpty) {
-                      AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.error,
-                        animType: AnimType.rightSlide,
-                        headerAnimationLoop: false,
-                        title: 'Error',
-                        desc: "Please check ",
-                        btnOkOnPress: () {},
-                        btnOkIcon: Icons.cancel,
-                        btnOkColor: Colors.red,
-                      ).show();
-                    } else {
-                      if (value.message == "Save Successfully") {
-                        AwesomeDialog(
-                            context: context,
-                            animType: AnimType.leftSlide,
-                            headerAnimationLoop: false,
-                            dialogType: DialogType.success,
-                            showCloseIcon: false,
-                            title: value.message,
-                            autoHide: Duration(seconds: 3),
-                            onDismissCallback: (type) {
-                              setState(() {
-                                // String dsss = 'Success Edit111';
-                              });
-                              // Navigator.pop(context);
-                            }).show();
-                      } else {
+                        if (_imageFile_input != null &&
+                            mutiple_image == 'Pick') {
+                          await _upload_Image_Sale_url();
+                          await _uploadImageSaleMultiple();
+                          // print('1');
+                        } else if (_imageFile_input != null &&
+                            mutiple_image != 'Pick') {
+                          // print('2');
+                          await _upload_Image_Sale_url();
+                        } else if (_imageFile_input == null &&
+                            mutiple_image == 'Pick') {
+                          await _uploadImageSaleMultiple();
+                          // print('3');
+                        }
+                        widget.dg!(dsss);
+                        widget.number_hometype!(number_type);
+                        Get.back();
+                      });
+
+                      if (requestAutoVerbal_property.id_ptys.isEmpty) {
                         AwesomeDialog(
                           context: context,
                           dialogType: DialogType.error,
                           animType: AnimType.rightSlide,
                           headerAnimationLoop: false,
                           title: 'Error',
-                          desc: value.message,
+                          desc: "Please check ",
                           btnOkOnPress: () {},
                           btnOkIcon: Icons.cancel,
                           btnOkColor: Colors.red,
                         ).show();
-                        print(value.message);
+                      } else {
+                        if (value.message == "Save Successfully") {
+                          AwesomeDialog(
+                              context: context,
+                              animType: AnimType.leftSlide,
+                              headerAnimationLoop: false,
+                              dialogType: DialogType.success,
+                              showCloseIcon: false,
+                              title: value.message,
+                              autoHide: Duration(seconds: 3),
+                              onDismissCallback: (type) {
+                                setState(() {
+                                  // String dsss = 'Success Edit111';
+                                });
+                                // Navigator.pop(context);
+                              }).show();
+                        } else {
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.error,
+                            animType: AnimType.rightSlide,
+                            headerAnimationLoop: false,
+                            title: 'Error',
+                            desc: value.message,
+                            btnOkOnPress: () {},
+                            btnOkIcon: Icons.cancel,
+                            btnOkColor: Colors.red,
+                          ).show();
+                          print(value.message);
+                        }
                       }
-                    }
-                  },
-                );
-              } else {
-                setState(() {
-                  AwesomeDialog(
-                    context: context,
-                    dialogType: DialogType.error,
-                    animType: AnimType.rightSlide,
-                    headerAnimationLoop: false,
-                    title: 'Please Check Your Information',
-                    btnOkOnPress: () {},
-                    btnOkIcon: Icons.cancel,
-                    btnOkColor: Colors.red,
-                  ).show();
-                });
-              }
-            },
-            child: Container(
-              alignment: Alignment.center,
-              width: 80,
-              decoration: BoxDecoration(
-                  color: kImageColor, borderRadius: BorderRadius.circular(15)),
-              child: Text(
-                'Save',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    },
+                  );
+                } else {
+                  setState(() {
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.error,
+                      animType: AnimType.rightSlide,
+                      headerAnimationLoop: false,
+                      title: 'Please Check Your Information',
+                      btnOkOnPress: () {},
+                      btnOkIcon: Icons.cancel,
+                      btnOkColor: Colors.red,
+                    ).show();
+                  });
+                }
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: 80,
+                decoration: BoxDecoration(
+                    color: kImageColor,
+                    borderRadius: BorderRadius.circular(15)),
+                child: Text(
+                  'Save',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      // body: Column(
-      //   children: [
-      //     Text(
-      //         'Edit Property : ${widget.list2_Sale_id![indexN!]['id_ptys'].toString()}'),
-      //   ],
-      // ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 10, left: 10, bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromARGB(255, 67, 20, 175),
-                        // border: Border.all(width: 2),
+          ],
+        ),
+        // body: Column(
+        //   children: [
+        //     Text(
+        //         'Edit Property : ${widget.list2_Sale_id![indexN!]['id_ptys'].toString()}'),
+        //   ],
+        // ),
+        body: (waiting_d == null)
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // TextButton(
+                      //     onPressed: () {
+                      //       _upload_Image_Sale_url();
+                      //     },
+                      //     child: Text('Go')),
+                      SizedBox(
+                        height: 10,
                       ),
-                      height: 55,
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: Text(
-                        'Code : ${widget.get_all_homeytpe![indexN!]['id_ptys'].toString()}',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13),
-                      ),
-                    ),
-                    Container(
-                      height: 55,
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 43, 131, 11),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Switch(
-                            autofocus: false,
-                            activeColor: Color.fromARGB(255, 253, 253, 253),
-                            value: ug!,
-                            onChanged: (value) {
-                              setState(() {
-                                ug = value;
-                                if (value == true) {
-                                  urgent = 'Urgent';
-                                } else {
-                                  urgent = 'N/A';
-                                }
-                                print('Urgent : $urgent');
-                              });
-                            },
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            height: 60,
-                            width: 80,
-                            decoration: BoxDecoration(
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            right: 10, left: 10, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
                                 color: Color.fromARGB(255, 67, 20, 175),
-                                borderRadius: BorderRadius.circular(15)),
+                                // border: Border.all(width: 2),
+                              ),
+                              height: 55,
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              child: Text(
+                                'Code : ${widget.get_all_homeytpe![indexN!]['id_ptys'].toString()}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13),
+                              ),
+                            ),
+                            Container(
+                              height: 55,
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 43, 131, 11),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Switch(
+                                    autofocus: false,
+                                    activeColor:
+                                        Color.fromARGB(255, 253, 253, 253),
+                                    value: ug!,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        ug = value;
+                                        if (value == true) {
+                                          urgent = 'Urgent';
+                                        } else {
+                                          urgent = 'N/A';
+                                        }
+                                        print('Urgent : $urgent');
+                                      });
+                                    },
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 60,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 67, 20, 175),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      (ug == true) ? 'Urgent' : 'N/A',
+                                      style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // Column(
+                      //   children: [
+                      //     Text(
+                      //         'propertyy id = ${requestAutoVerbal_property.property_type_id}'),
+                      //     Text('image = $image_i'),
+                      //     // Text(
+                      //     //     'requestAutoVerbal_property.property_type_id ${widget.property_type_id1}'),
+                      //   ],
+                      // ),
+                      // TextButton(
+                      //     onPressed: () async {
+                      //       setState(() {
+                      //         _imageFile_noinput;
+                      //         // print('00000 = ${_imageFile_noinput}');
+                      //       });
+                      //       await _downloadImage();
+                      //       _upload_Image_Sale_url(_imageFile_noinput);
+                      //     },
+                      //     child: Text('Go')),
+                      // Text('Id = ${requestAutoVerbal_property.description}'),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      (widget.get_all_homeytpe![indexN!]['url'] != null &&
+                              _imageFile_input == null)
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.35,
+                                width: double.infinity,
+                                child: CachedNetworkImage(
+                                  imageUrl: widget.get_all_homeytpe![indexN!]
+                                          ['url']
+                                      .toString(),
+                                  fit: BoxFit.cover,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          Center(
+                                    child: CircularProgressIndicator(
+                                        value: downloadProgress.progress),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                ),
+                              ),
+                            )
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: Image.file(
+                                _imageFile_input!,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10, left: 10),
+                        child: InkWell(
+                          onTap: _getImage,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 50,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: Color.fromARGB(255, 47, 22, 157)),
                             child: Text(
-                              (ug == true) ? 'Urgent' : 'N/A',
+                              'Select Image',
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      (widget.get_all_homeytpe != 0 && _images.length == 0)
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.only(right: 10, left: 10),
+                              child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  width: double.infinity,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.32,
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.22,
+                                        child: CachedNetworkImage(
+                                          imageUrl: widget
+                                              .get_all_homeytpe![indexN!]
+                                                  ['url_1']
+                                              .toString(),
+                                          fit: BoxFit.cover,
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              Center(
+                                            child: CircularProgressIndicator(
+                                                value:
+                                                    downloadProgress.progress),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
+                                        ),
+                                      ),
+                                      Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.32,
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.22,
+                                        child: CachedNetworkImage(
+                                          imageUrl: widget
+                                              .get_all_homeytpe![indexN!]
+                                                  ['url_2']
+                                              .toString(),
+                                          fit: BoxFit.cover,
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              Center(
+                                            child: CircularProgressIndicator(
+                                                value:
+                                                    downloadProgress.progress),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            )
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
+                                width: double.infinity,
+                                child: GridView.count(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 5,
+                                  crossAxisSpacing: 5,
+                                  children:
+                                      List.generate(_images.length, (index) {
+                                    return Image.file(
+                                      _images[index],
+                                      fit: BoxFit.cover,
+                                    );
+                                  }),
+                                ),
+                              ),
+                            ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10, left: 10),
+                        child: InkWell(
+                          onTap: pickImages,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 50,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: Color.fromARGB(255, 47, 22, 157)),
+                            child: Text(
+                              'Mutiple Image',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      // Text(widget.get_all_homeytpe![indexN!]['hometype'].toString()),
+                      (widget.get_all_homeytpe![indexN!]['hometype'] != null &&
+                              province_dropdown != null)
+                          ? Container(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                  fillColor: kwhite,
+                                  filled: true,
+                                  labelText: 'Hometype',
+                                  hintText: 'Hometype',
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: kPrimaryColor, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                      color: kPrimaryColor,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                      color: kerror,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 2,
+                                      color: kerror,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  //   decoration: InputDecoration(
+                                  //       labelText: 'From',
+                                  //       prefixIcon: Icon(Icons.business_outlined)),
+                                ),
+                                value: province_dropdown,
+                                icon: const Icon(
+                                    Icons.arrow_circle_down_outlined),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 13,
-                                  fontWeight: FontWeight.bold),
+                                  color: Colors.black,
+                                ),
+                                items: list_hometype
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value.toString(),
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.015,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    value;
+                                    province_dropdown = value;
+                                    province_dropdown;
+                                  });
+                                },
+                              ),
+                            )
+                          : Container(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                  fillColor: kwhite,
+                                  filled: true,
+                                  labelText: widget.get_all_homeytpe![indexN!]
+                                          ['hometype']
+                                      .toString(),
+                                  hintText: 'Hometype',
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: kPrimaryColor, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                      color: kPrimaryColor,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                      color: kerror,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 2,
+                                      color: kerror,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  //   decoration: InputDecoration(
+                                  //       labelText: 'From',
+                                  //       prefixIcon: Icon(Icons.business_outlined)),
+                                ),
+                                value: province_dropdown,
+                                icon: const Icon(
+                                    Icons.arrow_circle_down_outlined),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                  color: Colors.black,
+                                ),
+                                items: list_hometype
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value.toString(),
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.015,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    value;
+                                    province_dropdown = value;
+                                    province_dropdown;
+                                    requestAutoVerbal_property.hometype =
+                                        value.toString();
+                                  });
+                                },
+                              ),
+                            ),
+
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (value) {
+                                    requestAutoVerbal_property.price = value;
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.price_change_outlined,
+                                      color: kImageColor,
+                                    ),
+                                    hintText: widget.get_all_homeytpe![indexN!]
+                                            ['price']
+                                        .toString(),
+                                    fillColor: kwhite,
+                                    filled: true,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: kPrimaryColor, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 1,
+                                        color: kPrimaryColor,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (value) {
+                                    requestAutoVerbal_property.sqm =
+                                        double.parse(value).toStringAsFixed(5);
+
+                                    // setState(() {
+                                    //   sqm =
+                                    //       double.parse(value).toStringAsFixed(5);
+                                    // });
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.square_foot_outlined,
+                                      color: kImageColor,
+                                    ),
+                                    fillColor: kwhite,
+                                    hintText: widget.get_all_homeytpe![indexN!]
+                                            ['sqm']
+                                        .toString(),
+                                    filled: true,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: kPrimaryColor, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 1,
+                                        color: kPrimaryColor,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Column(
-              //   children: [
-              //     Text(
-              //         'propertyy id = ${requestAutoVerbal_property.property_type_id}'),
-              //     Text('image = $image_i'),
-              //     // Text(
-              //     //     'requestAutoVerbal_property.property_type_id ${widget.property_type_id1}'),
-              //   ],
-              // ),
-              // TextButton(
-              //     onPressed: () async {
-              //       setState(() {
-              //         _imageFile_noinput;
-              //         // print('00000 = ${_imageFile_noinput}');
-              //       });
-              //       await _downloadImage();
-              //       _upload_Image_Sale_url(_imageFile_noinput);
-              //     },
-              //     child: Text('Go')),
-              // Text('Id = ${requestAutoVerbal_property.description}'),
-              SizedBox(
-                height: 20,
-              ),
-              (widget.get_all_homeytpe![indexN!]['url'] != null &&
-                      _imageFile_input == null)
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: CachedNetworkImage(
-                        imageUrl:
-                            widget.get_all_homeytpe![indexN!]['url'].toString(),
-                        fit: BoxFit.cover,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) => Center(
-                          child: CircularProgressIndicator(
-                              value: downloadProgress.progress),
-                        ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      SizedBox(
+                        height: 10,
                       ),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Image.file(
-                        _imageFile_input!,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.only(right: 10, left: 10),
-                child: InkWell(
-                  onTap: _getImage,
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Color.fromARGB(255, 47, 22, 157)),
-                    child: Text(
-                      'Select Image',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              // Text(widget.get_all_homeytpe![indexN!]['hometype'].toString()),
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: DropdownButtonFormField<String>(
-                  isExpanded: true,
-                  onChanged: (newValue) {
-                    newValue!;
-                    print('newValue = $newValue');
-                    requestAutoVerbal_property.hometype = newValue;
-                    // hometype11 = newValue;
-                    setState(() {});
-                  },
-                  validator: (String? value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Please select bank';
-                    }
-                    return null;
-                  },
-                  items: controller.list_hometype
-                      .map<DropdownMenuItem<String>>(
-                        (value) => DropdownMenuItem<String>(
-                          value: value["hometype"].toString(),
-                          child: Text(
-                            value["hometype"],
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize:
-                                    MediaQuery.textScaleFactorOf(context) * 13,
-                                height: 1),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (value) {
+                                    requestAutoVerbal_property.bed = value;
+                                    // setState(() {
+                                    //   bed = int.parse(value);
+                                    // });
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.bed_outlined,
+                                      color: kImageColor,
+                                    ),
+                                    hintText: widget.get_all_homeytpe![indexN!]
+                                            ['bed']
+                                        .toString(),
+                                    fillColor: kwhite,
+                                    filled: true,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: kPrimaryColor, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 1,
+                                        color: kPrimaryColor,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      )
-                      .toList(),
-                  // add extra sugar..
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    color: kImageColor,
-                  ),
-                  //property_type_id
-                  decoration: InputDecoration(
-                    fillColor: kwhite,
-                    filled: true,
-                    labelText: widget.get_all_homeytpe![indexN!]['hometype']
-                        .toString(),
-                    hintText: 'Select',
-                    prefixIcon: Icon(
-                      Icons.home_outlined,
-                      color: kImageColor,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: kPrimaryColor, width: 2.0),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 1,
-                        color: kPrimaryColor,
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (value) {
+                                    requestAutoVerbal_property.bath = value;
+                                    // setState(() {
+                                    //   bath = int.parse(value);
+                                    // });
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.bathtub_outlined,
+                                      color: kImageColor,
+                                    ),
+                                    fillColor: kwhite,
+                                    hintText: widget.get_all_homeytpe![indexN!]
+                                            ['bed']
+                                        .toString(),
+                                    filled: true,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: kPrimaryColor, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 1,
+                                        color: kPrimaryColor,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 1,
-                        color: kerror,
+                      SizedBox(
+                        height: 10,
                       ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 2,
-                        color: kerror,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: TextFormField(
+                                  readOnly: true,
+                                  onChanged: (value) {
+                                    requestAutoVerbal_property.type = value;
+                                    // setState(() {
+                                    //   land =
+                                    //       double.parse(value).toStringAsFixed(5);
+                                    // });
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: widget.get_all_homeytpe![indexN!]
+                                            ['type']
+                                        .toString(),
+                                    prefixIcon: Icon(
+                                      Icons.landscape_outlined,
+                                      color: kImageColor,
+                                    ),
+                                    fillColor: kwhite,
+                                    hintText: widget.get_all_homeytpe![indexN!]
+                                            ['type']
+                                        .toString(),
+                                    filled: true,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: kPrimaryColor, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 1,
+                                        color: kPrimaryColor,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (value) {
+                                    requestAutoVerbal_property.land = value;
+                                    // setState(() {
+                                    //   land =
+                                    //       double.parse(value).toStringAsFixed(5);
+                                    // });
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.landscape_outlined,
+                                      color: kImageColor,
+                                    ),
+                                    fillColor: kwhite,
+                                    hintText: widget.get_all_homeytpe![indexN!]
+                                            ['land']
+                                        .toString(),
+                                    filled: true,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: kPrimaryColor, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 1,
+                                        color: kPrimaryColor,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    //   decoration: InputDecoration(
-                    //       labelText: 'From',
-                    //       prefixIcon: Icon(Icons.business_outlined)),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              // Center(
-              //   child: _imageFile == null
-              //       ? CircularProgressIndicator()
-              //       : Image.file(_imageFile1),
-              // ),
-              // Container(
-              //   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              //   child: DropdownButtonFormField<String>(
-              //     isExpanded: true,
-              //     onChanged: (newValue) {
-              //       requestAutoVerbal_property.property_type_id = newValue!;
-
-              //       setState(() {
-              //         provice = newValue as String;
-              //         // print('provice id = $provice');
-              //       });
-              //     },
-              //     validator: (String? value) {
-              //       if (value?.isEmpty ?? true) {
-              //         return 'Please select bank';
-              //       }
-              //       return null;
-              //     },
-              //     items: _items
-              //         .map<DropdownMenuItem<String>>(
-              //           (value) => DropdownMenuItem<String>(
-              //             value: value["property_type_id"].toString(),
-              //             child: Text(
-              //               value["Name_cummune"],
-              //               overflow: TextOverflow.ellipsis,
-              //               style: TextStyle(
-              //                   fontSize:
-              //                       MediaQuery.textScaleFactorOf(context) * 13,
-              //                   height: 1),
-              //             ),
-              //           ),
-              //         )
-              //         .toList(),
-              //     // add extra sugar..
-              //     icon: Icon(
-              //       Icons.arrow_drop_down,
-              //       color: kImageColor,
-              //     ),
-              //     //property_type_id
-              //     decoration: InputDecoration(
-              //       fillColor: kwhite,
-              //       filled: true,
-              //       labelText: widget.list2_Sale_id![indexN!]
-              //               ['property_type_id']
-              //           .toString(),
-              //       hintText: 'Select',
-              //       prefixIcon: Icon(
-              //         Icons.home_work,
-              //         color: kImageColor,
-              //       ),
-              //       focusedBorder: OutlineInputBorder(
-              //         borderSide:
-              //             const BorderSide(color: kPrimaryColor, width: 2.0),
-              //         borderRadius: BorderRadius.circular(10.0),
-              //       ),
-              //       enabledBorder: OutlineInputBorder(
-              //         borderSide: BorderSide(
-              //           width: 1,
-              //           color: kPrimaryColor,
-              //         ),
-              //         borderRadius: BorderRadius.circular(10.0),
-              //       ),
-              //       errorBorder: OutlineInputBorder(
-              //         borderSide: BorderSide(
-              //           width: 1,
-              //           color: kerror,
-              //         ),
-              //         borderRadius: BorderRadius.circular(10.0),
-              //       ),
-              //       focusedErrorBorder: OutlineInputBorder(
-              //         borderSide: BorderSide(
-              //           width: 2,
-              //           color: kerror,
-              //         ),
-              //         borderRadius: BorderRadius.circular(10.0),
-              //       ),
-              //       //   decoration: InputDecoration(
-              //       //       labelText: 'From',
-              //       //       prefixIcon: Icon(Icons.business_outlined)),
-              //     ),
-              //   ),
-              // ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            requestAutoVerbal_property.price = value;
+                      SizedBox(
+                        height: 10,
+                      ),
+                      InkWell(
+                          onTap: () {
+                            map_address = 'ok';
+                            Get.to(Map_verbal_address_Sale(
+                              get_province: (value) {
+                                setState(() {
+                                  songkat = value.toString();
+                                });
+                              },
+                              get_district: (value) {
+                                setState(() {
+                                  provice_map = value.toString();
+                                });
+                              },
+                              get_commune: (value) {
+                                setState(() {
+                                  khan = value.toString();
+                                });
+                              },
+                              get_log: (value) {},
+                              get_lat: (value) {},
+                            ));
                           },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.price_change_outlined,
-                              color: kImageColor,
-                            ),
-                            hintText: widget.get_all_homeytpe![indexN!]['price']
-                                .toString(),
-                            fillColor: kwhite,
-                            filled: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: kPrimaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: kPrimaryColor,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
+                          child: (khan != null || songkat != null)
+                              ? Container(
+                                  height: 65,
+                                  margin: EdgeInsets.only(right: 10, left: 10),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(width: 1),
+                                      borderRadius: BorderRadius.circular(10),
+                                      color:
+                                          Color.fromARGB(255, 255, 255, 255)),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.location_city_outlined,
+                                        size: 30,
+                                        color: Color.fromARGB(255, 40, 164, 45),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      // Text(
+                                      //   '${songkat} ',
+                                      //   style: TextStyle(
+                                      //       fontWeight: FontWeight.bold,
+                                      //       fontSize: 12),
+                                      // ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '${khan}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '/ ${provice_map}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  height: 65,
+                                  margin: EdgeInsets.only(right: 10, left: 10),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(width: 1),
+                                      borderRadius: BorderRadius.circular(10),
+                                      color:
+                                          Color.fromARGB(255, 255, 255, 255)),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.location_city_outlined,
+                                        size: 30,
+                                        color: kImageColor,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '${widget.get_all_homeytpe![indexN!]['address'].toString()}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14),
+                                      )
+                                    ],
+                                  ),
+                                )),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 50,
+                        width: double.infinity,
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 1,
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                         child: TextFormField(
-                          keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            requestAutoVerbal_property.sqm =
-                                double.parse(value).toStringAsFixed(5);
-
-                            // setState(() {
-                            //   sqm =
-                            //       double.parse(value).toStringAsFixed(5);
-                            // });
+                            requestAutoVerbal_property.title = value;
                           },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.square_foot_outlined,
-                              color: kImageColor,
-                            ),
-                            fillColor: kwhite,
-                            hintText: widget.get_all_homeytpe![indexN!]['sqm']
+                          maxLines: 3,
+                          decoration: InputDecoration.collapsed(
+                            hintText: widget.get_all_homeytpe![indexN!]['Title']
                                 .toString(),
-                            filled: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: kPrimaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: kPrimaryColor,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      Container(
+                        height: 150,
+                        width: double.infinity,
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 1,
+                          ),
+                        ),
                         child: TextFormField(
-                          keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            requestAutoVerbal_property.bed = value;
-                            // setState(() {
-                            //   bed = int.parse(value);
-                            // });
+                            requestAutoVerbal_property.description = value;
                           },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.bed_outlined,
-                              color: kImageColor,
-                            ),
-                            hintText: widget.get_all_homeytpe![indexN!]['bed']
+                          maxLines: 3,
+                          decoration: InputDecoration.collapsed(
+                            hintText: widget.get_all_homeytpe![indexN!]
+                                    ['description']
                                 .toString(),
-                            fillColor: kwhite,
-                            filled: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: kPrimaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: kPrimaryColor,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            requestAutoVerbal_property.bath = value;
-                            // setState(() {
-                            //   bath = int.parse(value);
-                            // });
-                          },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.bathtub_outlined,
-                              color: kImageColor,
-                            ),
-                            fillColor: kwhite,
-                            hintText: widget.get_all_homeytpe![indexN!]['bed']
-                                .toString(),
-                            filled: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: kPrimaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: kPrimaryColor,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  // Expanded(
-                  //   child: SizedBox(
-                  //     child: Padding(
-                  //       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  //       child: TextFormField(
-                  //         onChanged: (value) {
-                  //           requestAutoVerbal_property.type = value;
-                  //           // setState(() {
-                  //           //   bath = int.parse(value);
-                  //           // });
-                  //         },
-                  //         decoration: InputDecoration(
-                  //           prefixIcon: Icon(
-                  //             Icons.sell,
-                  //             color: kImageColor,
-                  //           ),
-                  //           fillColor: kwhite,
-                  //           hintText: 'For Sale',
-                  //           filled: true,
-                  //           focusedBorder: OutlineInputBorder(
-                  //             borderSide: const BorderSide(
-                  //                 color: kPrimaryColor, width: 2.0),
-                  //             borderRadius: BorderRadius.circular(10.0),
-                  //           ),
-                  //           enabledBorder: OutlineInputBorder(
-                  //             borderSide: BorderSide(
-                  //               width: 1,
-                  //               color: kPrimaryColor,
-                  //             ),
-                  //             borderRadius: BorderRadius.circular(10.0),
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // Expanded(
-                  //   child: SizedBox(
-                  //     child: Padding(
-                  //       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  //       child: DropdownButtonFormField<String>(
-                  //         isExpanded: true,
-                  //         onChanged: (newValue) {
-                  //           requestAutoVerbal_property.type = newValue!;
-                  //           setState(() {
-                  //             type;
-                  //             index_Sale = _items_2.indexOf('For Sale');
-                  //             // print(type);
-                  //           });
-                  //           // if (type == 'For Sale') {
-                  //           //   // print('$index_Sale');
-                  //           //   // print('$type');
-                  //           //   index_Sale = _items_2.indexOf('For Sale');
-                  //           // } else if (type == 'For Rent') {
-                  //           //   index_Rent = _items_2.indexOf('For Rent');
-                  //           //   // print('$type');
-                  //           //   // print('$index_Rent');
-                  //           // }
-                  //         },
-                  //         validator: (String? value) {
-                  //           if (value?.isEmpty ?? true) {
-                  //             return 'Please select bank';
-                  //           }
-                  //           return null;
-                  //         },
-                  //         items: _items_2
-                  //             .map<DropdownMenuItem<String>>(
-                  //               (value) => DropdownMenuItem<String>(
-                  //                 value: value,
-                  //                 child: Text(
-                  //                   value,
-                  //                   overflow: TextOverflow.ellipsis,
-                  //                   style: TextStyle(
-                  //                       fontSize:
-                  //                           MediaQuery.textScaleFactorOf(
-                  //                                   context) *
-                  //                               13,
-                  //                       height: 1),
-                  //                 ),
-                  //               ),
-                  //             )
-                  //             .toList(),
-                  //         // add extra sugar..
-                  //         icon: Icon(
-                  //           Icons.arrow_drop_down,
-                  //           color: kImageColor,
-                  //         ),
-
-                  //         decoration: InputDecoration(
-                  //           fillColor: kwhite,
-                  //           filled: true,
-                  //           labelText: 'Type',
-                  //           hintText: 'Select',
-
-                  //           prefixIcon: Icon(
-                  //             Icons.home_work,
-                  //             color: kImageColor,
-                  //           ),
-                  //           focusedBorder: OutlineInputBorder(
-                  //             borderSide: const BorderSide(
-                  //                 color: kPrimaryColor, width: 2.0),
-                  //             borderRadius: BorderRadius.circular(10.0),
-                  //           ),
-                  //           enabledBorder: OutlineInputBorder(
-                  //             borderSide: BorderSide(
-                  //               width: 1,
-                  //               color: kPrimaryColor,
-                  //             ),
-                  //             borderRadius: BorderRadius.circular(10.0),
-                  //           ),
-                  //           errorBorder: OutlineInputBorder(
-                  //             borderSide: BorderSide(
-                  //               width: 1,
-                  //               color: kerror,
-                  //             ),
-                  //             borderRadius: BorderRadius.circular(10.0),
-                  //           ),
-                  //           focusedErrorBorder: OutlineInputBorder(
-                  //             borderSide: BorderSide(
-                  //               width: 2,
-                  //               color: kerror,
-                  //             ),
-                  //             borderRadius: BorderRadius.circular(10.0),
-                  //           ),
-                  //           //   decoration: InputDecoration(
-                  //           //       labelText: 'From',
-                  //           //       prefixIcon: Icon(Icons.business_outlined)),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  Expanded(
-                    child: SizedBox(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        child: TextFormField(
-                          readOnly: true,
-                          onChanged: (value) {
-                            requestAutoVerbal_property.type = value;
-                            // setState(() {
-                            //   land =
-                            //       double.parse(value).toStringAsFixed(5);
-                            // });
-                          },
-                          decoration: InputDecoration(
-                            labelText: widget.get_all_homeytpe![indexN!]['type']
-                                .toString(),
-                            prefixIcon: Icon(
-                              Icons.landscape_outlined,
-                              color: kImageColor,
-                            ),
-                            fillColor: kwhite,
-                            hintText: widget.get_all_homeytpe![indexN!]['type']
-                                .toString(),
-                            filled: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: kPrimaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: kPrimaryColor,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            requestAutoVerbal_property.land = value;
-                            // setState(() {
-                            //   land =
-                            //       double.parse(value).toStringAsFixed(5);
-                            // });
-                          },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.landscape_outlined,
-                              color: kImageColor,
-                            ),
-                            fillColor: kwhite,
-                            hintText: widget.get_all_homeytpe![indexN!]['land']
-                                .toString(),
-                            filled: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: kPrimaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: kPrimaryColor,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              InkWell(
-                  onTap: () {
-                    Get.to(Map_verbal_address_Sale(
-                      get_province: (value) {
-                        setState(() {
-                          songkat = value.toString();
-                        });
-                      },
-                      get_district: (value) {
-                        setState(() {
-                          provice_map = value.toString();
-                        });
-                      },
-                      get_commune: (value) {
-                        setState(() {
-                          khan = value.toString();
-                        });
-                      },
-                      get_log: (value) {},
-                      get_lat: (value) {},
-                    ));
-                  },
-                  child: (khan != null || songkat != null)
-                      ? Container(
-                          height: 65,
-                          margin: EdgeInsets.only(right: 10, left: 10),
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: Border.all(width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 255, 255, 255)),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.location_city_outlined,
-                                size: 30,
-                                color: Color.fromARGB(255, 40, 164, 45),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              // Text(
-                              //   '${songkat} ',
-                              //   style: TextStyle(
-                              //       fontWeight: FontWeight.bold,
-                              //       fontSize: 12),
-                              // ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                '${khan}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 12),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                '/ ${provice_map}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Container(
-                          height: 65,
-                          margin: EdgeInsets.only(right: 10, left: 10),
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: Border.all(width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 255, 255, 255)),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.location_city_outlined,
-                                size: 30,
-                                color: kImageColor,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                '${widget.get_all_homeytpe![indexN!]['address'].toString()}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14),
-                              )
-                            ],
-                          ),
-                        )),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 50,
-                width: double.infinity,
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1,
+                    ],
                   ),
                 ),
-                child: TextFormField(
-                  onChanged: (value) {
-                    requestAutoVerbal_property.title = value;
-                  },
-                  maxLines: 3,
-                  decoration: InputDecoration.collapsed(
-                    hintText:
-                        widget.get_all_homeytpe![indexN!]['Title'].toString(),
-                  ),
+              )
+            : LiquidLinearProgressIndicator(
+                value: 0.25, // Defaults to 0.5.
+                valueColor: AlwaysStoppedAnimation(Color.fromARGB(255, 53, 33,
+                    207)), // Defaults to the current Theme's accentColor.
+                backgroundColor: Colors
+                    .white, // Defaults to the current Theme's backgroundColor.
+                borderColor: Colors.white,
+                borderWidth: 5.0,
+                borderRadius: 12.0,
+                direction: Axis
+                    .vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+                center: Text(
+                  "Please waiting...!",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).size.height * 0.025),
                 ),
-              ),
-              Container(
-                height: 150,
-                width: double.infinity,
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                ),
-                child: TextFormField(
-                  onChanged: (value) {
-                    requestAutoVerbal_property.description = value;
-                  },
-                  maxLines: 3,
-                  decoration: InputDecoration.collapsed(
-                    hintText: widget.get_all_homeytpe![indexN!]['description']
-                        .toString(),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+              ));
   }
 
+  Future<void> pickImages() async {
+    List<Asset> resultList = [];
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 2,
+        enableCamera: true,
+      );
+    } on Exception catch (e) {
+      // Handle exception
+    }
+    // setState(() {
+    //   _images;
+    // });
+
+    List<File> files = [];
+    for (var asset in resultList) {
+      ByteData byteData = await asset.getByteData();
+      final tempDir = await getTemporaryDirectory();
+
+      final file = File('${tempDir.path}/${asset.name}');
+      await file.writeAsBytes(byteData.buffer.asUint8List());
+      files.add(file);
+    }
+
+    setState(() {
+      _images = files;
+
+      mutiple_image = 'Pick';
+    });
+  }
+
+  String? mutiple_image;
   List? last_id2 = [];
   var last_cid;
   List? last_id = [];
-
+  List<File> _images = [];
   List? _items1;
   String? provice_pd;
 
@@ -1167,6 +1296,60 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
     }
   }
 
+  Future<void> _uploadImageSaleMultiple() async {
+    final url = Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/mutiple_image_update_mutiple/${widget.get_all_homeytpe![indexN!]['id_ptys'].toString()}');
+
+    final request = http.MultipartRequest('POST', url);
+    request.fields['id_ptys'] =
+        widget.get_all_homeytpe![indexN!]['id_ptys'].toString();
+    request.fields['property_type_id'] =
+        requestAutoVerbal_property.property_type_id.toString();
+
+    if (_images != null) {
+      print('Go');
+      final tempDir = await getTemporaryDirectory();
+      final path = tempDir.path;
+
+      List<File> compressedImages = [];
+
+      for (int i = 0; i < _images.length; i++) {
+        var compressedImageFile = await FlutterImageCompress.compressAndGetFile(
+          _images[i].absolute.path,
+          '$path/${DateTime.now().millisecondsSinceEpoch}_$i.jpg',
+          quality: 70,
+        );
+
+        if (compressedImageFile != null) {
+          compressedImages.add(compressedImageFile);
+        }
+      }
+
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'image',
+          compressedImages[0].path,
+        ),
+      );
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'images',
+          compressedImages[1].path,
+        ),
+      );
+    } else {
+      print('No edit');
+    }
+
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('mutiplle Image uploaded! ');
+    } else {
+      print('Error uploading image: ${response.reasonPhrase}');
+    }
+  }
+
   ///////////////Update
   File? _imageFile_input;
   late File _imageFile_noinput;
@@ -1187,56 +1370,104 @@ class _Add_verbal_saleState extends State<Edit_verbal_property> {
   //   });
   // }
   File? one;
-  Future<void> _upload_Image_Sale_url() async {
-    // Convert the image URL to a file
+  // Future<void> _upload_Image_Sale_url2222() async {
+  //   // Convert the image URL to a file
 
-    final response = await http
-        .get(Uri.parse('${widget.get_all_homeytpe![indexN!]['url']}'));
+  //   final response = await http
+  //       .get(Uri.parse('${widget.get_all_homeytpe![indexN!]['url']}'));
 
-    // Get the bytes of the response's body
-    final bytes = response.bodyBytes;
+  //   // Get the bytes of the response's body
+  //   final bytes = response.bodyBytes;
 
-    // Create a temporary file with a unique name
-    final tempDir = await Directory.systemTemp.createTemp();
-    final tempFile = File(
-        '${tempDir.path}/temp_${DateTime.now().millisecondsSinceEpoch}.jpg');
+  //   // Create a temporary file with a unique name
+  //   final tempDir = await Directory.systemTemp.createTemp();
+  //   final tempFile = File(
+  //       '${tempDir.path}/temp_${DateTime.now().millisecondsSinceEpoch}.jpg');
 
-    // Write the bytes to the file
-    await tempFile.writeAsBytes(bytes);
-    // print('File Post = ${tempFile.toString()}');
-    // Return the file
+  //   // Write the bytes to the file
+  //   await tempFile.writeAsBytes(bytes);
+
+  //   if (tempFile != null && _imageFile_input == null) {
+  //     one = tempFile;
+  //   } else {
+  //     one = _imageFile_input;
+  //   }
+  //   final url = Uri.parse(
+  //       'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/Image_ptys_post_id_last/${widget.get_all_homeytpe![indexN!]['id_ptys'].toString()}');
+
+  //   final request = http.MultipartRequest('POST', url);
+  //   // request.files.add(
+  //   //     await http.MultipartFile.fromPath('image_name_sale', tempFile.path));
+  //   request.fields['id_image'] =
+  //       widget.get_all_homeytpe![indexN!]['id_ptys'].toString();
+  //   request.fields['hometype'] = requestAutoVerbal_property.hometype.toString();
+  //   request.fields['property_type_id'] =
+  //       requestAutoVerbal_property.property_type_id;
+
+  //   request.files
+  //       .add(await http.MultipartFile.fromPath('image_name_sale', one!.path));
+  //   final response1 = await request.send();
+
+  //   if (response.statusCode == 200) {
+  //     print('Image uploaded!');
+  //   } else {
+  //     print('Error uploading image: ${response.reasonPhrase}');
+  //   }
+
+  //   // Delete the temporary file
+  //   await tempFile.delete();
+  // }
+
+  ////////////////
+  Future<File?> _upload_Image_Sale_url() async {
+    var tempFile;
+    if (_imageFile_input == null) {
+      final response2 = await http
+          .get(Uri.parse('${widget.get_all_homeytpe![indexN!]['url']}'));
+
+      final bytes = response2.bodyBytes;
+      final tempDir = await Directory.systemTemp.createTemp();
+      tempFile = File(
+          '${tempDir.path}/temp_${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+      await tempFile.writeAsBytes(bytes);
+    }
     if (tempFile != null && _imageFile_input == null) {
       one = tempFile;
+      print('Input == null');
     } else {
       one = _imageFile_input;
+      print('Input != null');
     }
     final url = Uri.parse(
         'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/Image_ptys_post_id_last/${widget.get_all_homeytpe![indexN!]['id_ptys'].toString()}');
-
     final request = http.MultipartRequest('POST', url);
-    // request.fields['id_image'] = '202347267';
-    // request.fields['hometype'] = 'sdfjkjhhsd';
-    // request.fields['property_type_id'] = '12';
-
-    // request.files.add(
-    //     await http.MultipartFile.fromPath('image_name_sale', tempFile.path));
     request.fields['id_image'] =
         widget.get_all_homeytpe![indexN!]['id_ptys'].toString();
     request.fields['hometype'] = requestAutoVerbal_property.hometype.toString();
     request.fields['property_type_id'] =
-        requestAutoVerbal_property.property_type_id;
+        requestAutoVerbal_property.property_type_id.toString();
 
-    request.files
-        .add(await http.MultipartFile.fromPath('image_name_sale', one!.path));
-    final response1 = await request.send();
+    if (one != null) {
+      final tempDir = await getTemporaryDirectory();
+      final path = tempDir.path;
+
+      var compressedImageFile = await FlutterImageCompress.compressAndGetFile(
+        one!.absolute.path,
+        '$path/${DateTime.now().millisecondsSinceEpoch}.jpg',
+        quality: 70,
+      );
+
+      request.files.add(await http.MultipartFile.fromPath(
+          'image_name_sale', compressedImageFile!.path));
+    }
+
+    final response = await request.send();
 
     if (response.statusCode == 200) {
       print('Image uploaded!');
     } else {
       print('Error uploading image: ${response.reasonPhrase}');
     }
-
-    // Delete the temporary file
-    await tempFile.delete();
   }
 }

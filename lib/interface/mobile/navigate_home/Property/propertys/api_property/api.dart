@@ -3,7 +3,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-
 import '../../Model/Autho_verbal.dart';
 import '../../Model/update_property.dart';
 

@@ -10,6 +10,8 @@ class Controller_verbal extends GetxController {
   var list_cummone = [].obs;
   var list_hometype = [].obs;
   var id_last;
+  var bank_name;
+  var bank = [].obs;
   var hometype;
   @override
   void onInit() {
@@ -17,6 +19,26 @@ class Controller_verbal extends GetxController {
     list_cummone;
     list_hometype;
     super.onInit();
+  }
+
+  Future<void> bank_dropdown() async {
+    try {
+      final response = await http.get(Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/bank'));
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonBody = jsonDecode(response.body)['data'];
+        bank.value = jsonBody;
+
+        // for (int i = 0; i < list_hometype.length; i++) {
+        //   hometype = list_hometype[i]['hometype'].toString();
+        //   print('$i : ${hometype.toString()}');
+        // }
+      } else {
+        print('Error value_all_list');
+      }
+    } catch (e) {
+      print('Error value_all_list $e');
+    }
   }
 
   Future<void> verbal_Hometype() async {
@@ -61,7 +83,7 @@ class Controller_verbal extends GetxController {
         final List<dynamic> jsonBody = jsonDecode(response.body);
         list_last_verbalID.value = jsonBody;
         id_last = list_last_verbalID[0]['id_ptys'] + 1;
-        print(id_last.toString());
+
         // print('id no + = ${list_last_verbalID[0]['id_ptys']}');
         // print('id + 1 = $id_last');
       } else {

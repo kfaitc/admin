@@ -70,7 +70,7 @@ class controller_for_Rent extends GetxController {
       if (response.statusCode == 200) {
         final List<dynamic> jsonBody = jsonDecode(response.body)['data'];
         list_hometype.value = jsonBody;
-        print(list_hometype.toString());
+
         // for (int i = 0; i < list_hometype.length; i++) {
         //   hometype = list_hometype[i]['hometype'].toString();
         //   print('$i : ${hometype.toString()}');

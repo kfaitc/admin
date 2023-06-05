@@ -15,7 +15,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import '../../../../../components/contants.dart';
-import '../Detail_Screen/Detail_all_list_sale.dart';
+import '../Detail_Screen/Detail_all_list_Screen.dart';
 import '../Getx_api/for_screen.dart';
 import '../Getx_api/vetbal_controller.dart';
 import '../verval_property/edit_property_sale.dart';
@@ -306,10 +306,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                                                           InkWell(
                                                             onTap: () {
                                                               detail_property_id(
-                                                                  index,
-                                                                  items[index][
-                                                                          'id_ptys']
-                                                                      .toString());
+                                                                  index, items);
                                                               setState(() {
                                                                 verbal_ID = items[
                                                                             index]
@@ -633,7 +630,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                                                                             //         [
                                                                             //         'id_ptys']
                                                                             //     .toString());
-                                                                            await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, widget.list_get!, index));
+                                                                            await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, items, index));
                                                                             // print(index
                                                                             //     .toString());
                                                                           },
@@ -655,7 +652,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                                                                       child: IconButton(
                                                                           onPressed: () {
                                                                             detail_property_id(index,
-                                                                                items[index]['id_ptys'].toString());
+                                                                                items);
                                                                             setState(() {
                                                                               verbal_ID = items[index]['id_ptys'].toString();
                                                                               // print(verbal_ID);
@@ -820,10 +817,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                                                           InkWell(
                                                             onTap: () {
                                                               detail_property_id(
-                                                                  index,
-                                                                  items[index][
-                                                                          'id_ptys']
-                                                                      .toString());
+                                                                  index, items);
                                                               setState(() {
                                                                 verbal_ID = items[
                                                                             index]
@@ -1163,7 +1157,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                                                                       child: IconButton(
                                                                           onPressed: () {
                                                                             detail_property_id(index,
-                                                                                items[index]['id_ptys'].toString());
+                                                                                items);
                                                                             setState(() {
                                                                               verbal_ID = items[index]['id_ptys'].toString();
                                                                               // print(verbal_ID);
@@ -1453,10 +1447,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                                                               onTap: () {
                                                                 detail_property_id(
                                                                     index,
-                                                                    items[index]
-                                                                            [
-                                                                            'id_ptys']
-                                                                        .toString());
+                                                                    items);
                                                                 setState(() {
                                                                   verbal_ID = items[
                                                                               index]
@@ -1758,7 +1749,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                                                                               //         [
                                                                               //         'id_ptys']
                                                                               //     .toString());
-                                                                              await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, widget.list_get!, index));
+                                                                              await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, items, index));
                                                                               // print(index
                                                                               //     .toString());
                                                                             },
@@ -1775,7 +1766,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                                                                             30,
                                                                         child: IconButton(
                                                                             onPressed: () {
-                                                                              detail_property_id(index, items[index]['id_ptys'].toString());
+                                                                              detail_property_id(index, items);
                                                                               setState(() {
                                                                                 verbal_ID = items[index]['id_ptys'].toString();
                                                                                 // print(verbal_ID);
@@ -1935,10 +1926,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                                                               onTap: () {
                                                                 detail_property_id(
                                                                     index,
-                                                                    items[index]
-                                                                            [
-                                                                            'id_ptys']
-                                                                        .toString());
+                                                                    items);
                                                                 setState(() {
                                                                   verbal_ID = items[
                                                                               index]
@@ -2251,7 +2239,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                                                                             30,
                                                                         child: IconButton(
                                                                             onPressed: () {
-                                                                              detail_property_id(index, items[index]['id_ptys'].toString());
+                                                                              detail_property_id(index, items);
                                                                               setState(() {
                                                                                 verbal_ID = items[index]['id_ptys'].toString();
                                                                                 // print(verbal_ID);
@@ -2413,13 +2401,13 @@ class _List_Sale_AllState extends State<List_Sale_All> {
   }
 
   String? verbal_ID;
-  Future<void> detail_property_id(int index, String ID) async {
+  Future<void> detail_property_id(int index, List list) async {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Detail_property_sale_all(
           verbal_ID: verbal_ID.toString(),
-          list_get_sale: widget.list_get,
+          list_get_sale: list,
         ),
       ),
     );
@@ -2488,11 +2476,21 @@ class _List_Sale_AllState extends State<List_Sale_All> {
     final ByteData bytes =
         await rootBundle.load('assets/images/New_KFA_Logo.png');
     final Uint8List byteList = bytes.buffer.asUint8List();
-    Uint8List bytes1 = (await NetworkAssetBundle(
-                Uri.parse('${widget.list_get![index]['url']}'))
-            .load('${widget.list_get![index]['url']}'))
-        .buffer
-        .asUint8List();
+    Uint8List bytes1 =
+        (await NetworkAssetBundle(Uri.parse('${items[index]['url']}'))
+                .load('${items[index]['url']}'))
+            .buffer
+            .asUint8List();
+    Uint8List bytes2 =
+        (await NetworkAssetBundle(Uri.parse('${items[index]['url_1']}'))
+                .load('${items[index]['url_1']}'))
+            .buffer
+            .asUint8List();
+    Uint8List bytes3 =
+        (await NetworkAssetBundle(Uri.parse('${items[index]['url_2']}'))
+                .load('${items[index]['url_2']}'))
+            .buffer
+            .asUint8List();
     // Uint8List bytes2 =
     //     (await NetworkAssetBundle(Uri.parse('$image_i')).load('$image_i'))
     //         .buffer
@@ -2512,19 +2510,17 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                   child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      // pw.Container(
-                      //   width: 80,
-                      //   height: 50,
-                      //   child: pw.Image(
-                      //       pw.MemoryImage(
-                      //         byteList,
-                      //         // bytes1,
-                      //       ),
-                      //       fit: pw.BoxFit.fill),
-                      // ),
-
-                      pw.Text(
-                          'verbal ID = ${widget.list_get![index]['id_ptys']}'),
+                      pw.Container(
+                        width: 80,
+                        height: 50,
+                        child: pw.Image(
+                            pw.MemoryImage(
+                              byteList,
+                              // bytes1,
+                            ),
+                            fit: pw.BoxFit.fill),
+                      ),
+                      pw.Text('verbal ID = ${items[index]['id_ptys']}'),
                       pw.Text("Property Check",
                           style: pw.TextStyle(
                               fontWeight: pw.FontWeight.bold, fontSize: 20)),
@@ -2543,15 +2539,15 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                     alignment: pw.Alignment.center,
                     height: 30,
                     width: double.infinity,
-                    child: pw.Text(
-                        '${widget.list_get![index]['Title'] ?? "N/A"}')),
-                pw.Text('${widget.list_get![index]['address'] ?? "N/A"}'),
+                    child: (items[index]['Title'].toString() != null)
+                        ? pw.Text('${items[index]['Title'] ?? "N/A"}')
+                        : pw.SizedBox()),
+                pw.Text('${items[index]['address'] ?? "N/A"}'),
                 pw.SizedBox(height: 10),
                 //Big image
                 pw.Container(
                   height: 160,
                   width: double.infinity,
-                  color: PdfColors.blue100,
                   child: pw.Image(pw.MemoryImage(bytes1), fit: pw.BoxFit.fill),
                 ),
                 pw.SizedBox(
@@ -2566,19 +2562,8 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                           padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(color: PdfColors.green),
-
-                          height: 80,
-                          //color: Colors.blue,
-                        ),
-                      ),
-                      pw.SizedBox(width: 5),
-                      pw.Expanded(
-                        flex: 3,
-                        child: pw.Container(
-                          padding: const pw.EdgeInsets.all(2),
-                          alignment: pw.Alignment.centerLeft,
-                          decoration: pw.BoxDecoration(color: PdfColors.red),
-
+                          child: pw.Image(pw.MemoryImage(bytes2),
+                              fit: pw.BoxFit.fill),
                           height: 80,
                           //color: Colors.blue,
                         ),
@@ -2590,10 +2575,11 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                           padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(
-                            // border: pw.Border.all(),
-                            color: PdfColors.yellow,
-                          ),
+                              // border: pw.Border.all(),
 
+                              ),
+                          child: pw.Image(pw.MemoryImage(bytes3),
+                              fit: pw.BoxFit.fill),
                           // name rest with api
 
                           height: 80,
@@ -2628,8 +2614,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                           alignment: pw.Alignment.center,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           // name rest with api
-                          child: pw.Text(
-                              '${widget.list_get![index]['price'] ?? "N/A"} \$',
+                          child: pw.Text('${items[index]['price'] ?? "N/A"} \$',
                               style: const pw.TextStyle(fontSize: 10)),
                           height: 25,
                           //color: Colors.blue,
@@ -2662,8 +2647,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                           alignment: pw.Alignment.center,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           // name rest with api
-                          child: pw.Text(
-                              '${widget.list_get![index]['land'] ?? "N/A"}',
+                          child: pw.Text('${items[index]['land'] ?? "N/A"}',
                               style: const pw.TextStyle(fontSize: 10)),
                           height: 20,
                           //color: Colors.blue,
@@ -2697,7 +2681,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           // name rest with api
                           child: pw.Text(
-                              '${widget.list_get![index]['sqm'] ?? "N/A"} ' +
+                              '${items[index]['sqm'] ?? "N/A"} ' +
                                   'm' +
                                   '\u00B2',
                               style: const pw.TextStyle(fontSize: 10)),
@@ -2732,8 +2716,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                           alignment: pw.Alignment.center,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           // name rest with api
-                          child: pw.Text(
-                              '${widget.list_get![index]['bed'] ?? "N/A"}',
+                          child: pw.Text('${items[index]['bed'] ?? "N/A"}',
                               style: const pw.TextStyle(fontSize: 10)),
                           height: 20,
                           //color: Colors.blue,
@@ -2766,8 +2749,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                           alignment: pw.Alignment.center,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           // name rest with api
-                          child: pw.Text(
-                              '${widget.list_get![index]['bath'] ?? "N/A"}',
+                          child: pw.Text('${items[index]['bath'] ?? "N/A"}',
                               style: const pw.TextStyle(fontSize: 10)),
                           height: 20,
                           //color: Colors.blue,
@@ -2800,8 +2782,7 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                           alignment: pw.Alignment.center,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           // name rest with api
-                          child: pw.Text(
-                              '${widget.list_get![index]['type'] ?? "N/A"}',
+                          child: pw.Text('${items[index]['type'] ?? "N/A"}',
                               style: const pw.TextStyle(fontSize: 10)),
                           height: 20,
                           //color: Colors.blue,
@@ -2824,8 +2805,9 @@ class _List_Sale_AllState extends State<List_Sale_All> {
                   child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        pw.Text(
-                            '${widget.list_get![index]['description'] ?? "N/A"}')
+                        (items[index]['description'].toString() != null)
+                            ? pw.Text('${items[index]['description'] ?? "N/A"}')
+                            : pw.SizedBox()
                       ]),
                 ),
                 pw.SizedBox(

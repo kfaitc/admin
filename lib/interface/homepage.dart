@@ -17,6 +17,8 @@ import 'package:intl/intl.dart';
 
 import 'package:kfa_admin/interface/mobile/navigate_home/User/menu.dart';
 import '../Account/account.dart';
+import '../bank/bank/new_bank.dart';
+import '../bank/bank/new_bank.dart';
 import 'mobile/navigate_home/User/list_notivigation.dart';
 import 'mobile/navigate_home/on_home_page.dart';
 import 'mobile/navigate_setting/memu_propety.dart';

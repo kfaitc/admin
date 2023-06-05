@@ -39,7 +39,6 @@ class controller_for_hometype extends GetxController {
       if (response.statusCode == 200) {
         final List<dynamic> jsonBody = jsonDecode(response.body);
         list_value_all_2SR.value = jsonBody;
-        print(list_value_all_2SR.toString());
       } else {
         print('Error value_all_list');
       }

@@ -1,34 +1,26 @@
 import 'package:flutter/material.dart';
 
-import '../../../../bank/bank/bank_list.dart';
-import '../../../../bank/bank/new_bank.dart';
-import 'auto_list.dart';
-import 'check_District.dart';
-import 'new_auto.dart';
+import 'brand_list.dart';
+import 'new_brand.dart';
 
-class MenuAuto extends StatefulWidget {
-  const MenuAuto({super.key});
+class Menu_brand extends StatefulWidget {
+  Menu_brand({super.key});
 
   @override
-  State<MenuAuto> createState() => _MenuAutoState();
+  State<Menu_brand> createState() => _MenuAutoState();
 }
 
 List<Text> optionText = const [
   Text(
-    "New Auto",
+    "New Brand",
     style: TextStyle(
         fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
   ),
   Text(
-    "Auto List",
+    "List Brand",
     style: TextStyle(
         fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
   ),
-  Text(
-    "Auto in Phnom Penh",
-    style: TextStyle(
-        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
-  )
 ];
 List<Image> optionIcon = [
   Image(
@@ -39,14 +31,14 @@ List<Image> optionIcon = [
   Image(
     image: AssetImage('assets/S_List.png'),
   ),
-  Image(
-    image: AssetImage(
-      'assets/S_plan.png',
-    ),
-  ),
+  // Image(
+  //   image: AssetImage(
+  //     'assets/S_plan.png',
+  //   ),
+  // ),
 ];
 
-class _MenuAutoState extends State<MenuAuto> {
+class _MenuAutoState extends State<Menu_brand> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +46,7 @@ class _MenuAutoState extends State<MenuAuto> {
         backgroundColor: Color.fromRGBO(49, 27, 146, 1),
         centerTitle: true,
         title: Text(
-          "Auto",
+          "Brand",
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
         ),
@@ -74,15 +66,11 @@ class _MenuAutoState extends State<MenuAuto> {
                 setState(() {
                   if (i == 0) {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => NewAuto()));
+                        MaterialPageRoute(builder: (context) => new_Brand()));
                   }
                   if (i == 1) {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => AutoList()));
-                  }
-                  if (i == 2) {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => District()));
+                        MaterialPageRoute(builder: (context) => Brand_list()));
                   }
                 });
               },

@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../../Detail_Screen/Detail_all_list_sale.dart';
+import '../../Detail_Screen/Detail_all_list_Screen.dart';
 
 class List_Rent extends StatefulWidget {
   List_Rent({super.key, required this.listget});

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, unused_import, avoid_print, non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, unused_import, avoid_print, non_constant_identifier_names, unused_field, unused_element
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
@@ -43,6 +43,16 @@ class _BankDropdownState extends State<BankDropdown> {
     Load();
   }
 
+  bool _district_l = false;
+  Future<void> _district() async {
+    _district_l = true;
+    await Future.wait([branch(bankvalue)]);
+
+    setState(() {
+      _district_l = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -58,8 +68,10 @@ class _BankDropdownState extends State<BankDropdown> {
                   bankvalue = newValue as String;
 
                   widget.bank(bankvalue);
-                  branch(newValue.toString());
-                  print(newValue);
+                  print(bankvalue.toString());
+                  // branch(newValue.toString());
+                  _district();
+                  // print(newValue);
                 });
               },
               validator: (String? value) {
@@ -136,69 +148,73 @@ class _BankDropdownState extends State<BankDropdown> {
         SizedBox(
           width: 10.0,
         ),
-        Expanded(
-          child: Container(
-            height: 58,
-            padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
-            child: DropdownButtonFormField<String>(
-              isExpanded: true,
+        _district_l
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Expanded(
+                child: Container(
+                  height: 58,
+                  padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
+                  child: DropdownButtonFormField<String>(
+                    isExpanded: true,
 
-              onChanged: (String? newValue) {
-                setState(() {
-                  branchvalue = newValue!;
-                  widget.bankbranch(branchvalue);
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        branchvalue = newValue!;
+                        widget.bankbranch(branchvalue);
 
-                  print(newValue);
-                });
-              },
-              items: _branch
-                  .map<DropdownMenuItem<String>>(
-                    (value) => DropdownMenuItem<String>(
-                      value: value["bank_branch_id"].toString(),
-                      child: Text(
-                        value["bank_branch_name"],
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                        // print(newValue);
+                      });
+                    },
+                    items: _branch
+                        .map<DropdownMenuItem<String>>(
+                          (value) => DropdownMenuItem<String>(
+                            value: value["bank_branch_id"].toString(),
+                            child: Text(
+                              value["bank_branch_name"],
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    // add extra sugar..
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: kImageColor,
                     ),
-                  )
-                  .toList(),
-              // add extra sugar..
-              icon: Icon(
-                Icons.arrow_drop_down,
-                color: kImageColor,
-              ),
 
-              decoration: InputDecoration(
-                fillColor: kwhite,
-                contentPadding: EdgeInsets.symmetric(vertical: 8),
+                    decoration: InputDecoration(
+                      fillColor: kwhite,
+                      contentPadding: EdgeInsets.symmetric(vertical: 8),
 
-                filled: true,
-                labelText: ((widget.brn == null) ? 'Branch' : widget.bn),
-                hintText: 'Select',
+                      filled: true,
+                      labelText: ((widget.brn == null) ? 'Branch' : widget.bn),
+                      hintText: 'Select',
 
-                prefixIcon: Icon(
-                  Icons.account_tree_rounded,
-                  color: kImageColor,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: kPrimaryColor, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    width: 1,
-                    color: kPrimaryColor,
+                      prefixIcon: Icon(
+                        Icons.account_tree_rounded,
+                        color: kImageColor,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: kPrimaryColor, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: kPrimaryColor,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      //   decoration: InputDecoration(
+                      //       labelText: 'From',
+                      //       prefixIcon: Icon(Icons.business_outlined)),
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(10.0),
                 ),
-                //   decoration: InputDecoration(
-                //       labelText: 'From',
-                //       prefixIcon: Icon(Icons.business_outlined)),
               ),
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -218,7 +234,7 @@ class _BankDropdownState extends State<BankDropdown> {
     }
   }
 
-  void branch(String value) async {
+  Future<void> branch(String value) async {
     setState(() {});
     var rs = await http.get(Uri.parse(
         'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/bankbranch?bank_branch_details_id=' +
@@ -228,6 +244,7 @@ class _BankDropdownState extends State<BankDropdown> {
       // print(jsonData);
       setState(() {
         _branch = jsonData['bank_branches'];
+        print(_branch.toString());
       });
     }
   }

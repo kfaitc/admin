@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../../../bank/bank/bank_list.dart';
+import '../../../bank/bank/menu_bank.dart';
+import '../../../bank/bank/new_bank.dart';
+import '../../../bank/brand/menu_brand.dart';
 import '../navigate_home/AutoVerbal/menu.dart';
 import 'auto/menu_auto.dart';
 
@@ -109,6 +113,14 @@ class _On_propertyState extends State<On_property> {
                   if (i == 2) {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => MenuAuto()));
+                  }
+                  if (i == 5) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Menu_bank()));
+                  }
+                  if (i == 6) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Menu_brand()));
                   }
                 });
               },
