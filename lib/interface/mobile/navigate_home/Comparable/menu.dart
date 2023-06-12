@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/Comparable/New_Comparable.dart';
 
 import 'Comparable_list_view.dart';
 
 class MenuComparable extends StatefulWidget {
-  const MenuComparable({super.key});
+  MenuComparable({super.key, required this.name});
+  String? name;
 
   @override
   State<MenuComparable> createState() => _MenuComparableState();
@@ -54,9 +56,18 @@ class _MenuComparableState extends State<MenuComparable> {
             for (int i = 0; i < option.length; i++)
               InkWell(
                 onTap: () {
+                  if (i == 0) {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return New_Comparable();
+                      },
+                    ));
+                  }
                   if (i == 1) {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ComparableList()));
+                        builder: (context) => ComparableList(
+                              name: widget.name,
+                            )));
                   }
                 },
                 child: Container(

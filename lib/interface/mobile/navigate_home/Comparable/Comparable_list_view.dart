@@ -1,15 +1,23 @@
-// ignore_for_file: unused_import, unnecessary_import, implementation_imports, non_constant_identifier_names, unused_field, must_call_super, prefer_const_constructors, unnecessary_string_interpolations
+// ignore_for_file: unused_import, unnecessary_import, implementation_imports, non_constant_identifier_names, unused_field, must_call_super, prefer_const_constructors, unnecessary_string_interpolations, unused_element, unused_local_variable, dead_code, must_be_immutable
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/button/gf_button.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/property/Screen_Page/For_Rent.dart';
 import 'package:kfa_admin/model/comparable.dart';
 import 'package:kfa_admin/model/property.dart';
+import 'package:printing/printing.dart';
 
+import '../Property/mapproperty/ToFromDate_ForSale.dart';
+import 'Edit_Comparable.dart';
+
+// comparable_search Api search
 class ComparableList extends StatefulWidget {
-  const ComparableList({super.key});
+  ComparableList({super.key, required this.name});
+  String? name;
 
   @override
   State<ComparableList> createState() => _ComparableListState();
@@ -17,217 +25,415 @@ class ComparableList extends StatefulWidget {
 
 class _ComparableListState extends State<ComparableList> {
   // A function that converts a response body into a List<Photo>.
-  static List<String> Idcom = [];
-  Future<Comparable> com_data() async {
-    final response = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/comparable/list'));
-    final data = jsonDecode(response.body);
-    return Comparable.fromJson(data);
+  List list = [];
+  int on_row = 20;
+  String? id_ds;
+  Future<void> _comparable_search_() async {
+    _wait_search_ = true;
+    await Future.wait([
+      Comparable_search(),
+    ]);
+    setState(() {
+      _wait_search_ = false;
+    });
   }
 
-  Future<properties> com_data_pty() async {
-    final response = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/property'));
-    final data = jsonDecode(response.body);
-    return properties.fromJson(data);
+  Future<void> Comparable_search() async {
+    setState(() {});
+    try {
+      final response = await http.get(Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/comparable_search?search=$_search'));
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonBody = jsonDecode(response.body);
+        list = jsonBody;
+
+        setState(() {
+          list;
+        });
+      } else {
+        print('Error bank');
+      }
+    } catch (e) {
+      print('Error value_all_list $e');
+    }
   }
 
-  Map<String, String> propertyID = {
-    '1': 'Agriculture',
-    '2': 'Apartment',
-    '3': 'Borey',
-    '4': 'Building',
-    '5': 'Business',
-    '6': 'Condominium',
-    '7': 'Deverlopment Land',
-    '8': 'Duplex House',
-    '9': 'Factory',
-    '10': 'Flat',
-    '11': 'Ges Station',
-    '12': 'Guest House',
-    '13': 'Hotel',
-    '14': 'House',
-    '15': 'Land',
-    '16': 'Link House',
-    '17': 'Marketing House',
-    '18': 'Office Space',
-    '19': 'Other',
-    '20': 'Penthon',
-    '21': 'Projet',
-    '22': 'Report',
-    '23': 'Restaurant',
-    '24': 'Shop',
-    '25': 'Shop House',
-    '26': 'Shopping Center',
-    '27': 'Store',
-    '28': 'Twin House',
-    '29': 'Villa',
-    '30': 'Villa Share',
-    '31': 'Warehouse',
-    '32': 'Residence',
-    '33': 'Vacant Land',
-    '34': 'Industrial Park',
-    '35': 'Casio',
-    '36': 'Office Building',
-  };
-  static String ch = '';
+  Future<void> ComparableList() async {
+    try {
+      final response = await http.get(Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/comparable/list'));
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonBody = jsonDecode(response.body);
+        list = jsonBody;
+
+        setState(() {
+          list;
+        });
+      } else {
+        print('Error bank');
+      }
+    } catch (e) {
+      print('Error value_all_list $e');
+    }
+  }
+
+  bool _wait_search_ = false;
+  bool _wait_search = false;
+  Future<void> _comparable_search() async {
+    _wait_search = true;
+    await Future.wait([
+      ComparableList_search(),
+    ]);
+    setState(() {
+      _wait_search = false;
+    });
+  }
+
+  Future<void> ComparableList_search() async {
+    try {
+      final response = await http.get(Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/comparable_search_date?start=$start&end=$end'));
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonBody = jsonDecode(response.body);
+        list = jsonBody;
+        setState(() {
+          list;
+        });
+      } else {
+        print('Error bank');
+      }
+    } catch (e) {
+      print('Error value_all_list $e');
+    }
+  }
+
   @override
-  void initState() {}
+  void initState() {
+    ComparableList();
+  }
 
+  String? start;
+  String? end;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: com_data(),
-        builder: (context, AsyncSnapshot<Comparable> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+      appBar: AppBar(),
+      body: _wait_search
+          ? Center(
               child: CircularProgressIndicator(),
-            );
-          }
-          return ListView.builder(
-            itemCount: snapshot.data!.data!.length,
-            itemBuilder: (context, index) {
-              final cdt = snapshot.data!.data![index];
-              // Idcom.add(cdt.comparableId!.toString());
-              propertyID.forEach(
-                (key, value) {
-                  if (key == cdt.comparablePropertyId.toString()) {
-                    ch = value;
-                  }
-                },
-              );
-              return Container(
-                height: MediaQuery.of(context).size.height * 0.5,
-                margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30)),
-                    boxShadow: [BoxShadow(color: Colors.black, blurRadius: 5)]),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Property Type :",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).textScaleFactor *
-                                        15)),
-                        Text(ch,
-                            style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).textScaleFactor *
-                                        14)),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Lang Size :",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).textScaleFactor *
-                                        15)),
-                        Text(ch,
-                            style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).textScaleFactor *
-                                        14)),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        },
-      ),
+            )
+          : comparable_list(context),
     );
   }
 
-  Widget getProperty(BuildContext context) {
-    return FutureBuilder(
-      future: com_data_pty(),
-      builder: (context, AsyncSnapshot<properties> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return ListView.builder(
-          itemCount: snapshot.data!.property?.length,
-          itemBuilder: (context, index) {
-            final cdt = snapshot.data!.property![index];
-            return Column(
-              children: [
-                Row(
-                  children: [
-                    Text("${cdt.propertyTypeId.toString()}"),
-                    Text("${cdt.propertyTypeName.toString()}")
-                  ],
-                )
-              ],
-            );
+  String? _search;
+  Widget comparable_list(BuildContext context) {
+    return SingleChildScrollView(
+        child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 10, left: 10, top: 10),
+          child: Row(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.07,
+                width: MediaQuery.of(context).size.width * 0.65,
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          _search = value;
+                          // _comparable_search_();
+                        });
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(),
+                        hintText: 'Search listing here...',
+                      )),
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              GFButton(
+                size: MediaQuery.of(context).size.height * 0.07,
+                elevation: 12,
+                onPressed: () {
+                  setState(() {
+                    _comparable_search_();
+                  });
+                },
+                text: "Search",
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        ToFromDate_p(
+          fromDate: (value) {
+            setState(() {
+              start = value.toString();
+              start;
+            });
           },
-        );
-      },
-    );
+          toDate: (value) {
+            setState(() {
+              end = value.toString();
+              end;
+            });
+          },
+        ),
+        _wait_search_
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                width: MediaQuery.of(context).size.width * 1,
+                padding: EdgeInsets.all(5),
+                child: PaginatedDataTable(
+                  horizontalMargin: 5.0,
+                  arrowHeadColor: Colors.blueAccent[300],
+                  columns: [
+                    DataColumn(
+                        label: Text(
+                      'No',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Proerty Type',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Land Size',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Building Size',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Asking',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Offered',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Bought',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Sold Out',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Location',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Agency',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Code',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Survey Date',
+                      style: TextStyle(color: Colors.green),
+                    )),
+                  ],
+                  dataRowHeight: 50,
+                  rowsPerPage: on_row,
+                  onRowsPerPageChanged: (value) {
+                    setState(() {
+                      on_row = value!;
+                    });
+                  },
+                  source:
+                      new _DataSource(list, list.length, context, widget.name),
+                ),
+              )
+      ],
+    ));
   }
 }
 
-// class PhotosList extends StatelessWidget {
-//   const PhotosList({super.key, required this.item});
+void DeTail_screen(BuildContext context, list, int index) async {
+  Navigator.push(context, MaterialPageRoute(
+    builder: (context) {
+      return Detail_Screen(
+        index: index.toString(),
+        list: list,
+      );
+    },
+  ));
+}
 
-//   final List<Comparable> item;
+class _DataSource extends DataTableSource {
+  final List data;
+  final String? name;
+  final int count_row;
+  final BuildContext context;
+  _DataSource(this.data, this.count_row, this.context, this.name);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return GridView.builder(
-//       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//         crossAxisCount: 1,
-//         crossAxisSpacing: 2.0,
-//       ),
-//       itemCount: item.length,
-//       itemBuilder: (context, index) {
-//         return Container(
-//           height: 700,
-//           decoration: BoxDecoration(
-//               color: Colors.blue[100], borderRadius: BorderRadius.circular(20)),
-//           padding: EdgeInsets.all(10),
-//           margin: EdgeInsets.only(bottom: 10),
-//           child: Column(
-//             children: [
-//               ListTile(
-//                 title: Text(
-//                   item[index].data[index].comparableCommuneId.toString(),
-//                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
-//                 ),
-//                 // subtitle: Text("Job : ${item[index].title.toString()}"),
-//                 trailing: Icon(
-//                   Icons.favorite_border,
-//                   color: Colors.red,
-//                   size: 40,
-//                 ),
-//               ),
-//               // Container(
-//               //   height: MediaQuery.of(context).size.height * 0.5,
-//               //   width: double.infinity,
-//               //   decoration: BoxDecoration(
-//               //       image: DecorationImage(
-//               //           fit: BoxFit.cover,
-//               //           image: NetworkImage(item[index].photo.toString()))),
-//               // ),
-//               // Text("This is My ex number ${item[index].id.toString()}"),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
+  @override
+  DataRow? getRow(int index) {
+    if (index >= data.length) {
+      return null;
+    }
+
+    final item = data[index];
+
+    return DataRow(
+        selected: true,
+        color: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.selected)) {
+              return index % 2 == 0
+                  ? Color.fromARGB(168, 73, 83, 224)
+                  : Colors.white;
+            }
+            return index % 2 == 0
+                ? Color.fromARGB(255, 255, 162, 162)
+                : Colors.white;
+          },
+        ),
+        cells: [
+          DataCell(
+            placeholder: true,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  index.toString(),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            onTap: () {
+              DeTail_screen(context, data, index);
+            },
+          ),
+          DataCell(
+            Text(
+              item['comparable_property_id'].toString(),
+              style: TextStyle(fontSize: 10),
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () {
+              DeTail_screen(context, data, index);
+            },
+          ),
+          DataCell(
+            Text(
+              item['comparable_land_total'].toString(),
+              style: TextStyle(fontSize: 10),
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () {},
+          ),
+          DataCell(
+            Text(
+              item['comparable_sold_total'].toString(),
+              style: TextStyle(fontSize: 10),
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () {},
+          ),
+          DataCell(
+            Text(
+              item['comparable_adding_price'].toString(),
+              style: TextStyle(fontSize: 10),
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () {},
+          ),
+          DataCell(
+              Text(
+                item['comparable_sold_total_price'].toString(),
+                style: TextStyle(fontSize: 10),
+                overflow: TextOverflow.ellipsis,
+              ),
+              onTap: () {}),
+          DataCell(
+            Text(
+              item['bank_name'].toString(),
+              style: TextStyle(fontSize: 10),
+            ),
+            onTap: () {},
+          ),
+          DataCell(
+            Text(
+              item['comparableaddprice'].toString(),
+              style: TextStyle(fontSize: 10),
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () {},
+          ),
+          DataCell(
+            Text(
+              item['comparable_address'].toString(),
+              style: TextStyle(fontSize: 10),
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () {},
+          ),
+          DataCell(
+            Text(
+              // '${name}',
+              'N/A',
+              // '${name}',
+              style: TextStyle(fontSize: 10),
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () {},
+          ),
+          DataCell(
+            Text(
+              item['comparable_id'].toString(),
+              style: TextStyle(fontSize: 10),
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () {},
+          ),
+          DataCell(
+              Text(
+                item['comparable_survey_date'].toString(),
+                style: TextStyle(fontSize: 10),
+                overflow: TextOverflow.ellipsis,
+              ),
+              onTap: () {}),
+        ]);
+  }
+
+  @override
+  int get rowCount => count_row;
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get selectedRowCount => 0;
+}
+//

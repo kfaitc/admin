@@ -52,116 +52,115 @@ class _Bank_listState extends State<Bank_list> {
   int on_row = 20;
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 22, 13, 160),
-          title: Text('Bank List'),
-          actions: [
-            IconButton(
-                onPressed: () async {
-                  await Printing.layoutPdf(
-                      onLayout: (format) =>
-                          _generatePdf(format, bank_list_get!));
-                },
-                icon: Icon(
-                  Icons.print_outlined,
-                  size: MediaQuery.of(context).size.height * 0.045,
-                )),
-            SizedBox(
-              width: 10,
-            ),
-          ],
-        ),
-        body: _wait
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            :
-            // ? Text('1')
-            // : Text('2')
-            SingleChildScrollView(
-                child: Column(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(right: 10, left: 10, top: 10),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: TextFormField(
-                            onChanged: (value) {
-                              setState(() {
-                                value;
-                                search = value;
-                                _bank_search();
-                              });
-                            },
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(),
-                              hintText: 'Search listing here...',
-                            )),
-                      ),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 22, 13, 160),
+        title: Text('Bank List'),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                await Printing.layoutPdf(
+                    onLayout: (format) => _generatePdf(format, bank_list_get!));
+              },
+              icon: Icon(
+                Icons.print_outlined,
+                size: MediaQuery.of(context).size.height * 0.045,
+              )),
+          SizedBox(
+            width: 10,
+          ),
+        ],
+      ),
+      body: _wait
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          :
+          // ? Text('1')
+          // : Text('2')
+          SingleChildScrollView(
+              child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, left: 10, top: 10),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Padding(
+                      padding: const EdgeInsets.all(1.0),
+                      child: TextFormField(
+                          onChanged: (value) {
+                            setState(() {
+                              value;
+                              search = value;
+                              _bank_search();
+                            });
+                          },
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            border: OutlineInputBorder(),
+                            hintText: 'Search listing here...',
+                          )),
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 1,
-                    padding: EdgeInsets.all(5),
-                    child: PaginatedDataTable(
-                      horizontalMargin: 5.0,
-                      arrowHeadColor: Colors.blueAccent[300],
-                      columns: [
-                        DataColumn(
-                            label: Text(
-                          'No',
-                          style: TextStyle(color: Colors.green),
-                        )),
-                        DataColumn(
-                            label: Text(
-                          'Bank Name',
-                          style: TextStyle(color: Colors.green),
-                        )),
-                        DataColumn(
-                            label: Text(
-                          'Bank Acronym',
-                          style: TextStyle(color: Colors.green),
-                        )),
-                        DataColumn(
-                            label: Text(
-                          'Bank Officer',
-                          style: TextStyle(color: Colors.green),
-                        )),
-                        DataColumn(
-                            label: Text(
-                          'Bank Contact',
-                          style: TextStyle(color: Colors.green),
-                        )),
-                        DataColumn(
-                            label: Text(
-                          'address',
-                          style: TextStyle(color: Colors.green),
-                        )),
-                        DataColumn(
-                            label: Text(
-                          'Create Date',
-                          style: TextStyle(color: Colors.green),
-                        )),
-                      ],
-                      dataRowHeight: 50,
-                      rowsPerPage: on_row,
-                      onRowsPerPageChanged: (value) {
-                        setState(() {
-                          on_row = value!;
-                        });
-                      },
-                      source: new _DataSource(
-                          bank_list_get!, bank_list_get!.length, context),
-                    ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 1,
+                  padding: EdgeInsets.all(5),
+                  child: PaginatedDataTable(
+                    horizontalMargin: 5.0,
+                    arrowHeadColor: Colors.blueAccent[300],
+                    columns: [
+                      DataColumn(
+                          label: Text(
+                        'No',
+                        style: TextStyle(color: Colors.green),
+                      )),
+                      DataColumn(
+                          label: Text(
+                        'Bank Name',
+                        style: TextStyle(color: Colors.green),
+                      )),
+                      DataColumn(
+                          label: Text(
+                        'Bank Acronym',
+                        style: TextStyle(color: Colors.green),
+                      )),
+                      DataColumn(
+                          label: Text(
+                        'Bank Officer',
+                        style: TextStyle(color: Colors.green),
+                      )),
+                      DataColumn(
+                          label: Text(
+                        'Bank Contact',
+                        style: TextStyle(color: Colors.green),
+                      )),
+                      DataColumn(
+                          label: Text(
+                        'address',
+                        style: TextStyle(color: Colors.green),
+                      )),
+                      DataColumn(
+                          label: Text(
+                        'Create Date',
+                        style: TextStyle(color: Colors.green),
+                      )),
+                    ],
+                    dataRowHeight: 50,
+                    rowsPerPage: on_row,
+                    onRowsPerPageChanged: (value) {
+                      setState(() {
+                        on_row = value!;
+                      });
+                    },
+                    source: new _DataSource(
+                        bank_list_get!, bank_list_get!.length, context),
                   ),
-                ],
-              )));
+                ),
+              ],
+            )),
+    );
   }
 
   List? bank_list_get;

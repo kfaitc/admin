@@ -66,6 +66,7 @@ class _RoadDropdownState extends State<RoadDropdown> {
               color: kImageColor,
             ),
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(vertical: 8),
               fillColor: kwhite,
               filled: true,
               labelText: 'Road',

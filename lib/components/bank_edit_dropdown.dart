@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, unused_import, avoid_print, non_constant_identifier_names, unused_field, unused_element
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, unused_import, avoid_print, non_constant_identifier_names, unused_field, unused_element, unnecessary_null_comparison
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
@@ -8,23 +8,27 @@ import 'contants.dart';
 
 typedef OnChangeCallback = void Function(dynamic value);
 
-class BankDropdown extends StatefulWidget {
-  const BankDropdown({
+class BankDropdown_Edit extends StatefulWidget {
+  BankDropdown_Edit({
     Key? key,
+    required this.brand_id,
+    required this.bank_id,
     required this.bank,
     required this.bankbranch,
-    this.bn,
-    this.brn,
+    required this.dbank,
+    required this.branch,
   }) : super(key: key);
+  String? bank_id;
+  String? brand_id;
   final OnChangeCallback bank;
   final OnChangeCallback bankbranch;
-  final String? bn;
-  final String? brn;
+  final String? dbank;
+  final String? branch;
   @override
-  State<BankDropdown> createState() => _BankDropdownState();
+  State<BankDropdown_Edit> createState() => _BankDropdownState();
 }
 
-class _BankDropdownState extends State<BankDropdown> {
+class _BankDropdownState extends State<BankDropdown_Edit> {
   var _list = [];
   var _branch = [];
   late String bankvalue;
@@ -64,11 +68,14 @@ class _BankDropdownState extends State<BankDropdown> {
             isExpanded: true,
             onChanged: (newValue) {
               setState(() {
-                bankvalue = newValue as String;
-
-                widget.bank(bankvalue);
                 print(bankvalue.toString());
-                // branch(newValue.toString());
+                bankvalue = newValue as String;
+                if (newValue == null) {
+                  widget.bank(widget.bank_id);
+                } else {
+                  widget.bank(newValue);
+                }
+
                 _district();
                 // print(newValue);
               });
@@ -103,7 +110,7 @@ class _BankDropdownState extends State<BankDropdown> {
               fillColor: kwhite,
               filled: true, contentPadding: EdgeInsets.symmetric(vertical: 8),
 
-              labelText: ((widget.bn == null) ? 'Bank' : widget.bn),
+              labelText: ((widget.dbank == null) ? 'bank' : widget.dbank),
               hintText: 'Select',
 
               prefixIcon: Icon(
@@ -156,7 +163,12 @@ class _BankDropdownState extends State<BankDropdown> {
                       branchvalue = newValue!;
                       widget.bankbranch(branchvalue);
 
-                      // print(newValue);
+                      if (newValue == null) {
+                        widget.bankbranch(widget.brand_id);
+                      } else {
+                        widget.bankbranch(newValue);
+                        print(newValue);
+                      }
                     });
                   },
                   items: _branch
@@ -181,7 +193,8 @@ class _BankDropdownState extends State<BankDropdown> {
                     contentPadding: EdgeInsets.symmetric(vertical: 8),
 
                     filled: true,
-                    labelText: ((widget.brn == null) ? 'Branch' : widget.bn),
+                    labelText:
+                        ((widget.branch == null) ? 'Branch' : widget.branch),
                     hintText: 'Select',
 
                     prefixIcon: Icon(

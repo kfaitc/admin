@@ -15,9 +15,14 @@ import 'Valuation/menu.dart';
 import 'Verbal/menu.dart';
 
 class NoBodyHome extends StatefulWidget {
-  NoBodyHome({Key? key, required this.id, required this.nativigation})
+  NoBodyHome(
+      {Key? key,
+      required this.id,
+      required this.nativigation,
+      required this.name})
       : super(key: key);
   final String id;
+  final String name;
   bool? nativigation;
   @override
   State<NoBodyHome> createState() => _NoBodyHomeState();
@@ -83,7 +88,9 @@ class _NoBodyHomeState extends State<NoBodyHome> {
                 }
                 if (i == 2) {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => MenuComparable()));
+                      builder: (context) => MenuComparable(
+                            name: widget.name,
+                          )));
                 }
                 if (i == 3) {
                   Navigator.of(context).push(MaterialPageRoute(

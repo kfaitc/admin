@@ -76,6 +76,7 @@ class _HomePageState extends State<HomePage>
     count_verbal(formattedDate_now, formattedDate_ago);
     pages = [
       NoBodyHome(
+        name: widget.user,
         nativigation: nativigation,
         id: widget.id,
       ),
