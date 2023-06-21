@@ -291,7 +291,14 @@ class _HomePageState extends State<HomePage>
                   // controller.count_verbal();
                   Get.to(Notivigation_day());
                 },
-                icon: Icon(Icons.notifications_active_outlined),
+                color: Color.fromARGB(0, 0, 0, 0),
+                disabledColor: Color.fromARGB(0, 0, 0, 0),
+                type: GFButtonType.outline,
+                shape: GFIconButtonShape.circle,
+                icon: Icon(
+                  Icons.notification_important_outlined,
+                  color: Colors.white,
+                ),
               ),
               counterChild: GFBadge(
                 child: Text("${count_string}"),

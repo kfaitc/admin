@@ -43,34 +43,24 @@ class _BankDropdownState extends State<BankDropdown> {
     Load();
   }
 
-  bool _district_l = false;
-  Future<void> _district() async {
-    _district_l = true;
-    await Future.wait([branch(bankvalue)]);
-
-    setState(() {
-      _district_l = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          height: 58,
+          height: 57,
           padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+          margin: EdgeInsets.only(bottom: 10),
           child: DropdownButtonFormField<String>(
             isExpanded: true,
             onChanged: (newValue) {
               setState(() {
                 bankvalue = newValue as String;
-
+                if (_branch.isNotEmpty) {
+                  _branch.clear();
+                }
                 widget.bank(bankvalue);
-                print(bankvalue.toString());
-                // branch(newValue.toString());
-                _district();
-                // print(newValue);
+                branch(newValue.toString());
               });
             },
             validator: (String? value) {
@@ -101,11 +91,11 @@ class _BankDropdownState extends State<BankDropdown> {
 
             decoration: InputDecoration(
               fillColor: kwhite,
-              filled: true, contentPadding: EdgeInsets.symmetric(vertical: 8),
-
+              contentPadding: EdgeInsets.symmetric(vertical: 8),
+              filled: true,
               labelText: ((widget.bn == null) ? 'Bank' : widget.bn),
               hintText: 'Select',
-
+              labelStyle: TextStyle(color: kPrimaryColor),
               prefixIcon: Icon(
                 Icons.home_work,
                 color: kImageColor,
@@ -141,71 +131,67 @@ class _BankDropdownState extends State<BankDropdown> {
             ),
           ),
         ),
-        _district_l
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Container(
-                height: 58,
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                child: DropdownButtonFormField<String>(
-                  isExpanded: true,
+        if (_branch.length >= 1)
+          Container(
+            height: 57,
+            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+            child: DropdownButtonFormField<String>(
+              isExpanded: true,
 
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      branchvalue = newValue!;
-                      widget.bankbranch(branchvalue);
+              onChanged: (String? newValue) {
+                setState(() {
+                  branchvalue = newValue!;
+                  widget.bankbranch(branchvalue);
 
-                      // print(newValue);
-                    });
-                  },
-                  items: _branch
-                      .map<DropdownMenuItem<String>>(
-                        (value) => DropdownMenuItem<String>(
-                          value: value["bank_branch_id"].toString(),
-                          child: Text(
-                            value["bank_branch_name"],
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  // add extra sugar..
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    color: kImageColor,
-                  ),
-
-                  decoration: InputDecoration(
-                    fillColor: kwhite,
-                    contentPadding: EdgeInsets.symmetric(vertical: 8),
-
-                    filled: true,
-                    labelText: ((widget.brn == null) ? 'Branch' : widget.bn),
-                    hintText: 'Select',
-
-                    prefixIcon: Icon(
-                      Icons.account_tree_rounded,
-                      color: kImageColor,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: kPrimaryColor, width: 2.0),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 1,
-                        color: kPrimaryColor,
+                  print(newValue);
+                });
+              },
+              items: _branch
+                  .map<DropdownMenuItem<String>>(
+                    (value) => DropdownMenuItem<String>(
+                      value: value["bank_branch_id"].toString(),
+                      child: Text(
+                        value["bank_branch_name"],
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                    //   decoration: InputDecoration(
-                    //       labelText: 'From',
-                    //       prefixIcon: Icon(Icons.business_outlined)),
-                  ),
-                ),
+                  )
+                  .toList(),
+              // add extra sugar..
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: kImageColor,
               ),
+
+              decoration: InputDecoration(
+                fillColor: kwhite,
+                contentPadding: EdgeInsets.symmetric(vertical: 8),
+                filled: true,
+                labelText: ((widget.brn == null) ? 'Branch' : widget.bn),
+                hintText: 'Select',
+                labelStyle: TextStyle(color: kPrimaryColor),
+                prefixIcon: Icon(
+                  Icons.account_tree_rounded,
+                  color: kImageColor,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: kPrimaryColor, width: 2.0),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: kPrimaryColor,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                //   decoration: InputDecoration(
+                //       labelText: 'From',
+                //       prefixIcon: Icon(Icons.business_outlined)),
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -225,7 +211,7 @@ class _BankDropdownState extends State<BankDropdown> {
     }
   }
 
-  Future<void> branch(String value) async {
+  branch(String value) async {
     setState(() {});
     var rs = await http.get(Uri.parse(
         'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/bankbranch?bank_branch_details_id=' +
@@ -235,7 +221,6 @@ class _BankDropdownState extends State<BankDropdown> {
       // print(jsonData);
       setState(() {
         _branch = jsonData['bank_branches'];
-        print(_branch.toString());
       });
     }
   }
