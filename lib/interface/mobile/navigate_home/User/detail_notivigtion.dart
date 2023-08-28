@@ -102,7 +102,7 @@ class _Detail_NotivigationState extends State<Detail_Notivigation2> {
                           topLeft: Radius.circular(40),
                           topRight: Radius.circular(40)),
                       color: Colors.white),
-                  height: MediaQuery.of(context).size.height * 1,
+                  height: MediaQuery.of(context).size.height * 0.83,
                   width: double.infinity,
                   child: Column(
                     children: [

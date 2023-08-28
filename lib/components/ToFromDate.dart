@@ -45,12 +45,11 @@ class _ToFromDateState extends State<ToFromDate> {
                     color: kImageColor,
                   ), //icon of text field
                   labelText: "From Date",
-                  labelStyle: TextStyle(color: kPrimaryColor),
                   floatingLabelStyle: TextStyle(color: Colors.black, shadows: [
                     Shadow(
                       color: Colors.black,
                       offset: Offset(0.5, 0),
-                      blurRadius: 1,
+                      blurRadius: 2,
                     ),
                   ]),
                   contentPadding: EdgeInsets.symmetric(vertical: 8),
@@ -58,11 +57,11 @@ class _ToFromDateState extends State<ToFromDate> {
                   filled: true,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(color: kPrimaryColor, width: 2.0),
+                        const BorderSide(color: Colors.green, width: 2.0),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 1, color: kPrimaryColor),
+                    borderSide: BorderSide(width: 1, color: Colors.green),
                     borderRadius: BorderRadius.circular(10.0),
                   ), //label text of field
                 ),
@@ -114,8 +113,7 @@ class _ToFromDateState extends State<ToFromDate> {
                     Icons.calendar_today,
                     color: kImageColor,
                   ), //icon of text field
-                  labelText: "To   Date",
-                  labelStyle: TextStyle(color: kPrimaryColor),
+                  labelText: "To Date",
                   contentPadding: EdgeInsets.symmetric(vertical: 8),
                   fillColor: kwhite,
                   filled: true,
@@ -123,16 +121,16 @@ class _ToFromDateState extends State<ToFromDate> {
                     Shadow(
                       color: Colors.black,
                       offset: Offset(0.5, 0),
-                      blurRadius: 1,
+                      blurRadius: 2,
                     ),
                   ]),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(color: kPrimaryColor, width: 2.0),
+                        const BorderSide(color: Colors.green, width: 2.0),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 1, color: kPrimaryColor),
+                    borderSide: BorderSide(width: 1, color: Colors.green),
                     borderRadius: BorderRadius.circular(10.0),
                   ), //label text of field
                 ),

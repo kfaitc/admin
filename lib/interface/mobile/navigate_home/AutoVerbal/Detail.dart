@@ -534,10 +534,9 @@ class _detail_searchingState extends State<detail_verbal> {
         (await NetworkAssetBundle(Uri.parse('$image_i')).load('$image_i'))
             .buffer
             .asUint8List();
-    final pageTheme = await _myPageTheme(format);
+
     // Add a page to the PDF document
     pdf.addPage(pw.MultiPage(
-      pageTheme: pageTheme,
       build: (context) {
         return [
           pw.Column(
@@ -1326,28 +1325,4 @@ class _detail_searchingState extends State<detail_verbal> {
         onLayout: (PdfPageFormat format) async => pdfBytes);
     return pdf.save();
   }
-}
-
-Future<pw.PageTheme> _myPageTheme(PdfPageFormat format) async {
-  final bgShape = await rootBundle.loadString('assets/images/Letter En-Kh.svg');
-
-  format = format.applyMargin(
-      left: 0.5 * PdfPageFormat.cm,
-      top: 1.0 * PdfPageFormat.cm,
-      right: 0.5 * PdfPageFormat.cm,
-      bottom: 1.0 * PdfPageFormat.cm);
-  return pw.PageTheme(
-    pageFormat: format,
-    theme: pw.ThemeData.withFont(
-      base: await PdfGoogleFonts.openSansRegular(),
-      bold: await PdfGoogleFonts.openSansBold(),
-      icons: await PdfGoogleFonts.materialIcons(),
-    ),
-    buildBackground: (pw.Context context) {
-      return pw.FullPage(
-        ignoreMargins: true,
-        child: pw.SvgImage(svg: bgShape),
-      );
-    },
-  );
 }
