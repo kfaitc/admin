@@ -1,32 +1,34 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
-import 'package:kfa_admin/Customs/Contants.dart';
-import 'package:kfa_admin/interface/mobile/navigate_home/Report/R_valuation/V_menu.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:kfa_admin/contants.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/Report/R_valuation/V__year/V_year.dart';
 
-class MenuReport extends StatefulWidget {
-  MenuReport({Key? key, required this.id}) : super(key: key);
-  final String id;
+class V_menu extends StatefulWidget {
+  V_menu({Key? key}) : super(key: key);
 
   @override
-  State<MenuReport> createState() => _MenuReportState();
+  State<V_menu> createState() => _V_menuState();
 }
 
-class _MenuReportState extends State<MenuReport> {
+class _V_menuState extends State<V_menu> with TickerProviderStateMixin {
+  late AnimationController animationController =
+      AnimationController(vsync: this, duration: const Duration(seconds: 5));
   List<Text> option = const [
-    Text("Costomer",
+    Text("Valuation Report by Appraiser",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
-    Text("Verbal",
+    Text("Valuation Report by Year",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
-    Text("Comparable",
+    Text("Valuation Summary Report by Bank",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
-    Text("Valuation",
+    Text("Valuation Summary Report by Brand",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
-    Text("Property",
+    Text("Valuation Summary Report by Customer",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
   ];
@@ -38,13 +40,20 @@ class _MenuReportState extends State<MenuReport> {
     Icon(Icons.view_cozy_rounded, color: Colors.white),
   ];
   @override
+  void initState() {
+    animationController.forward();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple[900],
         centerTitle: true,
         title: const Text(
-          "Report",
+          "Valuation",
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
         ),
@@ -55,38 +64,30 @@ class _MenuReportState extends State<MenuReport> {
           for (int i = 0; i < option.length; i++)
             InkWell(
               onTap: () {
-                if (i == 3) {
+                if (i == 1) {
                   Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => V_menu()));
+                      .push(MaterialPageRoute(builder: (context) => v_year()));
                 }
               },
               child: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.07,
-                margin: const EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                    color: kImageColor,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          color: Colors.black,
-                          blurStyle: BlurStyle.outer)
-                    ]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: optionIconList.elementAt(i),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: option.elementAt(i),
-                    ),
+                  color: kImageColor,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                      spreadRadius: 3,
+                      blurRadius: 2,
+                      color: Colors.black,
+                      blurStyle: BlurStyle.outer,
+                    )
                   ],
+                ),
+                child: ListTile(
+                  horizontalTitleGap: 8,
+                  leading: optionIconList[i],
+                  style: ListTileStyle.drawer,
+                  title: option[i],
                 ),
               ),
             ),
