@@ -6,8 +6,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../Model/Rent_model.dart';
-
 class Detail_property_sale extends StatefulWidget {
   final String? property_type_id;
   final String? id_image;

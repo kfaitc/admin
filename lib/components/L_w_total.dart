@@ -8,10 +8,19 @@ typedef OnChangeCallback = void Function(dynamic value);
 
 class Land_building extends StatefulWidget {
   Land_building(
-      {super.key, required this.w, required this.l, required this.total});
+      {super.key,
+      required this.w,
+      required this.l,
+      required this.total,
+      this.l_get,
+      this.total_get,
+      this.w_get});
   final OnChangeCallback l;
   final OnChangeCallback w;
   final OnChangeCallback total;
+  String? w_get;
+  String? l_get;
+  String? total_get;
   @override
   _MultiplyFormState createState() => _MultiplyFormState();
 }
@@ -20,11 +29,22 @@ class _MultiplyFormState extends State<Land_building> {
   TextEditingController _controllerA = TextEditingController();
   TextEditingController _controllerB = TextEditingController();
   int _total = 0;
+  @override
+  void initState() {
+    if (widget.l_get == 'new_executive') {
+      _controllerA = TextEditingController(text: widget.l_get.toString());
+      _controllerB = TextEditingController(text: widget.w_get.toString());
+      _total = int.parse(widget.total_get.toString());
+    } else {}
+
+    super.initState();
+  }
 
   @override
   void dispose() {
     _controllerA.dispose();
     _controllerB.dispose();
+
     super.dispose();
   }
 

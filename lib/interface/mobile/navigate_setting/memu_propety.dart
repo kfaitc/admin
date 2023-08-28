@@ -8,7 +8,17 @@ import '../../../bank/bank/bank_list.dart';
 import '../../../bank/bank/menu_bank.dart';
 import '../../../bank/bank/new_bank.dart';
 import '../../../bank/brand/menu_brand.dart';
+import 'Accompany_by/menu_Acompany.dart';
+
 import '../navigate_home/AutoVerbal/menu.dart';
+import 'Appraiser/menu_Appraiser.dart';
+import 'Approved/menu_Approved.dart';
+import 'Inspector/menu_Inspector.dart';
+import 'Inspectors/menu_Inspectors.dart';
+import 'Register/menu_Register.dart';
+import 'agency/menu_Agency.dart';
+
+import 'assign/menu_assign.dart';
 import 'auto/menu_auto.dart';
 
 class On_property extends StatefulWidget {
@@ -71,6 +81,24 @@ class _On_propertyState extends State<On_property> {
     Text("Assign To",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+    Text("Inspector Name",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+    Text("Inspectors Name",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+    Text("Register Name",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+    Text("Accomnpany Name",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+    Text("Approved Name",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+    Text("Appraiser Name",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
     Text("Min & Max",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
@@ -94,6 +122,15 @@ class _On_propertyState extends State<On_property> {
     Icon(Icons.support_agent, color: Colors.white),
     Icon(Icons.settings_applications, color: Colors.white),
     Icon(Icons.forest, color: Colors.white),
+    //Inspector
+    Icon(Icons.insert_page_break, color: Colors.white),
+    Icon(Icons.insert_page_break, color: Colors.white),
+    Icon(Icons.app_registration_rounded, color: Colors.white),
+    Icon(Icons.add_comment_sharp, color: Colors.white),
+    Icon(Icons.add_comment_sharp, color: Colors.white),
+    Icon(Icons.add_comment_sharp, color: Colors.white),
+
+    ///
     Icon(Icons.assignment_ind, color: Colors.white),
     Icon(Icons.hourglass_empty, color: Colors.white),
     Icon(Icons.category, color: Colors.white),
@@ -121,6 +158,38 @@ class _On_propertyState extends State<On_property> {
                   if (i == 6) {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Menu_brand()));
+                  }
+                  if (i == 7) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Menu_Agency()));
+                  }
+                  if (i == 10) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Menu_Assign()));
+                  }
+                  if (i == 11) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Menu_Inspector()));
+                  }
+                  if (i == 12) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Menu_Inspectors()));
+                  }
+                  if (i == 13) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Menu_Register()));
+                  }
+                  if (i == 14) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Menu_Acompany()));
+                  }
+                  if (i == 15) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Menu_Approved()));
+                  }
+                  if (i == 16) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Menu_Appraiser()));
                   }
                 });
               },

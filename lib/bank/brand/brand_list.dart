@@ -1,7 +1,6 @@
 // ignore_for_file: unused_field, override_on_non_overriding_member, unnecessary_null_comparison, unused_local_variable, unused_element
 
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;

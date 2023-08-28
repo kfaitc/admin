@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/Valuation/New_Executive.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/Valuation/list_Executive.dart';
+
+import 'Executive_approvel.dart';
 
 class MenuValuation extends StatefulWidget {
   MenuValuation({Key? key, required this.id}) : super(key: key);
@@ -50,7 +54,29 @@ class _MenuValuationState extends State<MenuValuation> {
           children: [
             for (int i = 0; i < option.length; i++)
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  if (i == 0) {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return New_Executive();
+                      },
+                    ));
+                  }
+                  if (i == 1) {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return Executive_List();
+                      },
+                    ));
+                  }
+                  if (i == 2) {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return Executive_approvals();
+                      },
+                    ));
+                  }
+                },
                 child: Container(
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width,

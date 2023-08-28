@@ -109,8 +109,8 @@ class _PropertyDropdownState extends State<Province_dropdown> {
               filled: true,
               contentPadding: EdgeInsets.symmetric(vertical: 8),
               labelText: (widget.province_id0 != null)
-                  ? widget.cummone_id0.toString()
-                  : 'Province',
+                  ? widget.province_id0.toString()
+                  : 'Province*',
               hintText: 'Select one',
               prefixIcon: Icon(
                 Icons.business_outlined,
@@ -174,7 +174,7 @@ class _PropertyDropdownState extends State<Province_dropdown> {
                     contentPadding: EdgeInsets.symmetric(vertical: 8),
                     labelText: (widget.district_id0 != null)
                         ? widget.district_id0.toString()
-                        : 'District',
+                        : 'District*',
                     hintText: 'Select one',
                     prefixIcon: Icon(
                       Icons.business_outlined,

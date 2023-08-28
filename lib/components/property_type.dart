@@ -65,9 +65,9 @@ class _property_typeState extends State<property_hoemtype> {
           fillColor: kwhite,
           filled: true,
           contentPadding: EdgeInsets.symmetric(vertical: 8),
-          labelText: ((widget.hometype_lable == null)
+          labelText: (widget.hometype_lable == null)
               ? 'Property Type*'
-              : widget.hometype_lable),
+              : widget.hometype_lable,
           hintText: 'Select',
           prefixIcon: Icon(
             Icons.real_estate_agent_outlined,

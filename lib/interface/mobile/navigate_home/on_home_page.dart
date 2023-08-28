@@ -3,7 +3,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:kfa_admin/interface/mobile/navigate_home/Property/Home_Screen_property.dart';
-import 'package:kfa_admin/interface/mobile/navigate_home/property/menu.dart';
 
 import 'AutoVerbal/menu.dart';
 import 'Comparable/menu.dart';

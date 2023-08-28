@@ -1,6 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../model/executive/Edit_Executive.dart';
+import '../model/executive/Edit_building.dart';
+import '../model/executive/buiding_executive.dart';
 import '../model/models/M_commune.dart';
 import '../model/models/M_roadAndcommune.dart';
 import '../model/models/Verbal_limited.dart';
@@ -214,6 +217,56 @@ class APIservice {
       return Verbal_limited_ReponeModel.fromJson(json.decode(response.body));
     } else if (response.statusCode == 201 || response.statusCode == 401) {
       return Verbal_limited_ReponeModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Data');
+    }
+  }
+
+  ///Building Exective
+  Future<Buidng_ReponseModel> saveExecutive(
+      BuildingRequestModel requestModel) async {
+    final response = await http.post(
+      Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/new_add'),
+      headers: {
+        "Accept": "application/json;charset=UTF-8",
+        "Content-Type": "application/json"
+      },
+      body: json.encode(
+        requestModel.toJson(),
+      ),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 422) {
+      return Buidng_ReponseModel.fromJson(json.decode(response.body));
+    } else if (response.statusCode == 201 || response.statusCode == 401) {
+      return Buidng_ReponseModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Data');
+    }
+  }
+
+  ////Update Building
+  Future<Executive_ReponseModel> building_Edit(
+      ExecutiveRequestModel requestModel, id) async {
+    print(id);
+    final response = await http.post(
+      Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/update_executive/500'),
+      headers: {
+        "Accept": "application/json;charset=UTF-8",
+        "Content-Type": "application/json"
+      },
+      body: json.encode(
+        requestModel.toJson(),
+      ),
+    );
+    // print(response.statusCode);
+    // return Executive_ReponseModel.fromJson(json.decode(response.body));
+    if (response.statusCode == 200 || response.statusCode == 422) {
+      return Executive_ReponseModel.fromJson(json.decode(response.body));
+    } else if (response.statusCode == 201 || response.statusCode == 401) {
+      return Executive_ReponseModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load Data');
     }

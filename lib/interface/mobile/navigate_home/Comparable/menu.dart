@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:kfa_admin/interface/mobile/navigate_home/Comparable/New_Comparable.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/Comparable/comparable_1/New_Comparable.dart';
 
-import 'Comparable_list_view.dart';
+import 'comparable_2/Comparable_list_view.dart';
+import 'comparable4/list_comparable_filter.dart';
+import 'comparable3/search_screen.dart/comparable_search.dart';
 
 class MenuComparable extends StatefulWidget {
   MenuComparable({super.key, required this.name});
@@ -24,16 +26,20 @@ class _MenuComparableState extends State<MenuComparable> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
     Text("Comparable Search",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+    Text("Comparable Map List",
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
   ];
   List<Icon> optionIconList = const [
     Icon(Icons.data_saver_on),
     Icon(Icons.list_alt_outlined),
     Icon(Icons.search),
+    Icon(Icons.map),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.deepPurple[900],
         title: const Text(
           "Comparable",
@@ -68,6 +74,14 @@ class _MenuComparableState extends State<MenuComparable> {
                         builder: (context) => ComparableList(
                               name: widget.name,
                             )));
+                  }
+                  if (i == 2) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => comparable_search()));
+                  }
+                  if (i == 3) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => List_comparable_filter()));
                   }
                 },
                 child: Container(

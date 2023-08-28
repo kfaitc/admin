@@ -45,7 +45,7 @@ class _RoadDropdownState extends State<Total_dropdown> {
       child: Row(
         children: [
           Container(
-            width: MediaQuery.of(context).size.height * 0.19,
+            width: MediaQuery.of(context).size.width * 0.42,
             child: TextFormField(
               keyboardType: TextInputType.number,
               style: TextStyle(
@@ -81,8 +81,8 @@ class _RoadDropdownState extends State<Total_dropdown> {
             ),
           ),
           Container(
-            width: MediaQuery.of(context).size.height * 0.26,
-            padding: const EdgeInsets.fromLTRB(10, 0, 30, 0),
+            width: MediaQuery.of(context).size.width * 0.42,
+            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
             child: DropdownButtonFormField<String>(
               //value: genderValue,
               isExpanded: true,

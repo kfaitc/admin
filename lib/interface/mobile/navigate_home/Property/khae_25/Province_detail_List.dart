@@ -23,17 +23,7 @@ class _HHHHSSsState extends State<Province_detail_List> {
   int? indexN;
   @override
   void initState() {
-    // indexn = widget.value_province!.toString();
     super.initState();
-    // for (int i = 0; i < widget.value_province!.length; i++) {
-    //   // print(widget.value_province!);
-    //   if (widget.value_province![i]['property_type_id'].toString() ==
-    //       '${widget.property_id}') {
-    //     print('${widget.value_province![i]}');
-    //     indexN = i;
-    //     // Get.to(HHHHSSs(value_province: list2_Sale2[i]));
-    //   }
-    // }
   }
 
   @override

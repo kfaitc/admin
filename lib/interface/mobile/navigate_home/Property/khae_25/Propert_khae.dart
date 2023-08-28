@@ -89,25 +89,14 @@ class _Screen_sliderState extends State<Property_25> {
                   onPageChanged: (index, reason) {
                     setState(() {
                       a = index;
-                      // print('property_type_id = ${a}');
-                      //  widget.property_type_id=a.toString();
                     });
                   },
                   // reverse: true,
                 )),
-            // buildIndicator(),
           ],
         ));
   }
 
-  // Widget buildImage(String imageList1, int index) => Container(
-  //       margin: EdgeInsets.symmetric(horizontal: 24),
-  //       color: Colors.green,
-  //       child: Image.asset(
-  //         imageList1,
-  //         fit: BoxFit.cover,
-  //       ),
-  //     );
   Widget buildImage(String imageList1, int index) => PartnersCard2(
         index_Ontap: index.toString(),
         img: imageList1,
@@ -119,19 +108,8 @@ class _Screen_sliderState extends State<Property_25> {
         press: () async {
           setState(() {});
           final property_id = widget.property_type_id;
-          // await launch(
-          //   property_id.elementAt(index),
-          //   forceSafariVC: false,
-          //   forceWebView: false,
-          // );
         },
       );
-  // Widget buildIndicator() => AnimatedSmoothIndicator(
-  //       activeIndex: a,
-  //       count: imageList.length,
-  //       textDirection: TextDirection.rtl,
-  //       // effect: WormEffect(dotWidth: 20, dotHeight: 20),
-  //     );
 }
 
 class PartnersCard2 extends StatelessWidget {
@@ -357,6 +335,45 @@ class PartnersCard2 extends StatelessWidget {
 }
 
 class PartnersCard_khae extends StatelessWidget {
+  final imageList = [
+    'assets/images/25_commune/Battambang.jpg',
+    'assets/images/25_commune/PhnomPenh.jpg',
+
+    'assets/images/25_commune/Bonteaymeanchey.jpg',
+    'assets/images/25_commune/KamponChnang.jpg',
+    'assets/images/25_commune/KampongThom.jpg',
+    'assets/images/25_commune/Kandal.jpg',
+    // // // ///
+    'assets/images/25_commune/kampot.jpg',
+
+    'assets/images/25_commune/Kep.jpg',
+    'assets/images/25_commune/Kracheh.jpg',
+
+    // ///
+    'assets/images/25_commune/Oudormeanchey.jpg',
+
+    'assets/images/25_commune/Preah_Vihea.jpg',
+    'assets/images/25_commune/PreyVeng.jpeg',
+
+    // // ///
+    'assets/images/25_commune/Rathanakiri.jpg',
+    'assets/images/25_commune/Siehanuk.jpg',
+    'assets/images/25_commune/Siemreab.jpg',
+    'assets/images/25_commune/Steng_Treng.jpg',
+
+    // ///
+    'assets/images/25_commune/SvangRieng.jpg',
+    'assets/images/25_commune/takao.jpg',
+    'assets/images/25_commune/tbongKhmom.jpeg',
+    'assets/images/25_commune/Pursat.jpg',
+    // // /////////
+    'assets/images/25_commune/Pailin.jpg',
+    'assets/images/25_commune/munduolmiri.jpg',
+    // /////
+    'assets/images/25_commune/Kohkong.jpg',
+    // 'assets/images/25_commune/munduolmiri.jpg',
+    // 'assets/images/25_commune/munduolmiri.jpg',
+  ];
   final Fruitlist = [
     'Battambong',
     'Phnom Penh',
@@ -427,8 +444,8 @@ class PartnersCard_khae extends StatelessWidget {
                   child: Image.asset(
                     img,
                     fit: BoxFit.fitWidth,
-                    width: 120,
-                    height: 46,
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.1,
                   ),
                 ),
                 SizedBox(

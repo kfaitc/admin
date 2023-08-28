@@ -68,9 +68,7 @@ class _BankDropdownState extends State<BankDropdown> {
 
                 widget.bank(bankvalue);
                 print(bankvalue.toString());
-                // branch(newValue.toString());
                 _district();
-                // print(newValue);
               });
             },
             validator: (String? value) {
@@ -103,7 +101,7 @@ class _BankDropdownState extends State<BankDropdown> {
               fillColor: kwhite,
               filled: true, contentPadding: EdgeInsets.symmetric(vertical: 8),
 
-              labelText: ((widget.bn == null) ? 'Bank' : widget.bn),
+              labelText: ((widget.bn == null) ? 'Bank*' : widget.bn),
               hintText: 'Select',
 
               prefixIcon: Icon(
@@ -181,7 +179,7 @@ class _BankDropdownState extends State<BankDropdown> {
                     contentPadding: EdgeInsets.symmetric(vertical: 8),
 
                     filled: true,
-                    labelText: ((widget.brn == null) ? 'Branch' : widget.bn),
+                    labelText: ((widget.brn == null) ? 'Branch' : widget.brn),
                     hintText: 'Select',
 
                     prefixIcon: Icon(

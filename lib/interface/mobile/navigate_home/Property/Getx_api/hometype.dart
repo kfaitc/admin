@@ -28,68 +28,6 @@ class Controller_hometype extends GetxController {
         final List<dynamic> jsonBody = jsonDecode(response.body)['data'];
         list_hometype.value = jsonBody;
         list_hometype = list_hometype;
-        // print(list_hometype);
-        // for (int i = 0; i < list_hometype.length; i++) {
-        //   hometype = list_hometype[i]['hometype'].toString();
-        //   print('$i : ${hometype.toString()}');
-        // }
-      } else {
-        print('Error value_all_list');
-      }
-    } catch (e) {
-      print('Error value_all_list $e');
-    }
-  }
-
-  Future<void> value_get_rent_sale(hometype_id) async {
-    try {
-      final response = await http.get(Uri.parse(
-          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/get_all_sale_rent/${hometype_id}'));
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonBody = jsonDecode(response.body)['data'];
-        list_value.value = jsonBody;
-        // for (int i = 0; i < list_hometype.length; i++) {
-        //   hometype = list_hometype[i]['hometype'].toString();
-        //   print('$i : ${hometype.toString()}');
-        // }
-      } else {
-        print('Error value_all_list');
-      }
-    } catch (e) {
-      print('Error value_all_list $e');
-    }
-  }
-
-  Future<void> image_get_rent_sale(hometype_id) async {
-    try {
-      final response = await http.get(Uri.parse(
-          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/get_all_sale_rent__image/${hometype_id}'));
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonBody = jsonDecode(response.body)['data'];
-        list_image.value = jsonBody;
-        // for (int i = 0; i < list_hometype.length; i++) {
-        //   hometype = list_hometype[i]['hometype'].toString();
-        //   print('$i : ${hometype.toString()}');
-        // }
-      } else {
-        print('Error value_all_list');
-      }
-    } catch (e) {
-      print('Error value_all_list $e');
-    }
-  }
-
-  Future<void> urgent_get_rent_sale(hometype_id) async {
-    try {
-      final response = await http.get(Uri.parse(
-          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/get_all_sale_rent_u/${hometype_id}'));
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonBody = jsonDecode(response.body)['data'];
-        list_hometype.value = jsonBody;
-        // for (int i = 0; i < list_hometype.length; i++) {
-        //   hometype = list_hometype[i]['hometype'].toString();
-        //   print('$i : ${hometype.toString()}');
-        // }
       } else {
         print('Error value_all_list');
       }
