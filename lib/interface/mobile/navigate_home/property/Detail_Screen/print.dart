@@ -399,7 +399,7 @@ class _Print_propertyState extends State<Print_property> {
                                         bed, 'Bed', '${items['Bed'] ?? ""}'),
                                     Sizebox_2w,
                                     icon_text(
-                                        bath, 'Bath', '${items['type'] ?? ""}'),
+                                        bath, 'Bath', '${items['bath'] ?? ""}'),
                                     Sizebox_2w,
                                     icon_text(lot, 'Lot(sqm)',
                                         '${items['land'] ?? ""}'),
@@ -432,7 +432,7 @@ class _Print_propertyState extends State<Print_property> {
                                         '${items['price_sqm'] ?? ""}'),
                                     Sizebox_2w,
                                     icon_text(aircon_type, 'Aircon',
-                                        '${items['	aircon'] ?? ""}'),
+                                        '${items['aircon'] ?? ""}'),
                                     Sizebox_2w,
                                     icon_text(
                                         total_area,

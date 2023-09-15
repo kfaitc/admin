@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
+import 'package:kfa_admin/Auth/login.dart';
 import 'package:kfa_admin/interface/mobile/navigate_home/Property/Home_Screen_property.dart';
 
 void main() async {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home_Screen_property(),
+      home: Login(),
     );
   }
 }

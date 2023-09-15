@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kfa_admin/interface/mobile/navigate_home/User/control_user.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/User/use_vpoint.dart';
 
 import 'list_notivigation.dart';
 
@@ -28,12 +29,16 @@ class _MenuUserState extends State<MenuUser> {
     Text("List Notivagation",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+    Text("VPoint User",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
   ];
   List<Icon> optionIconList = const [
     Icon(Icons.add_circle, color: Colors.white),
     Icon(Icons.add_task, color: Colors.white),
     Icon(Icons.person_search_outlined, color: Colors.white),
     Icon(Icons.notifications_active_outlined, color: Colors.white),
+    Icon(Icons.library_add_check_outlined, color: Colors.white),
   ];
   @override
   Widget build(BuildContext context) {
@@ -67,6 +72,8 @@ class _MenuUserState extends State<MenuUser> {
                         MaterialPageRoute(builder: (context) => CTL_User()));
                   } else if (i == 3) {
                     Get.to(Notivigation_day());
+                  } else if (i == 4) {
+                    Get.to(User_Vpoint());
                   }
                 },
                 child: Container(
