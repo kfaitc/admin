@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/Report/Total_amount.dart';
 
 class MenuReport extends StatefulWidget {
   MenuReport({Key? key, required this.id}) : super(key: key);
@@ -21,6 +22,8 @@ class _MenuReportState extends State<MenuReport> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
     Text("Property",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+    Text("Total Amount",
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
   ];
   List<Icon> optionIconList = const [
     Icon(Icons.home_repair_service),
@@ -28,6 +31,7 @@ class _MenuReportState extends State<MenuReport> {
     Icon(Icons.home_repair_service),
     Icon(Icons.home_repair_service),
     Icon(Icons.home_repair_service),
+    Icon(Icons.payment_outlined),
   ];
   @override
   Widget build(BuildContext context) {
@@ -55,7 +59,17 @@ class _MenuReportState extends State<MenuReport> {
           children: [
             for (int i = 0; i < option.length; i++)
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  setState(() {
+                    if (i == 5) {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Total_Amount();
+                        },
+                      ));
+                    }
+                  });
+                },
                 child: Container(
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width,

@@ -7,6 +7,7 @@ import 'package:getwidget/types/gf_button_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import 'package:kfa_admin/interface/mobile/navigate_home/User/search.dart';
 import '../../../../components/contants.dart';
 
@@ -241,6 +242,7 @@ class _Uer_VpointState extends State<User_Vpoint> {
       // "count_autoverbal": '44',
       "id_user_control": id_user_control.toString(),
       "count_autoverbal": count_autoverbal.toString(),
+      "expiry": date.toString(),
     };
     final url = await Uri.parse(
         'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/updart_count_VP');
@@ -351,61 +353,121 @@ class _Uer_VpointState extends State<User_Vpoint> {
     );
   }
 
+  String? date;
+  TextEditingController controller = TextEditingController();
   TextEditingController? _v_point;
   String? v_point;
   Widget Input_V() {
     return Container(
       height: MediaQuery.of(context).size.height * 0.04,
-      width: MediaQuery.of(context).size.width * 0.4,
+      width: MediaQuery.of(context).size.width * 0.7,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.035,
-            width: MediaQuery.of(context).size.height * 0.035,
-            child: Image.network(
-                'https://www.oneclickonedollar.com/laravel_kfa_2023/public/data_imgs_kfa/Form_Image/v.png'),
-          ),
-          SizedBox(width: 10),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.04,
-            width: MediaQuery.of(context).size.width * 0.3,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: TextFormField(
-                controller: _v_point,
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.height * 0.015,
-                  fontWeight: FontWeight.bold,
-                ),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  setState(() {
-                    v_point = value;
-                  });
-                },
-                decoration: InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+          Row(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.035,
+                width: MediaQuery.of(context).size.height * 0.035,
+                child: Image.network(
+                    'https://www.oneclickonedollar.com/laravel_kfa_2023/public/data_imgs_kfa/Form_Image/v.png'),
+              ),
+              SizedBox(width: 10),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.04,
+                width: MediaQuery.of(context).size.width * 0.23,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: TextFormField(
+                    controller: _v_point,
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.height * 0.015,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      setState(() {
+                        v_point = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 8),
 
-                  // hintText: '$text',
-                  fillColor: kwhite,
-                  filled: true,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 2.0,
+                      // hintText: '$text',
+                      fillColor: kwhite,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Colors.grey,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 1,
-                      color: Colors.grey,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
+            ],
+          ),
+          Container(
+            width: MediaQuery.of(context).size.height * 0.15,
+            child: TextField(
+              style: TextStyle(
+                fontSize: MediaQuery.textScaleFactorOf(context) * 10,
+                color: Color.fromARGB(255, 43, 41, 41),
+              ),
+              controller: controller,
+              decoration: InputDecoration(
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                prefixIcon: Icon(
+                  Icons.calendar_today,
+                  color: Colors.grey,
+                  size: MediaQuery.of(context).size.height * 0.025,
+                ), //icon of text field
+                labelText: "Date",
+                labelStyle: TextStyle(
+                    fontSize: MediaQuery.textScaleFactorOf(context) * 13,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold),
+                fillColor: kwhite,
+                filled: true,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(5.0),
+                ), //label text of field
+              ),
+              readOnly:
+                  true, //set it true, so that user will not able to edit text
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101));
+                if (pickedDate != null) {
+                  setState(() {
+                    date = DateFormat('yyyy-MM-dd').format(pickedDate);
+                    controller.text = date!;
+                    print(controller.text.toString());
+                  });
+                }
+              },
             ),
           ),
         ],
