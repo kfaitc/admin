@@ -247,8 +247,7 @@ class _HomePageState extends State<HomePage>
                 width: 55,
               ),
               Text(
-                //ONE CLICK
-                '  ${widget.controller_user}',
+                '  ONE CLICK',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
