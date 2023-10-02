@@ -5,10 +5,18 @@ import 'package:flutter/material.dart';
 class Detai_VPoint extends StatefulWidget {
   Detai_VPoint({
     super.key,
+    this.await_image,
+    this.url,
     required this.list,
     required this.index_get,
     required this.TypePayment_bank,
+    this.typebank,
+    this.b,
   });
+  bool? await_image;
+  String? url;
+  bool? b;
+  String? typebank;
   List list;
   String? TypePayment_bank;
 
@@ -24,6 +32,13 @@ class _Detai_VPointState extends State<Detai_VPoint> {
   void initState() {
     index = int.parse(widget.index_get.toString());
     // list = widget.list[int.parse(widget.index_get.toString())];
+    if (widget.b == true) {
+      if (widget.typebank == '8899') {
+        widget.TypePayment_bank = 'payAmount';
+      } else {
+        widget.TypePayment_bank = 'amount';
+      }
+    }
     super.initState();
   }
 
@@ -32,6 +47,7 @@ class _Detai_VPointState extends State<Detai_VPoint> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 225, 224, 224),
       appBar: AppBar(
+        // title: Text('${widget.typebank}'),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -115,7 +131,7 @@ class _Detai_VPointState extends State<Detai_VPoint> {
                               foregroundColor:
                                   Colors.white, // Set the border color to white
                               backgroundImage: NetworkImage(
-                                  '${(widget.list[index]['url'] != null) ? widget.list[index]['url'] : 'https://www.oneclickonedollar.com/laravel_kfa_2023/public/data_imgs_kfa/Form_Image/images.png'}'),
+                                  '${(widget.list[index]['url'] != null) ? widget.list[index]['url'] : (widget.await_image.toString() == 'true') ? "${widget.url}" : 'https://www.oneclickonedollar.com/laravel_kfa_2023/public/data_imgs_kfa/Form_Image/images.png'}'),
                               radius: 30,
                             ),
                           )

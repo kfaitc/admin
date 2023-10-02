@@ -8,8 +8,10 @@ import 'package:kfa_admin/interface/mobile/navigate_home/User/use_vpoint.dart';
 import 'list_notivigation.dart';
 
 class MenuUser extends StatefulWidget {
-  MenuUser({Key? key, required this.id}) : super(key: key);
+  MenuUser({Key? key, required this.id, required this.controller_user})
+      : super(key: key);
   final String id;
+  final String? controller_user;
 
   @override
   State<MenuUser> createState() => _MenuUserState();
@@ -73,7 +75,9 @@ class _MenuUserState extends State<MenuUser> {
                   } else if (i == 3) {
                     Get.to(Notivigation_day());
                   } else if (i == 4) {
-                    Get.to(User_Vpoint());
+                    Get.to(User_Vpoint(
+                      controller_user: widget.controller_user,
+                    ));
                   }
                 },
                 child: Container(

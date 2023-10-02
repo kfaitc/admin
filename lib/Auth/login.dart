@@ -44,6 +44,7 @@ class _LoginState extends State<Login> {
   late String username = "";
   late String first_name = "";
   late String last_name = "";
+  late String control_user = "";
   late String email = "";
   late String gender = "";
   late String from = "";
@@ -247,6 +248,7 @@ class _LoginState extends State<Login> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => HomePage(
+                                    controller_user: control_user,
                                     user: username,
                                     email: email,
                                     first_name: first_name,
@@ -323,6 +325,7 @@ class _LoginState extends State<Login> {
       var jsonData = jsonDecode(rs.body);
       setState(() {
         id = jsonData["id"];
+        control_user = jsonData['control_user'];
         username = jsonData['username'];
         first_name = jsonData['first_name'];
         last_name = jsonData['last_name'];

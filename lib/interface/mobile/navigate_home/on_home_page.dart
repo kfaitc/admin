@@ -16,12 +16,14 @@ import 'Verbal/menu.dart';
 class NoBodyHome extends StatefulWidget {
   NoBodyHome(
       {Key? key,
+      required this.controller_user,
       required this.id,
       required this.nativigation,
       required this.name})
       : super(key: key);
   final String id;
   final String name;
+  final String? controller_user;
   bool? nativigation;
   @override
   State<NoBodyHome> createState() => _NoBodyHomeState();
@@ -108,6 +110,7 @@ class _NoBodyHomeState extends State<NoBodyHome> {
                 if (i == 6) {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => MenuUser(
+                            controller_user: widget.controller_user,
                             id: widget.id,
                           )));
                 }

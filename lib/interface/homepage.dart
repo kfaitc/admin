@@ -18,7 +18,6 @@ import 'package:intl/intl.dart';
 import 'package:kfa_admin/interface/mobile/navigate_home/User/menu.dart';
 import '../Account/account.dart';
 import '../bank/bank/new_bank.dart';
-import '../bank/bank/new_bank.dart';
 import 'mobile/navigate_home/User/list_notivigation.dart';
 import 'mobile/navigate_home/on_home_page.dart';
 import 'mobile/navigate_setting/memu_propety.dart';
@@ -33,8 +32,10 @@ class HomePage extends StatefulWidget {
   final String from;
   final String tel;
   final String id;
+  final String? controller_user;
   HomePage({
     Key? key,
+    required this.controller_user,
     required this.user,
     required this.first_name,
     required this.last_name,
@@ -76,6 +77,7 @@ class _HomePageState extends State<HomePage>
     count_verbal(formattedDate_now, formattedDate_ago);
     pages = [
       NoBodyHome(
+        controller_user: widget.controller_user,
         name: widget.user,
         nativigation: nativigation,
         id: widget.id,
@@ -245,7 +247,8 @@ class _HomePageState extends State<HomePage>
                 width: 55,
               ),
               Text(
-                '  ONE CLICK',
+                //ONE CLICK
+                '  ${widget.controller_user}',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,

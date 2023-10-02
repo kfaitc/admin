@@ -256,6 +256,7 @@ class _Total_AmountState extends State<Total_Amount> {
       arrowHeadColor: Color.fromARGB(255, 176, 177, 179),
       columns: [
         DataColumn(label: _text('User ID')),
+        // DataColumn(label: _text('Bank')),
         DataColumn(label: _text('Name')),
         DataColumn(label: _text('Gender')),
         DataColumn(label: _text('V Point')),

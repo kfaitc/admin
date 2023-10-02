@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:kfa_admin/interface/mobile/navigate_home/User/use_vpoint.dart';
 
 typedef OnChangeCallback = void Function(dynamic value);
 
 class CustomSearchDelegate extends SearchDelegate {
+  bool? b;
   final List itemList;
+  String? type_id;
   // final OnChangeCallback list;
   final OnChangeCallback index_back;
 
-  CustomSearchDelegate(
-      this.itemList,
-      //  this.list,
-      this.index_back);
+  CustomSearchDelegate(this.itemList, this.index_back, this.b, this.type_id);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -41,17 +39,17 @@ class CustomSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     // Build the search results based on the query.
     final results = itemList
-        .where((item) => item['id_user_control'].toString().contains(query))
+        .where((item) => item['$type_id'].toString().contains(query))
         .toList();
     return ListView.builder(
       itemCount: results.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(results[index]['id_user_control'].toString()),
+          title: Text(results[index]['$type_id'].toString()),
           onTap: () {
             // You can handle item selection here.
             // list(results[index]['id_user_control'].toString());
-            close(context, results[index]['id_user_control'].toString());
+            close(context, results[index]['$type_id'].toString());
           },
         );
       },
@@ -60,17 +58,16 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // Suggestions that appear while typing in the search bar.
     List suggestionList = itemList
-        .where((item) => item['id_user_control'].toString().startsWith(query))
+        .where((item) => item['$type_id'].toString().startsWith(query))
         .toList();
     return ListView.builder(
       itemCount: suggestionList.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(suggestionList[index]['id_user_control'].toString()),
+          title: Text(suggestionList[index]['$type_id'].toString()),
           onTap: () {
-            query = suggestionList[index]['id_user_control'].toString();
+            query = suggestionList[index]['$type_id'].toString();
             index_back(index);
             Navigator.pop(context);
             print('Back');

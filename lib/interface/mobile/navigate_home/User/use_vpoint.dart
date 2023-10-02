@@ -6,13 +6,14 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:kfa_admin/interface/mobile/navigate_home/User/search.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../components/contants.dart';
 
 class User_Vpoint extends StatefulWidget {
-  const User_Vpoint({super.key});
+  User_Vpoint({super.key, required this.controller_user});
+  final String? controller_user;
 
   @override
   State<User_Vpoint> createState() => _Uer_VpointState();
@@ -21,7 +22,7 @@ class User_Vpoint extends StatefulWidget {
 class _Uer_VpointState extends State<User_Vpoint> {
   @override
   void initState() {
-    User_VPoint();
+    _get();
     super.initState();
   }
 
@@ -70,7 +71,7 @@ class _Uer_VpointState extends State<User_Vpoint> {
                             index_back = int.parse(value.toString());
                             print(index_back.toString());
                           });
-                        }),
+                        }, false, 'id_user_control'),
                       );
                       if (selected != null) {
                         // Handle the selected item here.
@@ -117,7 +118,14 @@ class _Uer_VpointState extends State<User_Vpoint> {
         elevation: 0.0,
       ),
       backgroundColor: Color.fromARGB(255, 23, 17, 124),
-      body: callback == false ? body(list, 0) : body(list, index_back),
+      body: (_await)
+          ? Center(
+              child: _await_value(),
+            )
+          : callback == false
+              ? body(list, 0)
+              : body(list, index_back),
+      // body: _await_value(),
     );
   }
 
@@ -149,62 +157,65 @@ class _Uer_VpointState extends State<User_Vpoint> {
 
   Widget Box_value(list, index) {
     return Padding(
-      padding: const EdgeInsets.only(right: 30, left: 30, top: 15),
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.17,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5), color: Colors.white),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _Text(
-                      'User ID : ${(list[index]['id_user_control'].toString() == "null") ? "" : list[index]['id_user_control']}'),
-                  _Text(
-                      'Name : ${list[index]['first_name']} ${list[index]['last_name']}'),
-                  _Text('Sex : ${list[index]['gender']}'),
-                  _Text('Phone : ${list[index]['tel_num']}'),
-                  _Text('Email : ${list[index]['email']}'),
-                  V_Image(
-                      '${(list[index]['count_autoverbal'].toString() == "null") ? "0" : list[index]['count_autoverbal']}'),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GFButton(
-                    textStyle:
-                        TextStyle(color: Color.fromARGB(255, 148, 146, 146)),
-                    onPressed: () {
-                      setState(() {
-                        _showMyDialog(
-                            'User ID : ${(list[index]['id_user_control'].toString() == "null") ? "" : list[index]['id_user_control']}',
-                            'Name : ${list[index]['first_name']} ${list[index]['last_name']}',
-                            'Sex : ${list[index]['gender']}',
-                            'Phone : ${list[index]['tel_num']}',
-                            'Email : ${list[index]['email']}',
-                            '${(list[index]['count_autoverbal'].toString() == "null") ? "0" : list[index]['count_autoverbal']}',
-                            '${(list[index]['id_user_control'].toString() == "null") ? "" : list[index]['id_user_control']}');
-                        _v_point = TextEditingController(
-                            text:
-                                '${(list[index]['count_autoverbal'].toString() == "null") ? "0" : list[index]['count_autoverbal']}');
-                        // Edit_V_Point('${list[index]['id_user_control']}',
-                        //     '${list[index]['count_autoverbal']}');
-                      });
-                    },
-                    text: "Edit",
-                    icon: Icon(Icons.edit),
-                    color: Color.fromARGB(255, 204, 203, 203),
-                    type: GFButtonType.outline,
-                  ),
-                ],
-              ),
-            ],
+      padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
+      child: Card(
+        elevation: 5,
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.17,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5), color: Colors.white),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _Text(
+                        'User ID : ${(list[index]['id_user_control'].toString() == "null") ? "" : list[index]['id_user_control']}'),
+                    _Text(
+                        'Name : ${list[index]['first_name']} ${list[index]['last_name']}'),
+                    _Text('Sex : ${list[index]['gender']}'),
+                    _Text('Phone : ${list[index]['tel_num']}'),
+                    _Text('Email : ${list[index]['email']}'),
+                    V_Image(
+                        '${(list[index]['count_autoverbal'].toString() == "null") ? "0" : list[index]['count_autoverbal']}'),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GFButton(
+                      textStyle:
+                          TextStyle(color: Color.fromARGB(255, 148, 146, 146)),
+                      onPressed: () {
+                        setState(() {
+                          _showMyDialog(
+                              'User ID : ${(list[index]['id_user_control'].toString() == "null") ? "" : list[index]['id_user_control']}',
+                              'Name : ${list[index]['first_name']} ${list[index]['last_name']}',
+                              'Sex : ${list[index]['gender']}',
+                              'Phone : ${list[index]['tel_num']}',
+                              'Email : ${list[index]['email']}',
+                              '${(list[index]['count_autoverbal'].toString() == "null") ? "0" : list[index]['count_autoverbal']}',
+                              '${(list[index]['id_user_control'].toString() == "null") ? "" : list[index]['id_user_control']}');
+                          _v_point = TextEditingController(
+                              text:
+                                  '${(list[index]['count_autoverbal'].toString() == "null") ? "0" : list[index]['count_autoverbal']}');
+                          // Edit_V_Point('${list[index]['id_user_control']}',
+                          //     '${list[index]['count_autoverbal']}');
+                        });
+                      },
+                      text: "Edit",
+                      icon: Icon(Icons.edit),
+                      color: Color.fromARGB(255, 204, 203, 203),
+                      type: GFButtonType.outline,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -240,12 +251,12 @@ class _Uer_VpointState extends State<User_Vpoint> {
     Map<String, dynamic> payload = await {
       // "id_user_control": '81K564F81A',
       // "count_autoverbal": '44',
-      "id_user_control": id_user_control.toString(),
+      // "id_user_control": id_user_control.toString(),
       "count_autoverbal": count_autoverbal.toString(),
       "expiry": date.toString(),
     };
     final url = await Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/updart_count_VP');
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/updart_History/${id_user_control}/${widget.controller_user}');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -473,6 +484,120 @@ class _Uer_VpointState extends State<User_Vpoint> {
         ],
       ),
     );
+  }
+
+  Widget _await_value() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.9,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.1,
+        child: Shimmer.fromColors(
+            baseColor: Color.fromARGB(255, 151, 150, 150),
+            highlightColor: Color.fromARGB(255, 221, 221, 219),
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Padding(
+                    padding:
+                        const EdgeInsets.only(right: 20, left: 20, top: 10),
+                    child: Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(width: 1),
+                              borderRadius: BorderRadius.circular(5)),
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.height * 0.13,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 20, left: 20, top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _container(),
+                                    _container(),
+                                    _container(),
+                                    _container(),
+                                    _container(),
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                            backgroundColor: Colors.grey,
+                                            radius: 10),
+                                        SizedBox(width: 10),
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.01,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.2,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Color.fromARGB(
+                                                255, 190, 14, 14),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(5)),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.15,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ));
+              },
+            )),
+      ),
+    );
+  }
+
+  Widget _container() {
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.01,
+        width: MediaQuery.of(context).size.width * 0.3,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Color.fromARGB(255, 190, 14, 14),
+        ),
+      ),
+    );
+  }
+
+  bool _await = true;
+  Future<void> _get() async {
+    _await = true;
+    await Future.wait([
+      User_VPoint(),
+    ]);
+    setState(() {
+      _await = false;
+    });
   }
 
   List list = [];

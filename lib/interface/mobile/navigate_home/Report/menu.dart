@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:kfa_admin/interface/mobile/navigate_home/Report/Total_amount.dart';
+import 'package:kfa_admin/interface/mobile/navigate_home/Report/Transetoin/history.dart';
 
 class MenuReport extends StatefulWidget {
   MenuReport({Key? key, required this.id}) : super(key: key);
@@ -24,6 +25,8 @@ class _MenuReportState extends State<MenuReport> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
     Text("Total Amount",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+    Text("Controller VPoint's User",
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
   ];
   List<Icon> optionIconList = const [
     Icon(Icons.home_repair_service),
@@ -32,6 +35,7 @@ class _MenuReportState extends State<MenuReport> {
     Icon(Icons.home_repair_service),
     Icon(Icons.home_repair_service),
     Icon(Icons.payment_outlined),
+    Icon(Icons.admin_panel_settings_outlined),
   ];
   @override
   Widget build(BuildContext context) {
@@ -65,6 +69,13 @@ class _MenuReportState extends State<MenuReport> {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
                           return Total_Amount();
+                        },
+                      ));
+                    }
+                    if (i == 6) {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Trastoin_Payment();
                         },
                       ));
                     }
