@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types, deprecated_member_use, non_constant_identifier_names, must_be_immutable, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_brace_in_string_interps, prefer_typing_uninitialized_variables, unused_local_variable, unnecessary_string_interpolations
 
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'List_Detail.dart';
 import 'Propert_khae.dart';
@@ -149,6 +152,8 @@ class _ALl_Khae_cambodiaState extends State<ALl_Khae_cambodia> {
     'Pai lin',
     'Mondolkiri',
     'Kohkong',
+    'Kampong_Cham',
+    'KampongChhnang',
 
     // //
     // 'Kratie',
@@ -189,8 +194,8 @@ class _ALl_Khae_cambodiaState extends State<ALl_Khae_cambodia> {
     'assets/images/25_commune/munduolmiri.jpg',
     // /////
     'assets/images/25_commune/Kohkong.jpg',
-    // 'assets/images/25_commune/munduolmiri.jpg',
-    // 'assets/images/25_commune/munduolmiri.jpg',
+    'assets/images/25_commune/Kampong_Cham.jpg',
+    'assets/images/25_commune/KampongChhnang.jpg',
   ];
   Widget girdview() {
     return Container(
@@ -211,6 +216,7 @@ class _ALl_Khae_cambodiaState extends State<ALl_Khae_cambodia> {
                   return List_detail(
                     listget: [],
                     reloard: 'No',
+                    index_P: index.toString(),
                     add: 'add',
                     province_id: index.toString(),
                     type: '${Fruitlist[index].toString()}',

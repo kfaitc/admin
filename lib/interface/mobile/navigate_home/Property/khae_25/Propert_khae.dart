@@ -60,8 +60,8 @@ class _Screen_sliderState extends State<Property_25> {
     'assets/images/25_commune/munduolmiri.jpg',
     // /////
     'assets/images/25_commune/Kohkong.jpg',
-    // 'assets/images/25_commune/munduolmiri.jpg',
-    // 'assets/images/25_commune/munduolmiri.jpg',
+    'assets/images/25_commune/Kampong_Cham.jpg',
+    'assets/images/25_commune/KampongChhnang.jpg',
   ];
 
   @override
@@ -145,6 +145,8 @@ class PartnersCard2 extends StatelessWidget {
     'Pai lin',
     'Mondolkiri',
     'Kohkong',
+    'Kampong_Cham',
+    'KampongChhnang',
 
     // //
     // 'Kratie',
@@ -327,6 +329,16 @@ class PartnersCard2 extends StatelessWidget {
                     '${Fruitlist[22]}',
                     style: TextStyle(fontSize: 10),
                   ),
+                if (img == 'assets/images/25_commune/Kampong_Cham.jpg')
+                  Text(
+                    '${Fruitlist[23]}',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                if (img == 'assets/images/25_commune/KampongChhnang.jpg')
+                  Text(
+                    '${Fruitlist[24]}',
+                    style: TextStyle(fontSize: 10),
+                  ),
               ],
             )),
       ),
@@ -371,8 +383,8 @@ class PartnersCard_khae extends StatelessWidget {
     'assets/images/25_commune/munduolmiri.jpg',
     // /////
     'assets/images/25_commune/Kohkong.jpg',
-    // 'assets/images/25_commune/munduolmiri.jpg',
-    // 'assets/images/25_commune/munduolmiri.jpg',
+    'assets/images/25_commune/Kampong_Cham.jpg',
+    'assets/images/25_commune/KampongChhnang.jpg',
   ];
   final Fruitlist = [
     'Battambong',
@@ -404,6 +416,8 @@ class PartnersCard_khae extends StatelessWidget {
     'Pai lin',
     'Mondolkiri',
     'Kohkong',
+    'Kampong_Cham',
+    'KampongChhnang',
   ];
   final String img;
   final press;
@@ -571,6 +585,16 @@ class PartnersCard_khae extends StatelessWidget {
                 if (img == 'assets/images/25_commune/Kohkong.jpg')
                   Text(
                     '${Fruitlist[22]}',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                if (img == 'assets/images/25_commune/Kampong_Cham.jpg')
+                  Text(
+                    '${Fruitlist[23]}',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                if (img == 'assets/images/25_commune/KampongChhnang.jpg')
+                  Text(
+                    '${Fruitlist[24]}',
                     style: TextStyle(fontSize: 10),
                   ),
               ],
