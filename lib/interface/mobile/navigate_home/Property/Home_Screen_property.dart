@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types, non_constant_identifier_names, unused_field, prefer_final_fields, unnecessary_new, prefer_typing_uninitialized_variables, unnecessary_brace_in_string_interps, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_print, unnecessary_null_comparison, prefer_is_empty, unused_local_variable, unrelated_type_equality_checks, override_on_non_overriding_member, unnecessary_string_interpolations, empty_statements, unused_element
 
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/button/gf_button.dart';
@@ -12,6 +14,7 @@ import 'package:kfa_admin/interface/mobile/navigate_home/property/khae_25/All_kh
 import 'Getx_api/vetbal_controller.dart';
 import 'List_all.dart';
 import 'companent/_await.dart';
+import 'companent/discount.dart';
 import 'companent/griwview.dart';
 import 'khae_25/List_Detail.dart';
 import 'Detail_Screen/Detail_all_list_Screen.dart';
@@ -53,6 +56,7 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
     button();
     query = '';
     _search(query);
+    slider_ds();
     controller_hometype.verbal_Hometype();
     controller_verbal.verbal_Commune_25_all();
     super.initState();
@@ -294,7 +298,14 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
                     : (search_list.toString() == '[]')
                         ? SizedBox()
                         : SizedBox(),
-            slider(),
+
+            (imageList.length == 0)
+                ? Discount_Url(
+                    list: imageList,
+                    a: a,
+                  )
+                : slider(),
+
             search_map(),
             Padding(
               padding: const EdgeInsets.only(
@@ -602,12 +613,32 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
     );
   }
 
-  List imageList = [
-    {
-      'image':
-          'https://media.blogto.com/listings/20160127-2048-DoubleDs6.jpg?w=2048&cmd=resize_then_crop&height=1365&quality=70',
+  List imageList = [];
+  Future<void> slider_ds() async {
+    var dio = Dio();
+    var response = await dio.request(
+      'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/image/get/slider',
+      options: Options(
+        method: 'GET',
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      // print(json.encode(response.data));
+      setState(() {
+        imageList = jsonDecode(json.encode(response.data))['data'];
+      });
+    } else {
+      print(response.statusMessage);
     }
-  ];
+  }
+
+  // List imageList = [
+  //   {
+  //     'image':
+  //         'https://media.blogto.com/listings/20160127-2048-DoubleDs6.jpg?w=2048&cmd=resize_then_crop&height=1365&quality=70',
+  //   }
+  // ];
 
   int a = 0;
   Widget slider() {
@@ -631,7 +662,7 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
                   borderRadius: BorderRadius.circular(10),
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/earth.gif',
-                    image: imageList[index]['image'].toString(),
+                    image: imageList[index]['url'].toString(),
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),
