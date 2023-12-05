@@ -435,8 +435,6 @@ class _Add_verbal_saleState extends State<Add_verbal_property> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Text(
-            //     '${price.toString()}  ${sqm.toString()}   ${price_sqm.toString()}   ${price.toString()}'),
             _size_10,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:http/http.dart' as http;
@@ -247,24 +248,17 @@ class _Uer_VpointState extends State<User_Vpoint> {
       count_autoverbal = _v_point!.text;
       print(count_autoverbal.toString());
     });
-
-    Map<String, dynamic> payload = await {
-      // "id_user_control": '81K564F81A',
-      // "count_autoverbal": '44',
-      // "id_user_control": id_user_control.toString(),
-      "count_autoverbal": count_autoverbal.toString(),
-      "expiry": date.toString(),
-    };
-    final url = await Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/updart_History/${id_user_control}/${widget.controller_user}');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(payload),
+    var data = '''''';
+    var dio = Dio();
+    var response = await dio.request(
+      'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/updart_History/${id_user_control}/${widget.controller_user}?addDate=$date&Vpoint=$count_autoverbal',
+      options: Options(
+        method: 'POST',
+      ),
+      data: data,
     );
 
     if (response.statusCode == 200) {
-      print('Success');
       AwesomeDialog(
           context: context,
           animType: AnimType.leftSlide,
@@ -278,7 +272,7 @@ class _Uer_VpointState extends State<User_Vpoint> {
             Navigator.pop(context);
           }).show();
     } else {
-      print('Error: ${response.reasonPhrase}');
+      print(response.statusMessage);
     }
   }
 

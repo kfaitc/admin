@@ -633,13 +633,6 @@ class _Home_Screen_propertyState extends State<Home_Screen_property> {
     }
   }
 
-  // List imageList = [
-  //   {
-  //     'image':
-  //         'https://media.blogto.com/listings/20160127-2048-DoubleDs6.jpg?w=2048&cmd=resize_then_crop&height=1365&quality=70',
-  //   }
-  // ];
-
   int a = 0;
   Widget slider() {
     return Padding(
